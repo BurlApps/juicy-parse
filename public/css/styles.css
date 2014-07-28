@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #ff503a;
+    position: relative;
+    text-align: center;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+img {
+    position: relative;
+    z-index: 2;
+    margin-top: 50px;
+    height: calc(100% - 100px);
+}

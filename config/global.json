@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Juicy": {
+            "applicationId": "JiY9SpududxaHLqhF83mhXglIIeLF2Zmvi5Z09hi", 
+            "masterKey": "bzSnkC4P0JxnANYGzaJGe5MHebeDgo2iQZbCenbv"
+        }, 
+        "_default": {
+            "link": "Juicy"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.19"
+    }
+}
