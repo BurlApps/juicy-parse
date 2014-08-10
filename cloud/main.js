@@ -1,1 +1,1 @@
-
+require("seedPosts")
