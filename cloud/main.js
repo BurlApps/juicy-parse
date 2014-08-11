@@ -1,1 +1,1 @@
-require("seedPosts")
+require("cloud/seedPosts")
