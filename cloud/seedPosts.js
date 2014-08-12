@@ -10,25 +10,26 @@ Parse.Cloud.define("seedPosts", function(req, res) {
     "http://static6.businessinsider.com/image/51f0432069beddd20a000004/email-ad-exec-demands-free-food-for-90-people-at-a-going-away-party.jpg"
   ]
 
-  Parse.Cloud.httpRequest({
-    url: images[Math.floor(Math.random() * (images.length - 1))]
-  }).then(function(imageData) {
-    var image = new Parse.File("background.jpg",  {
-      base64: imageData.buffer.toString('base64')
-    })
+  for(var i=0; i<images.length; i++) {
+    Parse.Cloud.httpRequest({
+      url: images[i]
+    }).then(function(imageData) {
+      var image = new Parse.File("background.jpg",  {
+        base64: imageData.buffer.toString('base64')
+      })
 
-    image.save().then(function() {
-      for(var i=0; i<5; i++) {
-        var post = new Post()
-        var relation = post.relation("aboutUsers")
+      image.save().then(function() {
+          var post = new Post()
+          var relation = post.relation("aboutUsers")
 
-        relation.add(user)
-        post.set("likes", Math.floor((Math.random() * 100) + 1))
-        post.set("juicy", i%4 == 0)
-        post.set("creator", user)
-        post.set("image", image)
-        post.save()
-      }
+          relation.add(user)
+          post.set("likes", Math.floor((Math.random() * 100) + 1))
+          post.set("juicy", [true, false][Math.round(Math.random())])
+          post.set("creator", user)
+          post.set("image", image)
+          post.set("content", "Wow!! That is crazy Mard Abams!")
+          post.save()
+      }, res.error)
     }, res.error)
-  }, res.error)
+  }
 })
