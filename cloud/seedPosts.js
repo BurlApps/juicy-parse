@@ -1,3 +1,5 @@
+var Image = require("parse-image");
+
 Parse.Cloud.define("seedPosts", function(req, res) {
   var Post = Parse.Object.extend("Posts")
   var user = Parse.User.current()
@@ -13,23 +15,30 @@ Parse.Cloud.define("seedPosts", function(req, res) {
   for(var i=0; i<images.length; i++) {
     Parse.Cloud.httpRequest({
       url: images[i]
-    }).then(function(imageData) {
-      var image = new Parse.File("background.jpg",  {
-        base64: imageData.buffer.toString('base64')
+    }).then(function(response) {
+      return new Parse.File("image.jpg",  {
+        base64: response.buffer.toString('base64')
       })
+    }).then(function(image) {
+      image.save()
+      return image
+    }).then(function(image) {
+        var post = new Post()
+        var relation = post.relation("aboutUsers")
 
-      image.save().then(function() {
-          var post = new Post()
-          var relation = post.relation("aboutUsers")
-
-          relation.add(user)
-          post.set("likes", Math.floor((Math.random() * 100) + 1))
-          post.set("juicy", [true, false][Math.round(Math.random())])
-          post.set("creator", user)
-          post.set("image", image)
-          post.set("content", "Wow!! That is crazy Mard Abams!")
-          post.save()
-      }, res.error)
-    }, res.error)
+        relation.add(user)
+        post.set("likes", Math.floor((Math.random() * 100) + 1))
+        post.set("juicy", (i % 4 == 0))
+        post.set("creator", user)
+        post.set("image", image)
+        post.set("content", "Wow!! That is crazy Mard Abams!")
+        return post.save()
+    }).then(function(result) {
+      if(i == (images.length - 1)) {
+        res.success();
+      }
+    }, function(error) {
+      res.error(error);
+    });
   }
 })
