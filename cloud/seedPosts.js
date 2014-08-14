@@ -34,7 +34,16 @@ Parse.Cloud.job("seedPosts", function(req, res) {
           post.set("juicy", (Math.random() > 0.9))
           post.set("creator", user)
           post.set("image", image)
-          post.set("content", ["Wow!! That is crazy ", user, "! What were you thinking?"])
+          post.set("content", [{
+            color: false,
+            message: "Wow!! That is crazy "
+          }, {
+            color: true,
+            message: user.get("displayName")
+           }, {
+            color: false,
+            message: "! What were you thinking?"
+          }])
           return post.save()
       }).then(function(result) {
         if(i == (number - 1)) {
