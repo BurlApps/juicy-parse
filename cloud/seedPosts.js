@@ -3,7 +3,7 @@ var Image = require("parse-image");
 
 // Create Background Job
 Parse.Cloud.job("seedPosts", function(req, res) {
-  var number = Math.floor((Math.random() * 30) + 1)
+  var number = req.params.posts
   demoUser(function(user) {
     var Post = Parse.Object.extend("Posts")
     var images = [
@@ -31,7 +31,7 @@ Parse.Cloud.job("seedPosts", function(req, res) {
 
           relation.add(user)
           post.set("likes", Math.floor((Math.random() * 100) + 1))
-          post.set("juicy", (Math.random() > 0.6))
+          post.set("juicy", (Math.random() > 0.9))
           post.set("creator", user)
           post.set("image", image)
           post.set("content", "Wow!! That is crazy Mard Abams!")
