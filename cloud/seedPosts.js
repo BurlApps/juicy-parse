@@ -2,8 +2,8 @@ var Image = require("parse-image");
 
 // Create Background Job
 Parse.Cloud.job("seedPosts", function(req, res) {
-  var query = new Parse.Query(Parse.User)
   var number = Math.floor((Math.random() * 30) + 1)
+  var query = new Parse.Query(Parse.User)
 
   query.limit(1)
   query.first({
