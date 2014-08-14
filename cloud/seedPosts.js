@@ -27,9 +27,14 @@ Parse.Cloud.job("seedPosts", function(req, res) {
         return image
       }).then(function(image) {
           var post = new Post()
-          var relation = post.relation("aboutUsers")
+          var aboutRelation = post.relation("aboutUsers")
+          var likedRelation = post.relation("likedUsers")
+          var nopeRelation = post.relation("nopedUsers")
 
-          relation.add(user)
+          aboutRelation.add(user)
+          likedRelation.add(user)
+          nopeRelation.add(user)
+
           post.set("likes", Math.floor((Math.random() * 100) + 1))
           post.set("juicy", (Math.random() > 0.9))
           post.set("creator", user)
@@ -40,9 +45,9 @@ Parse.Cloud.job("seedPosts", function(req, res) {
           }, {
             color: true,
             message: user.get("displayName")
-           }, {
+          }, {
             color: false,
-            message: "! What were you thinking?"
+            message: "! What were you thinking? "
           }])
           return post.save()
       }).then(function(result) {
