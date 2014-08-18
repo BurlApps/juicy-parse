@@ -36,6 +36,7 @@ Parse.Cloud.job("seedPosts", function(req, res) {
           nopeRelation.add(user)
 
           post.set("likes", Math.floor((Math.random() * 100) + 1))
+	  post.set("karma", Math.floor((Math.random() * 100) * (Math.random() < 0.5 ? -1 : 1)))
           post.set("juicy", (Math.random() > 0.9))
           post.set("creator", user)
           post.set("image", image)
