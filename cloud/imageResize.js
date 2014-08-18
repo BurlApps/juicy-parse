@@ -19,8 +19,8 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
     });
   }).then(function(image) {
     return image.scale({
-      width: 300,
-      height: 300
+      width: 600,
+      height: 600
     });
   }).then(function(image) {
     // Make sure it's a JPEG to save disk space and bandwidth.
