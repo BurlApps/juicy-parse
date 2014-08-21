@@ -5,36 +5,27 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
   var oneDayQuery = new Parse.Query(postsObject)
 
   var oneDayAgo = new Date()
-  oneDayAgo.setDate(oneDayAgo.getDate()-1);
-  oneDayQuery.greaterThan('updatedAt', oneDayAgo);
-  oneDayQuery.limit(1000)
+  oneDayAgo.setDate(oneDayAgo.getDate()-1)
+  oneDayQuery.greaterThanOrEqualTo('updatedAt', oneDayAgo)
+  oneDayQuery.descending("karma")
+  oneDayQuery.skip(10)
+  oneDayQuery.limit(1)
 
-  oneDayQuery.find().then(function(posts) {
-    var karma = 0
-
-    for(var i = 0; i < posts.length; i++) {
-      karma += posts[i].get("karma")
-
-      if(i == (posts.length - 1)) {
-        var average = Math.ceil(karma/posts.length)
-        var seventyFifth = average + Math.abs(average/2)
-        return seventyFifth
-      }
-    }
-  }).then(function(seventyFifth) {
+  oneDayQuery.first().then(function(post) {
+    return post.get("karma")
+  }).then(function(topPercent) {
     var topQuery = new Parse.Query(postsObject)
-    topQuery.greaterThan('karma', seventyFifth);
+    topQuery.greaterThanOrEqualTo('karma', topPercent);
 
     topQuery.each(function(post) {
       post.set("juicy", true)
       return post.save()
     })
 
-    return seventyFifth
-  }).then(function(seventyFifth) {
-
+    return topPercent
+  }).then(function(topPercent) {
     var bottomQuery = new Parse.Query(postsObject)
-    bottomQuery.lessThan('karma', seventyFifth);
+    bottomQuery.lessThan('karma', topPercent);
 
     return bottomQuery.each(function(post) {
       post.set("juicy", false)
@@ -43,6 +34,6 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
   }).then(function() {
     res.success()
   }, function(error) {
-    res.error(error)
+    res.error(error.message)
   })
 })
