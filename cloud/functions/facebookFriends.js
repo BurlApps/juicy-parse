@@ -17,6 +17,7 @@ Parse.Cloud.define("facebookFriends", function(req, res) {
         return names.push(user.name)
       })
     })
+
     return promise;
   }).then(function() {
     var query = new Parse.Query(Parse.User)

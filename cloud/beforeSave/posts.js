@@ -3,11 +3,16 @@ var Image = require("parse-image");
 Parse.Cloud.beforeSave("Posts", function(req, res) {
   var post = req.object;
 
+  if(!post.isNew()) {
+    return res.success()
+  }
+
+  // Resize Image
   Parse.Cloud.httpRequest({
     url: post.get("image").url()
-  }).then(function(res) {
+  }).then(function(data) {
     var image = new Image();
-    return image.setData(res.buffer);
+    return image.setData(data.buffer);
   }).then(function(image) {
     // Crop the image to the smaller of width or height.
     var size = Math.min(image.width(), image.height());

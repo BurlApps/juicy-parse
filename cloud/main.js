@@ -1,3 +1,3 @@
-require("cloud/seedPosts")
-require("cloud/imageResize")
-require("cloud/facebookFriends")
+require("cloud/jobs/index")
+require("cloud/beforeSave/index")
+require("cloud/functions/index")
