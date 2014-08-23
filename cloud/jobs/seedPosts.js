@@ -31,16 +31,13 @@ Parse.Cloud.job("seedPosts", function(req, res) {
       }).then(function(image) {
         var post = new Post()
         var aboutRelation = post.relation("aboutUsers")
-        var likedRelation = post.relation("likedUsers")
-        var nopeRelation = post.relation("nopedUsers")
 
         aboutRelation.add(user)
-        likedRelation.add(user)
-        nopeRelation.add(user)
 
         post.set("likes", 0)
         post.set("karma", 0)
         post.set("juicy", false)
+	post.set("show", true)
         post.set("creator", user)
         post.set("image", image)
         post.set("content", [{
