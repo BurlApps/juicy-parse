@@ -18,7 +18,7 @@ Parse.Cloud.job("seedPosts", function(req, res) {
 
     var promise = Parse.Promise.as()
 
-    _(number).times(function() {
+    _(number).times(function(n) {
       promise = Parse.Cloud.httpRequest({
         url: images[Math.floor(Math.random() * images.length)]
       }).then(function(response) {
@@ -48,7 +48,10 @@ Parse.Cloud.job("seedPosts", function(req, res) {
           message: user.get("displayName")
         }, {
           color: false,
-          message: "! What were you thinking? "
+          message: "! What were you thinking?\n"
+        }, {
+          color: false,
+          message: "Post: #" + n
         }])
 
         return post.save()
