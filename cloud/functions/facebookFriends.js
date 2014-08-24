@@ -3,9 +3,9 @@ var _ = require('underscore')
 Parse.Cloud.define("facebookFriends", function(req, res) {
   Parse.Cloud.useMasterKey()
 
-  var currentUser = Parse.User.current();
+  var currentUser     = Parse.User.current();
   var friendsRelation = currentUser.relation("friends")
-  var names = []
+  var names           = []
 
   Parse.Cloud.httpRequest({
     url:'https://graph.facebook.com/me/friends?&access_token=' + currentUser.get('authData').facebook.access_token

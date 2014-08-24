@@ -1,12 +1,11 @@
 var demoUser = require("cloud/util/getDemoUser")
-var Image = require("parse-image");
-
-var _ = require('underscore');
+var Image    = require("parse-image");
+var _        = require('underscore');
 
 Parse.Cloud.job("seedPosts", function(req, res) {
   var number = req.params.posts
   demoUser(function(user) {
-    var Post = Parse.Object.extend("Posts")
+    var Post   = Parse.Object.extend("Posts")
     var images = [
       "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
       "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",

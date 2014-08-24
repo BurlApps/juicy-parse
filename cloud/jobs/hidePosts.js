@@ -1,6 +1,6 @@
 Parse.Cloud.job("hidePosts", function(req, res) {
   var postsObject = Parse.Object.extend("Posts")
-  var countQuery = new Parse.Query(postsObject)
+  var countQuery  = new Parse.Query(postsObject)
 
   countQuery.equalTo("show", true)
   countQuery.count().then(function(count) {
