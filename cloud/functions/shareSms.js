@@ -24,7 +24,7 @@ Parse.Cloud.define("shareSms", function(req, res) {
     return promise
   }).then(function(post) {
     var promise = Parse.Promise.as()
-    if(message.length > 30) message = message.substring(0, 30)
+    if(message.length > 40) message = message.substring(0, 40)
 
     _.each(contacts, function(contact) {
       promise = promise.then(function() {
