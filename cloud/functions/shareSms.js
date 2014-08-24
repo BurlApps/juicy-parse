@@ -3,26 +3,31 @@ var twilio = require('twilio')
 
 Parse.Cloud.define("shareSms", function(req, res) {
   var contacts = req.params.contacts
-  var post = req.params.post
   var client = twilio(req.params.twilio.sid, req.params.twilio.token)
-
   var message = ""
   var download = "http://juicyapp.com/download"
-  var promise = Parse.Promise.as()
 
-  _.each(post.get("content"), function(content) {
-    promise = promise.then(function() {
-      message += content.message
-      return message
+  var Post = Parse.Object.extend("Posts")
+  var post = new Post()
+  post.id = req.params.post
+
+  post.fetch().then(function() {
+    var promise = Parse.Promise.as()
+
+    _.each(post.get("content"), function(content) {
+      promise = promise.then(function() {
+        message += content.message
+        return message
+      })
     })
-  })
 
-  promise.then(function() {
-    var innerPromise = Parse.Promise.as()
-    if(str.length > 30) str = str.substring(0, 30)
+    return promise
+  }).then(function(post) {
+    var promise = Parse.Promise.as()
+    if(message.length > 30) message = message.substring(0, 30)
 
     _.each(contacts, function(contact) {
-      innerPromise = promise.then(function() {
+      promise = promise.then(function() {
         return client.sendSms({
           to: req.params.twilio.phone,
           from: contact["phone"],
@@ -35,7 +40,7 @@ Parse.Cloud.define("shareSms", function(req, res) {
       })
     })
 
-    return innerPromise
+    return promise
   }).then(function() {
     res.success("Share through twilio successfully")
   }, function(error) {
