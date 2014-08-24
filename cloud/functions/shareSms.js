@@ -24,11 +24,10 @@ Parse.Cloud.define("shareSms", function(req, res) {
     _.each(contacts, function(contact) {
       innerPromise = promise.then(function() {
         return client.sendSms({
-          to: 'myTwilioPhoneNumber',
+          to: req.params.twilio.phone,
           from: contact["phone"],
           body: [
-            "Hey ", contact["name"],
-            ", your friend shared this with you: ",
+            "Your friend shared this with you on Juicy: ",
             message, "... Download juicy to find out the rest: ",
             download
           ].join("")
