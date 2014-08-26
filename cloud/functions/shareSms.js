@@ -3,7 +3,7 @@ var twilio = require('twilio')
 
 Parse.Cloud.define("shareSms", function(req, res) {
   var contacts = req.params.contacts
-  var client   = twilio(req.params.twilio.sid, req.params.twilio.token)
+  var Settings = Parse.Object.extend("Settings")
   var message  = ""
 
   var Post = Parse.Object.extend("Posts")
@@ -22,24 +22,29 @@ Parse.Cloud.define("shareSms", function(req, res) {
 
     return promise
   }).then(function(post) {
-    var promise = Parse.Promise.as()
-    if(message.length > 40) message = message.substring(0, 40)
+    var query = new Parse.Query(Settings)
 
-    _.each(contacts, function(contact) {
-      promise = promise.then(function() {
-        return client.sendSms({
-          to: "+1" + contact["phone"].match(/\d/g).join(""),
-          from: req.params.twilio.phone,
-          body: [
-            "Your friend shared this with you on Juicy: ",
-            message, "... Download Juicy to find out the rest: ",
-            "http://juicy.io"
-          ].join("")
+    return query.first().then(function(settings) {
+      var client   = twilio(settings.get("twilioSid"), settings.get("twilioToken"))
+      var promise = Parse.Promise.as()
+      if(message.length > 40) message = message.substring(0, 40)
+
+      _.each(contacts, function(contact) {
+        promise = promise.then(function() {
+          return client.sendSms({
+            to: "+1" + contact["phone"].match(/\d/g).join(""),
+            from: settings.get("twilioShareNumber"),
+            body: [
+              "Your friend shared this with you on Juicy: ",
+              message, "... Download Juicy to find out the rest: ",
+              "http://juicy.io"
+            ].join("")
+          })
         })
       })
-    })
 
-    return promise
+      return promise
+    })
   }).then(function() {
     res.success("Share through twilio successfully")
   }, function(error) {

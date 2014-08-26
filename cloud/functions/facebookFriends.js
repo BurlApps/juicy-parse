@@ -10,7 +10,7 @@ Parse.Cloud.define("facebookFriends", function(req, res) {
   Parse.Cloud.httpRequest({
     url:'https://graph.facebook.com/me/friends?&access_token=' + currentUser.get('authData').facebook.access_token
   }).then(function(response) {
-    var promise = Parse.Promise.as();
+    var promise = Parse.Promise.as()
 
     _.each(response.data.data, function(user) {
       promise = promise.then(function() {

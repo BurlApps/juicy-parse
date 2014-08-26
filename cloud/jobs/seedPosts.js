@@ -1,4 +1,4 @@
-var demoUser = require("cloud/util/getDemoUser")
+var demoUser = require("cloud/util/demoUser")
 var Image    = require("parse-image");
 var _        = require('underscore');
 
