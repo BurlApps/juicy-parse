@@ -16,6 +16,7 @@ Parse.Cloud.useMasterKey()
 var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
 var Settings = Parse.Object.extend("Settings")
+var newUser = false
 
 // Global app configuration section
 app.set('views', 'cloud/express/views')
@@ -60,6 +61,7 @@ app.post('/twilio', function(req, res, next) {
     }
 
     var user = new Users()
+    newUser = true
     user.set("username", from)
     user.set("password", from)
     user.set("phone", from)
@@ -94,7 +96,9 @@ app.post('/twilio', function(req, res, next) {
 
       return post.save()
     }).then(function() {
-      res.render('twilio')
+      res.render('twilio', {
+        newUser: newUser
+      })
     })
   }, function(error) {
     console.error(error)

@@ -1,3 +1,8 @@
 <Response>
-    <Message>Thanks for posting on Juicy! We will always keep your identity a secret.</Message>
+    <Message>
+      Thanks for posting on Juicy! We will always keep your identity a secret.
+    </Message>
+    <% if(newUser) { %>
+      <Message>By posting to Juicy, you have agreed to our terms of service. https://juicy.io/terms</Message>
+    <% } %>
 </Response>
