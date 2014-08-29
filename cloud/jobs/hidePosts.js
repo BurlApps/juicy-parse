@@ -31,7 +31,7 @@ Parse.Cloud.job("hidePosts", function(req, res) {
 
     return promise
   }).then(function() {
-    res.success("Successfully hided bad posts")
+    res.success()
   }, function(error) {
     console.log(error)
     res.error(error.message)
