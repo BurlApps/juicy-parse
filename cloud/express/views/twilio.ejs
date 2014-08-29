@@ -1,8 +1,7 @@
 <Response>
-    <Message>
-      Thanks for posting on Juicy! We will always keep your identity a secret.
-    </Message>
     <% if(newUser) { %>
-      <Message>By posting to Juicy, you have agreed to our terms of service. https://juicy.io/terms</Message>
+      <Message>Posted! We take your privacy and data seriously. When you post, you agree to our terms: https://juicy.io/terms</Message>
+    <% } else { %>
+      <Message>Thanks for posting on Juicy! We will always keep your identity a secret.</Message>
     <% } %>
 </Response>

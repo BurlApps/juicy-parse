@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 Parse.Cloud.job("hidePosts", function(req, res) {
   var postsObject = Parse.Object.extend("Posts")
   var countQuery  = new Parse.Query(postsObject)
@@ -7,19 +9,31 @@ Parse.Cloud.job("hidePosts", function(req, res) {
     return Math.ceil(count/4)
   }).then(function(removeLimit) {
     var query = new Parse.Query(postsObject)
+    var promise = Parse.Promise.as()
 
+    var oneDayAgo = new Date()
+    oneDayAgo.setDate(oneDayAgo.getDate()-1)
+
+    query.greaterThanOrEqualTo('updatedAt', oneDayAgo)
     query.equalTo("show", true)
     query.ascending("karma")
     query.limit(removeLimit)
 
-    return query.each(function(post) {
-      post.set("juicy", false)
-      post.set("show", false)
-      return post.save()
+    query.find(function(posts) {
+      _.each(posts, function(post) {
+        promise.then(function() {
+          post.set("juicy", false)
+          post.set("show", false)
+          return post.save()
+        })
+      })
     })
+
+    return promise
   }).then(function() {
-    res.success()
+    res.success("Successfully hided bad posts")
   }, function(error) {
+    console.log(error)
     res.error(error.message)
   })
 })

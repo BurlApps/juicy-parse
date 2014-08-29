@@ -28,6 +28,10 @@ app.get('/', function(req, res) {
   res.render('index')
 })
 
+app.get('/terms', function(req, res) {
+  res.render('terms')
+})
+
 // Twilio Text to Post
 app.post('/twilio', function(req, res, next) {
   var query = new Parse.Query(Settings)
