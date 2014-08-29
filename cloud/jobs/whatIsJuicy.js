@@ -15,7 +15,7 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
     return post.get("karma")
   }).then(function(topPercent) {
     var topQuery = new Parse.Query(postsObject)
-    topQuery.greaterThanOrEqualTo('karma', topPercent);
+    topQuery.greaterThanOrEqualTo('karma', topPercent)
 
     topQuery.each(function(post) {
       post.set("juicy", true)
@@ -25,7 +25,7 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
     return topPercent
   }).then(function(topPercent) {
     var bottomQuery = new Parse.Query(postsObject)
-    bottomQuery.lessThan('karma', topPercent);
+    bottomQuery.lessThan('karma', topPercent)
 
     return bottomQuery.each(function(post) {
       post.set("juicy", false)
