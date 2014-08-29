@@ -67,6 +67,7 @@ app.post('/twilio', function(req, res, next) {
     user.set("phone", from)
     user.set("admin", false)
     user.set("registered", false)
+    user.set("terms", false)
 
     return user.signUp()
   }).then(function(user) {
