@@ -21,7 +21,7 @@ Parse.Cloud.job("hidePosts", function(req, res) {
 
     query.find(function(posts) {
       _.each(posts, function(post) {
-        promise.then(function() {
+        promise = promise.then(function() {
           post.set("juicy", false)
           post.set("show", false)
           return post.save()
