@@ -1,20 +1,24 @@
-exports.auth = function(req, res, next) {
-  var Settings = Parse.Object.extend("Settings")
-  var query = new Parse.Query(Settings)
+exports.auth = function(express) {
+  return function(req, res, next) {
+    var Settings = Parse.Object.extend("Settings")
+    var query = new Parse.Query(Settings)
 
-  query.first().then(function(settings) {
-    if(settings) {
-      express.basicAuth(function(username, password) {
-        return (username == settings.get("twilioUsername")) &&
-               (password == settings.get("twilioPassword")) &&
-               (req.param("To") == settings.get("twilioCreateNumber"))
-      })(req, res, next)
-    } else {
+    query.first().then(function(settings) {
+      if(settings) {
+        req.settings = settings
+
+        express.basicAuth(function(username, password) {
+          return (username == settings.get("twilioUsername")) &&
+                 (password == settings.get("twilioPassword")) &&
+                 (req.param("To") == settings.get("twilioCreateNumber"))
+        })(req, res, next)
+      } else {
+        res.redirect('/')
+      }
+    }, function(error) {
       res.redirect('/')
-    }
-  }, function(error) {
-    res.redirect('/')
-  })
+    })
+  }
 }
 
 exports.post = function(req, res, next) {
@@ -70,14 +74,40 @@ exports.post = function(req, res, next) {
 
       return post.save()
     }).then(function() {
-      res.render('twilio', {
-        newUser: newUser
-      })
+      next()
     })
   }, function(error) {
     console.error(error)
-    res.render('twilio')
+    next()
   })
 }
 
-exports.confession
+exports.confession = function(req, res) {
+  Parse.Cloud.httpRequest({
+    method: "POST",
+    url: [
+      'https://graph.facebook.com/',
+      req.settings.get("facebookPage"),
+      '/feed?&access_token=',
+      req.settings.get("facebookID"),
+      "|",
+      req.settings.get("facebookSecret")
+    ].join(""),
+    body: {
+      body: req.param("Body"),
+      link: "http://getjuicyapp.com/ucsc",
+      published: true
+    }
+  }).then(function(response) {
+    console.log(response)
+    req.isConfession = true
+    next()
+  })
+}
+
+exports.response = function(req, res) {
+  res.render('twilio', {
+    newUser: newUser,
+    isConfession: !!req.isConfession
+  })
+}

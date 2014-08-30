@@ -16,7 +16,8 @@ Parse.Cloud.useMasterKey()
 // Routes
 routes = {
   home: require("cloud/express/routes/index"),
-  terms: require("cloud/express/routes/index")
+  terms: require("cloud/express/routes/terms"),
+  twilio: require("cloud/express/routes/twilio")
 }
 
 // Global app configuration section
@@ -31,11 +32,10 @@ app.get('/', routes.home)
 app.get('/terms', routes.terms)
 
 // Twilio Text to Post
-app.post('/twilio', twilio.auth, twilio.post)
-
+app.post('/twilio', routes.twilio.auth(express), routes.twilio.post, routes.twilio.response)
 
 // Facebook Confessions
-app.post('/facebook', twilio.auth, twilio.confessions, twilio.post)
+app.post('/confession', routes.twilio.auth(express), routes.twilio.confession, routes.twilio.post, routes.twilio.response)
 
 // Listen to Parse
 app.listen()
