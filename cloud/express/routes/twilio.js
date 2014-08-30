@@ -60,10 +60,7 @@ exports.post = function(req, res, next) {
       var Posts = Parse.Object.extend("Posts")
       var post = new Posts()
 
-      post.set("likes", 0)
-      post.set("karma", 0)
-      post.set("juicy", false)
-      post.set("show", true)
+      post.set("confession", !!req.isConfession)
       post.set("creator", user)
       post.set("image", image)
       post.set("content", [{
@@ -82,3 +79,5 @@ exports.post = function(req, res, next) {
     res.render('twilio')
   })
 }
+
+exports.confession

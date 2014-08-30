@@ -33,5 +33,9 @@ app.get('/terms', routes.terms)
 // Twilio Text to Post
 app.post('/twilio', twilio.auth, twilio.post)
 
+
+// Facebook Confessions
+app.post('/facebook', twilio.auth, twilio.confessions, twilio.post)
+
 // Listen to Parse
 app.listen()

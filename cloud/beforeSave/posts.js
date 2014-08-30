@@ -7,6 +7,13 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
     return res.success()
   }
 
+  // Set Defaults
+  post.set("likes", 0)
+  post.set("karma", 0)
+  post.set("juicy", false)
+  post.set("show", true)
+  post.set("confession", !!post.get("confession"))
+
   // Resize Image
   Parse.Cloud.httpRequest({
     url: post.get("image").url()
