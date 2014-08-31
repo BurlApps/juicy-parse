@@ -1,13 +1,11 @@
 var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
-var Settings = Parse.Object.extend("Settings")
+var Settings = require("cloud/util/settings")
+var Facebook = require("cloud/util/facebook")
 
 module.exports.auth = function(express) {
   return function(req, res, next) {
-    var query = new Parse.Query(Settings)
-
-    query.first().then(function(settings) {
-      if(settings) {
+    Settings().then(function(settings) {
         req.settings = settings
 
         express.basicAuth(function(username, password) {
@@ -15,11 +13,6 @@ module.exports.auth = function(express) {
                  (password == settings.get("twilioPassword")) &&
                  (req.param("To") == settings.get("twilioCreateNumber") || req.param("To") == settings.get("twilioConfessionNumber"))
         })(req, res, next)
-      } else {
-        res.redirect('/')
-      }
-    }, function(error) {
-      res.redirect('/')
     })
   }
 }
@@ -93,25 +86,18 @@ module.exports.post = function(req, res, next) {
 }
 
 module.exports.confession = function(req, res, next) {
-  Parse.Cloud.httpRequest({
-    method: "POST",
-    url: [
-      'https://graph.facebook.com/',
-      req.settings.get("facebookPage"),
-      '/feed?&access_token=',
-      req.settings.get("facebookToken")
-    ].join(""),
-    body: {
-      message: req.param("Body"),
-      published: !req.settings.get("facebookModerate")
-    }
-  }).then(function(response) {
-    req.isConfession = true
+  req.isConfession = true
+
+  if(!req.settings.get("facebookModerate")) {
+    Facebook.post(req.param("Body")).then(function(response) {
+      next()
+    }, function(error) {
+      console.log(error)
+      exports.response(req, res)
+    })
+  } else {
     next()
-  }, function(error) {
-    console.log(error)
-    exports.response(req, res)
-  })
+  }
 }
 
 module.exports.response = function(req, res) {
