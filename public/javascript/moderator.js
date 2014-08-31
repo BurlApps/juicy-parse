@@ -74,7 +74,7 @@ function getPosts() {
         addListeners(post)
       })
     } else {
-      $(".loading").text("No new confessions. Good job!")
+      $(".loading").text("No new confessions. Good work!")
     }
   })
 }
