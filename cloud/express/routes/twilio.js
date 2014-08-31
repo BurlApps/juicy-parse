@@ -4,18 +4,19 @@ var Queue = Parse.Object.extend("ConfessionsQueue")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
 
-module.exports.auth = function(express) {
-  return function(req, res, next) {
-    Settings().then(function(settings) {
-        req.settings = settings
+module.exports.auth = function(req, res, next) {
+  Settings().then(function(settings) {
+      req.settings = settings
 
-        express.basicAuth(function(username, password) {
-          return (username == settings.get("twilioUsername")) &&
-                 (password == settings.get("twilioPassword")) &&
-                 (req.param("To") == settings.get("twilioCreateNumber") || req.param("To") == settings.get("twilioConfessionNumber"))
-        })(req, res, next)
-    })
-  }
+      req.basicAuth(function(username, password) {
+        return (username == settings.get("twilioUsername")) &&
+               (password == settings.get("twilioPassword")) &&
+               ([
+                  settings.get("twilioCreateNumber"),
+                  settings.get("twilioConfessionNumber")
+                ].indexOf(req.param("To")) != -1)
+      })(req, res, next)
+  })
 }
 
 module.exports.post = function(req, res, next) {

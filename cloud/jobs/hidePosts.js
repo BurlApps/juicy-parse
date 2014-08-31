@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('underscore')
 
 Parse.Cloud.job("hidePosts", function(req, res) {
   var postsObject = Parse.Object.extend("Posts")
