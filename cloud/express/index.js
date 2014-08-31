@@ -1,23 +1,15 @@
 // These two lines are required to initialize Express in Cloud Code.
 var express = require('express')
 var app = express()
-var images = [
-  "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
-  "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
-  "http://cdn.surf.transworld.net/wp-content/blogs.dir/443/files/2013/08/Vans-Party.jpg",
-  "http://norwich.tab.co.uk/files/2012/10/house-party21.jpg",
-  "http://cdn.lipstiq.com/wp-content/uploads/2014/02/cover3.jpg",
-  "http://static6.businessinsider.com/image/51f0432069beddd20a000004/email-ad-exec-demands-free-food-for-90-people-at-a-going-away-party.jpg"
-]
 
 // Set Master Key
 Parse.Cloud.useMasterKey()
 
 // Routes
 routes = {
-  home: require("cloud/express/routes/index"),
-  terms: require("cloud/express/routes/terms"),
-  twilio: require("cloud/express/routes/twilio")
+  core: require("cloud/express/routes/index"),
+  twilio: require("cloud/express/routes/twilio"),
+  notfound: require("cloud/express/routes/notfound")
 }
 
 // Global app configuration section
@@ -26,16 +18,22 @@ app.set('view engine', 'ejs')
 app.use(express.bodyParser())
 
 // Landing Route
-app.get('/', routes.home)
+app.get('/', routes.core.home)
 
 // Terms Route
-app.get('/terms', routes.terms)
+app.get('/terms', routes.core.terms)
+
+// Privacy Route
+app.get('/privacy', routes.core.privacy)
 
 // Twilio Text to Post
-app.post('/twilio', routes.twilio.auth(express), routes.twilio.post, routes.twilio.response)
+//app.post('/twilio', routes.twilio.auth(express), routes.twilio.post, routes.twilio.response)
 
 // Facebook Confessions
-app.post('/confession', routes.twilio.auth(express), routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+app.post('/twilio', routes.twilio.auth(express), routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+
+// Not Found Redirect
+app.all("*", routes.notfound)
 
 // Listen to Parse
 app.listen()
