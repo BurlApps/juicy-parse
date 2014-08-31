@@ -103,8 +103,7 @@ module.exports.confession = function(req, res, next) {
     ].join(""),
     body: {
       message: req.param("Body"),
-      link: "http://getjuicyapp.com/ucsc",
-      published: true
+      published: !req.settings.get("facebookModerate")
     }
   }).then(function(response) {
     req.isConfession = true
