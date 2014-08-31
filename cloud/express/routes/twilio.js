@@ -13,7 +13,7 @@ module.exports.auth = function(express) {
         express.basicAuth(function(username, password) {
           return (username == settings.get("twilioUsername")) &&
                  (password == settings.get("twilioPassword")) &&
-                 (req.param("To") == settings.get("twilioCreateNumber"))
+                 (req.param("To") == settings.get("twilioCreateNumber") || req.param("To") == settings.get("twilioConfessionNumber"))
         })(req, res, next)
       } else {
         res.redirect('/')

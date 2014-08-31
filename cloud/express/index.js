@@ -27,10 +27,10 @@ app.get('/terms', routes.core.terms)
 app.get('/privacy', routes.core.privacy)
 
 // Twilio Text to Post
-//app.post('/twilio', routes.twilio.auth(express), routes.twilio.post, routes.twilio.response)
+app.post('/twilio', routes.twilio.auth(express), routes.twilio.post, routes.twilio.response)
 
 // Facebook Confessions
-app.post('/twilio', routes.twilio.auth(express), routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+app.post('/confession', routes.twilio.auth(express), routes.twilio.confession, routes.twilio.post, routes.twilio.response)
 
 // Not Found Redirect
 app.all("*", routes.notfound)
