@@ -32,8 +32,6 @@ module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
 
-  query.limit = 50;
-
   query.each(function(confession) {
     var post = confession.get("post")
 

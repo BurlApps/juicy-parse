@@ -3,7 +3,7 @@ var _ = require('underscore')
 Parse.Cloud.define("facebookFriends", function(req, res) {
   Parse.Cloud.useMasterKey()
 
-  var currentUser     = Parse.User.current();
+  var currentUser     = Parse.User.current()
   var friendsRelation = currentUser.relation("friends")
   var names           = []
 
