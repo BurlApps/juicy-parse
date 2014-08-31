@@ -1,5 +1,6 @@
 var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
+var Queue = Parse.Object.extend("ConfessionsQueue")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
 
@@ -64,7 +65,6 @@ module.exports.post = function(req, res, next) {
       image.save()
       return image
     }).then(function(image) {
-      var Posts = Parse.Object.extend("Posts")
       var post = new Posts()
 
       post.set("confession", req.isConfession)
@@ -74,6 +74,12 @@ module.exports.post = function(req, res, next) {
         color: false,
         message: body
       }])
+
+      if(req.isConfession && req.isModerated) {
+        var queue = new Queue()
+        queue.set("post", post)
+        queue.save()
+      }
 
       return post.save()
     }).then(function() {
@@ -87,6 +93,7 @@ module.exports.post = function(req, res, next) {
 
 module.exports.confession = function(req, res, next) {
   req.isConfession = true
+  req.isModerated = false
 
   if(!req.settings.get("facebookModerate")) {
     Facebook.post(req.param("Body")).then(function(response) {
@@ -96,6 +103,7 @@ module.exports.confession = function(req, res, next) {
       exports.response(req, res)
     })
   } else {
+    req.isModerated = true
     next()
   }
 }
