@@ -2,9 +2,6 @@ var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
 
 Parse.Cloud.define("feed", function(req, res) {
-  var posts = []
-  var currentUser = Parse.User.current()
-
   // TODO: All queries below are part of compound "or query"
   // TODO: Query for friends that have liked it (done)
   // TODO: Query for geo location from where u are
@@ -12,6 +9,9 @@ Parse.Cloud.define("feed", function(req, res) {
   // TODO: Query for about me (done)
   // TODO: Query for hotness calculated by karma (done)
   // TODO: Query for newest posts (done)
+
+  var posts = []
+  var currentUser = Parse.User.current()
 
   // About Me Query
   var aboutMeQuery = new Parse.Query(Posts)
