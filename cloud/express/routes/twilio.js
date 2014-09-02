@@ -3,6 +3,7 @@ var Posts = Parse.Object.extend("Posts")
 var Queue = Parse.Object.extend("ConfessionsQueue")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
+var Twilio   = require('twilio')
 
 module.exports.auth = function(req, res, next) {
   Settings().then(function(settings) {
@@ -95,6 +96,14 @@ module.exports.post = function(req, res, next) {
 module.exports.confession = function(req, res, next) {
   req.isConfession = true
   req.isModerated = false
+
+  var client = Twilio(req.settings.get("twilioSid"), req.settings.get("twilioToken"))
+
+  client.sendSms({
+    to: req.settings.get("notifyConfessionNumber"),
+    from: req.settings.get("twilioConfessionNumber"),
+    body: "Someone posted a confession: " + req.param("Body")
+  })
 
   if(!req.settings.get("facebookModerate")) {
     Facebook.post(req.param("Body")).then(function(response) {

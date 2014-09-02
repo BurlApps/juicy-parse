@@ -1,9 +1,9 @@
 var _ = require('underscore')
-var twilio = require('twilio')
+var Twilio = require('twilio')
+var Settings = require("cloud/util/settings")
 
 Parse.Cloud.define("shareSms", function(req, res) {
   var contacts = req.params.contacts
-  var Settings = Parse.Object.extend("Settings")
   var message  = ""
 
   var Post = Parse.Object.extend("Posts")
@@ -22,10 +22,8 @@ Parse.Cloud.define("shareSms", function(req, res) {
 
     return promise
   }).then(function(post) {
-    var query = new Parse.Query(Settings)
-
-    return query.first().then(function(settings) {
-      var client   = twilio(settings.get("twilioSid"), settings.get("twilioToken"))
+    return Settings().then(function(settings) {
+      var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
       var promise = Parse.Promise.as()
       if(message.length > 40) message = message.substring(0, 40)
 
