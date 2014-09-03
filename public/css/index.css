@@ -18,7 +18,11 @@ canvas {
 
 @font-face {
 	font-family: 'Balcony Angels';
-	src: url('/fonts/BalconyAngels.ttf') format('truetype')
+	src:url('/fonts/BalconyAngels.eot');
+	src:url('/fonts/BalconyAngels.eot') format('embedded-opentype'),
+		url('/fonts/BalconyAngels.woff') format('woff'),
+		url('/fonts/BalconyAngels.ttf') format('truetype'),
+		url('/fonts/BalconyAngels.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
