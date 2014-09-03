@@ -32,7 +32,7 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
       return post.save()
     })
   }).then(function() {
-    res.success()
+    res.success("")
   }, function(error) {
     res.error(error.message)
   })

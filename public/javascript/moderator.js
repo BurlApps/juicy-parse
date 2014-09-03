@@ -7,7 +7,8 @@ $(function() {
 function getFormFromPost(post) {
   return {
     id: post.data("id"),
-    message: post.find(".message").val()
+    message: post.find(".message").val(),
+    _csrf: $(".csrf").val()
   }
 }
 

@@ -5,7 +5,6 @@ body {
     height: 100%;
     background: #ff503a;
     position: relative;
-    text-align: center;
 }
 
 canvas {
@@ -17,9 +16,112 @@ canvas {
     z-index: 1;
 }
 
-img {
-    position: relative;
-    z-index: 2;
-    margin-top: 50px;
-    height: calc(100% - 100px);
+@font-face {
+	font-family: 'Balcony Angels';
+	src: url('/fonts/BalconyAngels.ttf') format('truetype')
+	font-weight: normal;
+	font-style: normal;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: 800px;
+  margin: 50px auto 40px auto;
+  color: #fff;
+}
+
+.container .information {
+  width: 420px;
+  float: left;
+  margin-top: 50px;
+}
+
+.container .information .header {
+  font-family: "Balcony Angels";
+  font-size: 100px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.container .information .subheader {
+  font-family: 'Signika', sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.container .information .form {
+  margin-top: 30px;
+}
+
+.container .information .form .input,
+.container .information .form .submit {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #666;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 24px;
+
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: background .2s ease 0;
+  -moz-transition: background .2s ease;
+  -o-transition: background .2s ease 0;
+  transition: background .2s ease 0;
+}
+
+.container .information .form .input:focus {
+  background: #fff;
+}
+
+.container .information .form .submit {
+  background: #2C97DD;
+  color: #fff;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.container .information .form .submit:hover {
+  background: #2685c4;
+}
+
+.container .information .form .submit:hover:active,
+.container .information .form .submit.active {
+  background: #1E6DA3;
+}
+
+.container .information .form .submit.error {
+  background: #C8120B;
+}
+
+.container .information .form .contact {
+  text-align: center;
+  font-family: 'Signika', sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  opacity: 0;
+
+  -webkit-transition: opacity .2s ease 0;
+  -moz-transition: opacity .2s ease;
+  -o-transition: opacity .2s ease 0;
+  transition: opacity .2s ease 0;
+}
+
+.container .information .form .contact.active {
+  opacity: 1;
+}
+
+.container .image {
+  width: 325px;
+  float: right;
 }

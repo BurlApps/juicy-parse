@@ -17,14 +17,25 @@ routes = {
 app.set('views', 'cloud/express/views')
 app.set('view engine', 'ejs')
 
+
 app.use(express.bodyParser())
+app.use(express.cookieParser())
+app.use(express.cookieSession({
+  secret: 'ursid',
+  cookie: {
+    httpOnly: true
+  }
+}))
+app.use(express.csrf())
 app.use(function(req, res, next) {
   req.basicAuth = express.basicAuth
+   res.locals.csrf = req.session._csrf
   next()
 })
 
 // Landing
 app.get('/', routes.core.home)
+app.post('/tester', routes.core.tester)
 
 // Terms
 app.get('/terms', routes.core.terms)

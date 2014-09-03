@@ -4,6 +4,10 @@
             "applicationId": "JiY9SpududxaHLqhF83mhXglIIeLF2Zmvi5Z09hi", 
             "masterKey": "bzSnkC4P0JxnANYGzaJGe5MHebeDgo2iQZbCenbv"
         }, 
+        "Juicy - Development": {
+            "applicationId": "1GvIRYDV5tyGZx3iehQDOXdgHVvjyTfpmRddlZG1", 
+            "masterKey": "VZb0YP8VitcSOMVSuo7Eig6v1p7Y61BQo8wWaI2E"
+        }, 
         "_default": {
             "link": "Juicy"
         }

@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Juicy App - Coming Soon</title>
+        <title>Juicy App - Join the Beta</title>
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+        <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/index.css">
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="/javascript/particles.js"></script>
+        <script type="text/javascript" src="/javascript/index.js"></script>
     </head>
     <body>
-        <img src="/images/iphone.png"/>
+        <div class="container">
+          <div class="information">
+            <div class="header">Juicy</div>
+            <div class="subheader">Share without worries!</div>
+            <form class="form">
+              <input class="csrf" type="hidden" value="<%= csrf %>"/>
+              <input class="input name" type="text" placeholder="My Name" required step="1" autofocus/>
+              <input class="input email" type="email" placeholder="My Email" required step="2"/>
+              <input class="submit" type="submit" value="Join the beta, it will be fun :)" />
+              <div class="contact">We will contact you by email soon...</div>
+            </form>
+          </div>
+          <img class="image" src="/images/iphone.png"/>
+        </div>
         <canvas id="canvas"></canvas>
     </body>
 </html>
