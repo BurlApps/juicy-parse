@@ -1,5 +1,6 @@
 var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
+var Shuffle = require("cloud/util/shuffle")
 
 Parse.Cloud.define("feed", function(req, res) {
   // TODO: All queries below are part of compound "or query"
@@ -14,6 +15,13 @@ Parse.Cloud.define("feed", function(req, res) {
   var currentUser = Parse.User.current()
 
   // About Me Query
+  var dayAgo = new Date()
+  var newPostsQuery = new Parse.Query(Posts)
+
+  dayAgo.setDate(dayAgo.getDate() - 1 - req.params.skip)
+  newPostsQuery.lessThanOrEqualTo("updatedAt", dayAgo)
+
+  // About Me Query
   var aboutMeQuery = new Parse.Query(Posts)
   aboutMeQuery.equalTo("aboutUsers", currentUser)
 
@@ -23,7 +31,7 @@ Parse.Cloud.define("feed", function(req, res) {
   aboutFriendsQuery.matchesQuery("aboutUsers", friendRelation.query())
 
   // Base "Or Query"
-  var query = Parse.Query.or(aboutMeQuery, aboutFriendsQuery)
+  var query = Parse.Query.or(aboutMeQuery, aboutFriendsQuery, newPostsQuery)
   query.limit(req.params.limit)
   query.skip(req.params.skip)
 
@@ -35,7 +43,7 @@ Parse.Cloud.define("feed", function(req, res) {
   query.descending("createdAt")
 
   query.find().then(function(posts) {
-    res.success(posts)
+    res.success(Shuffle(posts))
   }, function(error) {
     res.error(error.description)
   })
