@@ -1,7 +1,7 @@
 var demoUser = require("cloud/util/demoUser")
-var Image    = require("parse-image");
+var Image    = require("parse-image")
 var Post     = Parse.Object.extend("Posts")
-var _        = require('underscore');
+var _        = require('underscore')
 var images   = [
   "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
   "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
