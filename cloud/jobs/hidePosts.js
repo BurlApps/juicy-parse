@@ -11,10 +11,10 @@ Parse.Cloud.job("hidePosts", function(req, res) {
     var query = new Parse.Query(postsObject)
     var promise = Parse.Promise.as()
 
-    var oneDayAgo = new Date()
-    oneDayAgo.setDate(oneDayAgo.getDate()-1)
+    var daysAgo = new Date()
+    daysAgo.setDate(daysAgo.getDate()-5)
 
-    query.greaterThanOrEqualTo('updatedAt', oneDayAgo)
+    query.greaterThanOrEqualTo('updatedAt', daysAgo)
     query.equalTo("show", true)
     query.ascending("karma")
     query.limit(removeLimit)
