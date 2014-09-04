@@ -9,6 +9,13 @@ module.exports.tester = function(req, res) {
   var name  = req.param("name")
   var email = req.param("email")
 
+  if(!name || !email) {
+    return res.json({
+      success: false,
+      message: "Missing Information :("
+    })
+  }
+
   query.equalTo("email", email)
   query.first().then(function(tester) {
     if(!tester) {
