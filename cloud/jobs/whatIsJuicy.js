@@ -12,7 +12,11 @@ Parse.Cloud.job("whatIsJuicy", function(req, res) {
   oneDayQuery.limit(1)
 
   oneDayQuery.first().then(function(post) {
-    return post.get("karma")
+    if(post) {
+      return post.get("karma")
+    } else {
+      res.success("")
+    }
   }).then(function(topPercent) {
     var topQuery = new Parse.Query(postsObject)
     topQuery.greaterThanOrEqualTo('karma', topPercent)
