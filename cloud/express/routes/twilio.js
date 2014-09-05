@@ -99,11 +99,13 @@ module.exports.confession = function(req, res, next) {
 
   var client = Twilio(req.settings.get("twilioSid"), req.settings.get("twilioToken"))
 
-  client.sendSms({
-    to: req.settings.get("notifyConfessionNumber"),
-    from: req.settings.get("twilioConfessionNumber"),
-    body: "Someone posted a confession: " + req.param("Body")
-  })
+  if(req.settings.get("notifyConfessionNumber")) {
+    client.sendSms({
+      to: req.settings.get("notifyConfessionNumber"),
+      from: req.settings.get("twilioConfessionNumber"),
+      body: "Someone posted a confession: " + req.param("Body")
+    })
+  }
 
   if(!req.settings.get("facebookModerate")) {
     Facebook.post(req.param("Body")).then(function(response) {

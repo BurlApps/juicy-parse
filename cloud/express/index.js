@@ -25,13 +25,11 @@ app.use(express.cookieSession({
     httpOnly: true
   }
 }))
-
 app.use(function(req, res, next) {
   req.basicAuth = express.basicAuth
   res.locals.csrf = req.session._csrf
   next()
 })
-
 
 // Landing
 app.get('/', routes.core.home)
