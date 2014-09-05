@@ -15,8 +15,8 @@ Parse.Cloud.define("shareSms", function(req, res) {
 
     _.each(post.get("content"), function(content) {
       promise = promise.then(function() {
-        if(content.messsage) {
-	   message += content.message
+        if(content.message) {
+          message += content.message
         }
 	return message
       })
