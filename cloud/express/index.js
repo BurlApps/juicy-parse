@@ -18,18 +18,6 @@ app.set('views', 'cloud/express/views')
 app.set('view engine', 'ejs')
 
 app.use(express.bodyParser())
-app.use(function(req, res, next) {
-  req.basicAuth = express.basicAuth
-  next()
-})
-
-// TWILIO INBOUND: Juicy Posts
-app.post('/twilio', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
-
-// TWILIO INBOUND: Facebook Confessions
-app.post('/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
-
-// Internal
 app.use(express.cookieParser())
 app.use(express.cookieSession({
   secret: 'ursid',
@@ -38,11 +26,12 @@ app.use(express.cookieSession({
   }
 }))
 
-app.use(express.csrf())
 app.use(function(req, res, next) {
-   res.locals.csrf = req.session._csrf
+  req.basicAuth = express.basicAuth
+  res.locals.csrf = req.session._csrf
   next()
 })
+
 
 // Landing
 app.get('/', routes.core.home)
@@ -53,6 +42,12 @@ app.get('/terms', routes.core.terms)
 
 // Privacy
 app.get('/privacy', routes.core.privacy)
+
+// TWILIO INBOUND: Juicy Posts
+app.get('/twilio', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
+
+// TWILIO INBOUND: Facebook Confessions
+app.get('/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)
