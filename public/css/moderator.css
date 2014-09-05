@@ -121,6 +121,7 @@ canvas {
 .post .actions .push {
   background: #4862A3;
   margin-bottom: 10px;
+  display: none;
 }
 
 .post .actions .delete {
