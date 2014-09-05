@@ -13,6 +13,7 @@ module.exports.auth = function(req, res, next) {
     month = date.getMonth() + 1
     month = (month < 10) ? ("0" + month) : month
     day = date.getDate()
+    day = (day < 10) ? ("0" + day) : day
     year = date.getFullYear().toString().slice(-2)
 
     emails[user.get("email")] = [month, day, year].join("")
