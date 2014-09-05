@@ -1,0 +1,13 @@
+.container {
+  width: 850px;
+}
+
+.container .information {
+  width: 470px;
+}
+
+.container .information .form .input.textarea {
+  height: 260px;
+  resize: none;
+  font-size: 20px;
+}

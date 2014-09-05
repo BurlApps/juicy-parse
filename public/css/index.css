@@ -92,11 +92,6 @@ canvas {
   background: #fff;
 }
 
-.container .information .form .input.textarea {
-  height: 180px;
-  resize: none;
-}
-
 .container .information .form .submit {
   background: #2C97DD;
   color: #fff;

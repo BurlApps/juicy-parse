@@ -14,7 +14,16 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.post = function(req, res) {
-  return Parse.Cloud.httpRequest({
+  var message = req.param("message")
+
+  if(!message) {
+    return res.json({
+      success: false,
+      message: "Confession missing :("
+    })
+  }
+
+  Parse.Cloud.httpRequest({
     url: images[Math.floor(Math.random() * images.length)]
   }).then(function(response) {
     return new Parse.File("image.jpg",  {
@@ -31,7 +40,7 @@ module.exports.post = function(req, res) {
     post.set("image", image)
     post.set("content", [{
       color: false,
-      message: req.param("message")
+      message: message
     }])
 
     queue.set("post", post)
