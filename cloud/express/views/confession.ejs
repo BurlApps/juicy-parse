@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Juicy App - Join the Beta</title>
+        <title>Juicy - Post to Confessions</title>
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
         <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/index.css">
@@ -12,17 +12,16 @@
     <body>
         <div class="container">
           <div class="information">
-            <div class="header">Juicy</div>
+            <div class="header">Confessions</div>
             <div class="subheader">Share without worries!</div>
-            <form class="form" action="/tester">
+            <form class="form" action="/confession">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <input name="name" class="input" type="text" placeholder="My Name" required step="1" autofocus/>
-              <input name="email" class="input" type="email" placeholder="My Email" required step="2"/>
-              <input class="submit" type="submit" value="Join the beta, it will be fun :)" />
-              <div class="contact">We will contact you by email soon...</div>
+              <textarea name="message" class="input textarea" placeholder="Your confession" autofocus></textarea>
+              <input class="submit" type="submit" value="Post Your Confession" />
+              <div class="contact">We will always keep your identity a secret.</div>
             </form>
           </div>
-          <img class="image" src="/images/iphone.png"/>
+          <img class="image" src="/images/iphone-confessions.png"/>
         </div>
         <canvas id="canvas"></canvas>
     </body>

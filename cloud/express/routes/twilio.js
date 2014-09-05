@@ -4,6 +4,14 @@ var Queue = Parse.Object.extend("ConfessionsQueue")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
 var Twilio   = require('twilio')
+var images   = [
+  "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
+  "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
+  "http://cdn.surf.transworld.net/wp-content/blogs.dir/443/files/2013/08/Vans-Party.jpg",
+  "http://norwich.tab.co.uk/files/2012/10/house-party21.jpg",
+  "http://cdn.lipstiq.com/wp-content/uploads/2014/02/cover3.jpg",
+  "http://static6.businessinsider.com/image/51f0432069beddd20a000004/email-ad-exec-demands-free-food-for-90-people-at-a-going-away-party.jpg"
+]
 
 module.exports.auth = function(req, res, next) {
   Settings().then(function(settings) {
@@ -23,14 +31,6 @@ module.exports.auth = function(req, res, next) {
 module.exports.post = function(req, res, next) {
   var from = req.param("From")
   var body = req.param("Body")
-  var images = [
-    "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
-    "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
-    "http://cdn.surf.transworld.net/wp-content/blogs.dir/443/files/2013/08/Vans-Party.jpg",
-    "http://norwich.tab.co.uk/files/2012/10/house-party21.jpg",
-    "http://cdn.lipstiq.com/wp-content/uploads/2014/02/cover3.jpg",
-    "http://static6.businessinsider.com/image/51f0432069beddd20a000004/email-ad-exec-demands-free-food-for-90-people-at-a-going-away-party.jpg"
-  ]
 
   // Set Default
   req.newUser = false

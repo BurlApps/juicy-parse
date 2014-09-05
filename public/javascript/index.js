@@ -6,11 +6,7 @@ $(function() {
     var contact = $(this).find(".contact")
     var button = $(this).find(".submit").val("sending...")
 
-    $.post("/tester", {
-      _csrf: $(this).find(".csrf").val(),
-      name: $(this).find(".name").val(),
-      email: $(this).find(".email").val()
-    }, function(response) {
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
       button.val(response.message)
       button.toggleClass("error", !response.success)
       button.toggleClass("active", response.success)

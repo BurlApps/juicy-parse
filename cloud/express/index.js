@@ -8,6 +8,7 @@ Parse.Cloud.useMasterKey()
 // Routes
 routes = {
   core: require("cloud/express/routes/index"),
+  confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
   notfound: require("cloud/express/routes/notfound")
@@ -25,6 +26,7 @@ app.use(express.cookieSession({
     httpOnly: true
   }
 }))
+app.use(express.csrf())
 app.use(function(req, res, next) {
   req.basicAuth = express.basicAuth
   res.locals.csrf = req.session._csrf
@@ -41,11 +43,15 @@ app.get('/terms', routes.core.terms)
 // Privacy
 app.get('/privacy', routes.core.privacy)
 
+// Confessions
+app.get('/confession', routes.confession.home)
+app.post('/confession', routes.confession.post)
+
 // TWILIO INBOUND: Juicy Posts
-app.get('/twilio', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
+app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
 
 // TWILIO INBOUND: Facebook Confessions
-app.get('/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)
