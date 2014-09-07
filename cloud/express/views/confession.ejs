@@ -17,7 +17,7 @@
             <div class="subheader">Confess without worries!</div>
             <form class="form" action="/confession">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <textarea name="message" class="input textarea" placeholder="Your confession" autofocus></textarea>
+              <textarea name="message" class="input textarea" placeholder="Your confession" autofocus required></textarea>
               <input class="submit" type="submit" value="Post Your Confession" />
               <div class="contact">We will always keep your identity a secret.</div>
             </form>
