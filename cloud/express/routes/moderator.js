@@ -34,6 +34,7 @@ module.exports.confessions = function(req, res) {
   var query = new Parse.Query(Queue)
 
   query.equalTo("show", true)
+  oneDayQuery.descending("createdAt")
   query.each(function(confession) {
     var post = confession.get("post")
 
