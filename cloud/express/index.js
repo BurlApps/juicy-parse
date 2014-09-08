@@ -43,6 +43,14 @@ app.get('/terms', routes.core.terms)
 // Privacy
 app.get('/privacy', routes.core.privacy)
 
+// Robots
+app.get('/robots', routes.core.robots)
+app.get('/robots.txt', routes.core.robots)
+
+// Sitemap
+app.get('/sitemap', routes.core.sitemap)
+app.get('/sitemap.xml', routes.core.sitemap)
+
 // Confessions
 app.get('/confession', routes.confession.home)
 app.post('/confession', routes.confession.post)

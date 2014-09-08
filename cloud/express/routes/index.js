@@ -58,3 +58,13 @@ module.exports.terms = function(req, res) {
 module.exports.privacy = function(req, res) {
   res.render('privacy')
 }
+
+module.exports.robots = function(req, res) {
+  res.set('Content-Type', 'text/plain')
+  res.render('robots')
+}
+
+module.exports.sitemap = function(req, res) {
+  res.set('Content-Type', 'application/xml')
+  res.render('sitemap')
+}
