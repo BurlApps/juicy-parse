@@ -43,6 +43,7 @@ module.exports.post = function(req, res) {
       message: message
     }])
 
+    queue.set("source", "web")
     queue.set("post", post)
     queue.save()
 

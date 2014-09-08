@@ -56,6 +56,9 @@ function buildPost(confession) {
         <input class="push button" type="submit" value="POST" />          \
         <input class="delete button" type="submit" value="DELETE" />      \
       </div>                                                              \
+      <div class="source">                                                \
+        Via <strong>' + confession.source + '</strong>                    \
+      </div>                                                              \
     </div>                                                                \
   ')
 

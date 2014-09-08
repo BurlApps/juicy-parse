@@ -79,6 +79,7 @@ module.exports.post = function(req, res, next) {
 
       if(req.isConfession && req.isModerated) {
         var queue = new Queue()
+        queue.set("source", "sms")
         queue.set("post", post)
         queue.save()
       }

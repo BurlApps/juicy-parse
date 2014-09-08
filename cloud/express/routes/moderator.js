@@ -33,13 +33,15 @@ module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
 
+  query.equalTo("show", true)
   query.each(function(confession) {
     var post = confession.get("post")
 
     return post.fetch().then(function(post) {
       return confessions.push({
         id: confession.id,
-        message: post.get("content")[0].message
+        message: post.get("content")[0].message,
+        source: confession.get("source")
       })
     })
   }).then(function() {
@@ -63,7 +65,8 @@ module.exports.delete = function(req, res) {
   var queue = new Queue()
   queue.id = req.param("id")
 
-  queue.destroy().then(function() {
+  queue.set("show", false)
+  queue.save().then(function() {
     res.json({sucess: true})
   }, function(error) {
     console.log(error)
