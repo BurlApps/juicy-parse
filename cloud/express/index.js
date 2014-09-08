@@ -53,7 +53,9 @@ app.get('/sitemap.xml', routes.core.sitemap)
 
 // Confessions
 app.get('/confession', routes.confession.home)
+app.get('/confessions', routes.confession.home)
 app.post('/confession', routes.confession.post)
+app.post('/confessions', routes.confession.post)
 
 // TWILIO INBOUND: Juicy Posts
 app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
