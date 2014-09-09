@@ -51,7 +51,7 @@ function addListeners(post) {
 function buildPost(confession) {
   var post = $('                                                          \
     <div class="post" data-id="' + confession.id + '">                    \
-      <textarea class="message">' + confession.message + '</textarea>     \
+      <textarea class="message">"' + confession.message + '"</textarea>   \
       <div class="actions">                                               \
         <input class="push button" type="submit" value="POST" />          \
         <input class="delete button" type="submit" value="DELETE" />      \
