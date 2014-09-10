@@ -1,18 +1,11 @@
 var Image = require("parse-image")
-var Queue = Parse.Object.extend("ConfessionsQueue")
 
 Parse.Cloud.beforeSave("Posts", function(req, res) {
   var post = req.object
-  var queue = new Queue()
 
   if(!post.isNew()) {
     return res.success()
   }
-
-  // Add To Queue
-  queue.set("source", "app")
-  queue.set("post", post)
-  queue.save()
 
   // Set Defaults
   post.set("likes", 0)
