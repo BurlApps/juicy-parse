@@ -8,8 +8,8 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
     return res.success()
   }
 
-  // Add To Queue
-  if(!post.get("confession")) {
+  // Add To Queue: Posted in App
+  if(!post.get("confession") && !post.get("seeded")) {
     queue.set("source", "app")
     queue.set("post", post)
     queue.save()
