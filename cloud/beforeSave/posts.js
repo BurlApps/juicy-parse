@@ -8,6 +8,7 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
   }
 
   // Set Defaults
+  post.set("shares", 0)
   post.set("likes", 0)
   post.set("karma", 0)
   post.set("juicy", false)
