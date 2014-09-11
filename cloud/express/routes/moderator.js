@@ -41,11 +41,14 @@ module.exports.confessions = function(req, res) {
       return confessions.push({
         id: confession.id,
         message: post.get("content")[0].message,
-        source: confession.get("source")
+        source: confession.get("source"),
+        date: confession.createdAt
       })
     })
   }).then(function() {
-    res.json(confessions)
+    res.json(confessions.sort(function(a, b) {
+      return a.date > b.date
+    }))
   }, function(error) {
     console.log(error)
     res.json([])
