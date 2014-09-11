@@ -4,9 +4,7 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
   var post = req.object
   var queue = new Queue()
 
-  if(post.existed()) {
-    return res.success()
-  }
+  if(post.existed()) return
 
   // Add To Queue: Posted in App
   if(!post.get("confession") && !post.get("seeded")) {
