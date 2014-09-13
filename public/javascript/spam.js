@@ -20,6 +20,10 @@ function confession(action) {
       url: "/moderator/spam/confession",
       type: action,
       data: form
+    }).done(function() {
+      if($(".post").length == 0) {
+        getPosts()
+      }
     })
 
     post.animate({opacity: 0}, 250)
@@ -36,7 +40,7 @@ function confession(action) {
       post.remove()
 
       if($(".post").length == 0) {
-        getPosts()
+        $(".loading").show()
       }
     }, 1000)
   }
