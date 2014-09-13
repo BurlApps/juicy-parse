@@ -11,6 +11,7 @@ routes = {
   confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
+  spam: require("cloud/express/routes/spam"),
   notfound: require("cloud/express/routes/notfound")
 }
 
@@ -68,6 +69,11 @@ app.get('/moderator', routes.moderator.auth, routes.moderator.home)
 app.get('/moderator/confessions', routes.moderator.auth, routes.moderator.confessions)
 app.post('/moderator/confession', routes.moderator.auth, routes.moderator.post)
 app.delete('/moderator/confession', routes.moderator.auth, routes.moderator.delete)
+app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam)
+
+app.get('/moderator/spam', routes.spam.auth, routes.spam.home)
+app.get('/moderator/spam/confessions', routes.spam.auth, routes.spam.confessions)
+app.post('/moderator/spam/confession', routes.spam.auth, routes.spam.revert)
 
 // Not Found Redirect
 app.all("*", routes.notfound)

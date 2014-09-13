@@ -1,6 +1,5 @@
 var Users = Parse.User
 var Queue = Parse.Object.extend("ConfessionsQueue")
-var Facebook = require("cloud/util/facebook")
 
 module.exports.auth = function(req, res, next) {
   var emails = {}
@@ -26,15 +25,15 @@ module.exports.auth = function(req, res, next) {
 
 
 module.exports.home = function(req, res) {
-  res.render("moderator")
+  res.render("spam")
 }
 
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
 
-  query.equalTo("show", true)
-  query.equalTo("spam", false)
+  query.equalTo("show", false)
+  query.equalTo("spam", true)
 
   query.each(function(confession) {
     var post = confession.get("post")
@@ -59,16 +58,7 @@ module.exports.confessions = function(req, res) {
   })
 }
 
-module.exports.post = function(req, res) {
-  Facebook.post(req.param("message")).then(function() {
-    module.exports.delete(req, res)
-  }, function(error) {
-    console.log(error)
-    res.json({sucess: false})
-  })
-}
-
-module.exports.delete = function(req, res) {
+module.exports.revert = function(req, res) {
   var queue = new Queue()
   queue.id = req.param("id")
   console.log(queue.id)
@@ -77,15 +67,12 @@ module.exports.delete = function(req, res) {
     var post = queue.get("post")
 
     return post.fetch().then(function(post) {
-      post.set("show", false)
+      post.set("show", true)
       return post.save()
     })
   }).then(function() {
-    queue.set("show", false)
-
-    if(req.spam == true) {
-      queue.set("spam", true)
-    }
+    queue.set("show", true)
+    queue.set("spam", false)
 
     return queue.save()
   }).then(function() {
@@ -94,9 +81,4 @@ module.exports.delete = function(req, res) {
     console.log(error)
     res.json({sucess: false})
   })
-}
-
-module.exports.spam = function(req, res) {
-  req.spam = true
-  exports.delete(req, res)
 }

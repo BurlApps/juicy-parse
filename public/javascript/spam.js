@@ -7,7 +7,6 @@ $(function() {
 function getFormFromPost(post) {
   return {
     id: post.data("id"),
-    message: post.find(".message").val(),
     _csrf: $(".csrf").val()
   }
 }
@@ -18,7 +17,7 @@ function confession(action) {
     var form = getFormFromPost(post)
 
     $.ajax({
-      url: "/moderator/confession",
+      url: "/moderator/spam/confession",
       type: action,
       data: form
     })
@@ -44,9 +43,7 @@ function confession(action) {
 }
 
 function addListeners(post) {
-  post.find(".push").click(confession("POST"))
-  post.find(".delete").click(confession("DELETE"))
-  post.find(".spam").click(confession("PUT"))
+  post.find(".revert").click(confession("POST"))
 }
 
 function buildPost(confession) {
@@ -65,9 +62,7 @@ function buildPost(confession) {
       </div>                                                                    \
       <div class="right">                                                       \
         <div class="actions">                                                   \
-          <input class="push button" type="submit" value="POST" />              \
-          <input class="delete button" type="submit" value="DELETE" />          \
-          <input class="spam button" type="submit" value="SPAM" />              \
+          <input class="revert button" type="submit" value="REVERT" />          \
         </div>                                                                  \
       </div>                                                                    \
     </div>                                                                      \
@@ -79,7 +74,7 @@ function buildPost(confession) {
 function getPosts() {
   $(".loading").show()
 
-  $.getJSON("/moderator/confessions", function(confessions) {
+  $.getJSON("/moderator/spam/confessions", function(confessions) {
     if(confessions.length != 0) {
       $(".loading").hide()
 
@@ -89,7 +84,7 @@ function getPosts() {
         addListeners(post)
       })
     } else {
-      $(".loading").text("No new confessions. Good work!")
+      $(".loading").text("No spam confessions. Doing good!")
     }
   })
 }
