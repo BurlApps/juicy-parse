@@ -71,9 +71,9 @@ app.post('/moderator/confession', routes.moderator.auth, routes.moderator.post)
 app.delete('/moderator/confession', routes.moderator.auth, routes.moderator.delete)
 app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam)
 
-app.get('/moderator/spam', routes.spam.auth, routes.spam.home)
-app.get('/moderator/spam/confessions', routes.spam.auth, routes.spam.confessions)
-app.post('/moderator/spam/confession', routes.spam.auth, routes.spam.revert)
+app.get('/moderator/spam', routes.moderator.auth, routes.spam.home)
+app.get('/moderator/spam/confessions', routes.moderator.auth, routes.spam.confessions)
+app.post('/moderator/spam/confession', routes.moderator.auth, routes.spam.revert)
 
 // Not Found Redirect
 app.all("*", routes.notfound)

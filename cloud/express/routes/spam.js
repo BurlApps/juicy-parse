@@ -1,28 +1,4 @@
-var Users = Parse.User
 var Queue = Parse.Object.extend("ConfessionsQueue")
-
-module.exports.auth = function(req, res, next) {
-  var emails = {}
-  var query = new Parse.Query(Users)
-
-  query.equalTo("admin", true)
-  query.each(function(user) {
-    date = user.get("birthday")
-
-    month = date.getMonth() + 1
-    month = (month < 10) ? ("0" + month) : month
-    day = date.getDate()
-    day = (day < 10) ? ("0" + day) : day
-    year = date.getFullYear().toString().slice(-2)
-
-    emails[user.get("email")] = [month, day, year].join("")
-  }).then(function() {
-    req.basicAuth(function(email, birthday) {
-      return emails[email] == birthday
-    })(req, res, next)
-  })
-}
-
 
 module.exports.home = function(req, res) {
   res.render("spam")
