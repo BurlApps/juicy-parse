@@ -49,17 +49,26 @@ function addListeners(post) {
 }
 
 function buildPost(confession) {
-  var post = $('                                                          \
-    <div class="post" data-id="' + confession.id + '">                    \
-      <textarea class="message">"' + confession.message + '"</textarea>   \
-      <div class="actions">                                               \
-        <input class="push button" type="submit" value="POST" />          \
-        <input class="delete button" type="submit" value="DELETE" />      \
-      </div>                                                              \
-      <div class="source">                                                \
-        Via <strong>' + confession.source + '</strong>                    \
-      </div>                                                              \
-    </div>                                                                \
+  var created = new Date(confession.created)
+  var now = new Date(confession.now)
+  var duration = moment.duration(created - now).humanize(true)
+
+  var post = $('                                                                \
+    <div class="post" data-id="' + confession.id + '">                          \
+      <div class="left">                                                        \
+        <textarea class="message">"' + confession.message + '"</textarea>       \
+        <div class="time">Posted <strong>' + duration + '</strong></div>        \
+      </div>                                                                    \
+      <div class="right">                                                       \
+        <div class="actions">                                                   \
+          <input class="push button" type="submit" value="POST" />              \
+          <input class="delete button" type="submit" value="DELETE" />          \
+        </div>                                                                  \
+        <div class="source">                                                    \
+          Via <strong>' + confession.source + '</strong>                        \
+        </div>                                                                  \
+      </div>                                                                    \
+    </div>                                                                      \
   ')
 
   return post

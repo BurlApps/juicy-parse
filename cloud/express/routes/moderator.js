@@ -36,18 +36,20 @@ module.exports.confessions = function(req, res) {
   query.equalTo("show", true)
   query.each(function(confession) {
     var post = confession.get("post")
+    var now  = new Date()
 
     return post.fetch().then(function(post) {
       return confessions.push({
         id: confession.id,
         message: post.get("content")[0].message,
         source: confession.get("source"),
-        date: confession.createdAt
+        created: confession.createdAt,
+        now: now
       })
     })
   }).then(function() {
     res.json(confessions.sort(function(a, b) {
-      return a.date > b.date
+      return a.created > b.created
     }))
   }, function(error) {
     console.log(error)

@@ -72,19 +72,35 @@ canvas {
   margin-bottom: 0;
 }
 
+.post .left {
+  float: left;
+  width: calc(100% - 110px);
+}
+
+.post .right {
+  float: right;
+}
+
 .post .message {
   border: none;
   outline: none;
-  margin: 0;
+  margin: 0 0 10px 0;
   padding: 10px;
   font-size: 14px;
   color: #333;
   background: #fafafa;
-  width: calc(100% - 120px);
   height: 95px;
   resize: vertical;
-  float: left;
-  border-right: solid 1px #f7f7f7;
+  width: 100%;
+
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.post .time {
+  color: #777;
+  font-size: 16px;
 }
 
 .post .actions {
@@ -129,6 +145,5 @@ canvas {
 .post .source {
   font-size: 14px;
   color: #666;
-  float: right;
   width: 80px;
 }

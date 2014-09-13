@@ -1,4 +1,3 @@
-var demoUser = require("cloud/util/demoUser")
 var Image    = require("parse-image")
 var Post     = Parse.Object.extend("Posts")
 var _        = require('underscore')
@@ -13,51 +12,40 @@ var images   = [
 
 Parse.Cloud.job("seedPosts", function(req, res) {
   var number = req.params.posts
-  demoUser(function(user) {
-    var promise = Parse.Promise.as()
+  var promise = Parse.Promise.as()
 
-    _(number).times(function(n) {
-      promise = Parse.Cloud.httpRequest({
-        url: images[Math.floor(Math.random() * images.length)]
-      }).then(function(response) {
-        return new Parse.File("image.jpg",  {
-          base64: response.buffer.toString('base64')
-        })
-      }).then(function(image) {
-        image.save()
-        return image
-      }).then(function(image) {
-        var post = new Post()
-        var aboutRelation = post.relation("aboutUsers")
-
-        aboutRelation.add(user)
-
-        post.set("seeded", true)
-        post.set("creator", user)
-        post.set("image", image)
-        post.set("content", [{
-          color: false,
-          message: "Wow!! That is crazy "
-        }, {
-          color: true,
-          message: user.get("displayName")
-        }, {
-          color: false,
-          message: "! What were you thinking?\n"
-        }, {
-          color: false,
-          message: "Post: #" + n
-        }])
-
-        return post.save()
+  _(number).times(function(n) {
+    promise = Parse.Cloud.httpRequest({
+      url: images[Math.floor(Math.random() * images.length)]
+    }).then(function(response) {
+      return new Parse.File("image.jpg",  {
+        base64: response.buffer.toString('base64')
       })
-    })
+    }).then(function(image) {
+      image.save()
+      return image
+    }).then(function(image) {
+      var post = new Post()
 
-    promise.then(function() {
-      res.success()
-    }, function(error) {
-      res.error(error.message)
+      post.set("seeded", true)
+      post.set("image", image)
+      post.set("content", [{
+        color: false,
+        message: "Wow!! That is crazy!"
+      }, {
+        color: false,
+        message: "What were you thinking?\n"
+      }, {
+        color: false,
+        message: "Post: #" + n
+      }])
+
+      return post.save()
     })
+  })
+
+  promise.then(function() {
+    res.success()
   }, function(error) {
     res.error(error.message)
   })
