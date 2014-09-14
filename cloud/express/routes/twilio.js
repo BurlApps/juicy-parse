@@ -3,7 +3,6 @@ var Posts = Parse.Object.extend("Posts")
 var Queue = Parse.Object.extend("ConfessionsQueue")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
-var Twilio   = require('twilio')
 var images   = [
   "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
   "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
@@ -18,8 +17,8 @@ module.exports.auth = function(req, res, next) {
       req.settings = settings
 
       req.basicAuth(function(username, password) {
-        return (username == settings.get("twilioUsername")) &&
-               (password == settings.get("twilioPassword")) &&
+        return (username == settings.get("twilioAuthUsername")) &&
+               (password == settings.get("twilioAuthPassword")) &&
                ([
                   settings.get("twilioCreateNumber"),
                   settings.get("twilioConfessionNumber")
@@ -77,10 +76,11 @@ module.exports.post = function(req, res, next) {
         message: body
       }])
 
-      if(req.isConfession && req.isModerated) {
+      if(req.isConfession) {
         var queue = new Queue()
         queue.set("source", "sms")
         queue.set("post", post)
+        queue.set("show", req.isModerated)
         queue.save()
       }
 
@@ -96,19 +96,9 @@ module.exports.post = function(req, res, next) {
 
 module.exports.confession = function(req, res, next) {
   req.isConfession = true
-  req.isModerated = false
+  req.isModerated = req.settings.get("facebookModerate")
 
-  var client = Twilio(req.settings.get("twilioSid"), req.settings.get("twilioToken"))
-
-  if(req.settings.get("notifyConfessionNumber")) {
-    client.sendSms({
-      to: req.settings.get("notifyConfessionNumber"),
-      from: req.settings.get("twilioConfessionNumber"),
-      body: "Someone posted a confession: " + req.param("Body")
-    })
-  }
-
-  if(!req.settings.get("facebookModerate")) {
+  if(!req.isModerated) {
     Facebook.post(req.param("Body")).then(function(response) {
       next()
     }, function(error) {
@@ -116,7 +106,6 @@ module.exports.confession = function(req, res, next) {
       exports.response(req, res)
     })
   } else {
-    req.isModerated = true
     next()
   }
 }
