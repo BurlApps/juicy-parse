@@ -1,52 +1,58 @@
 var Image    = require("parse-image")
+var Settings = require("cloud/util/settings")
 var Post     = Parse.Object.extend("Posts")
 var _        = require('underscore')
-var images   = [
-  "http://www.heykiki.com/blog/wp-content/uploads/2013/09/a49.jpg",
-  "http://www.wired.com/images_blogs/underwire/2013/01/mf_ddp_large.jpg",
-  "http://cdn.surf.transworld.net/wp-content/blogs.dir/443/files/2013/08/Vans-Party.jpg",
-  "http://norwich.tab.co.uk/files/2012/10/house-party21.jpg",
-  "http://cdn.lipstiq.com/wp-content/uploads/2014/02/cover3.jpg",
-  "http://static6.businessinsider.com/image/51f0432069beddd20a000004/email-ad-exec-demands-free-food-for-90-people-at-a-going-away-party.jpg"
-]
 
 Parse.Cloud.job("seedPosts", function(req, res) {
   var number = req.params.posts
-  var promise = Parse.Promise.as()
 
-  _(number).times(function(n) {
-    promise = Parse.Cloud.httpRequest({
-      url: images[Math.floor(Math.random() * images.length)]
-    }).then(function(response) {
-      return new Parse.File("image.jpg",  {
-        base64: response.buffer.toString('base64')
+  Settings().then(function(settings) {
+    var host = settings.get("host")
+
+    return [
+      "http://" + host + "/images/posts/420.jpg",
+      "http://" + host + "/images/posts/face.png",
+      "http://" + host + "/images/posts/keg.png",
+      "http://" + host + "/images/posts/stance.jpg"
+    ]
+  }).then(function(images) {
+    var promise = Parse.Promise.as()
+
+    _(number).times(function(n) {
+      promise = Parse.Cloud.httpRequest({
+        url: images[Math.floor(Math.random() * images.length)]
+      }).then(function(response) {
+        return new Parse.File("image.jpg",  {
+          base64: response.buffer.toString('base64')
+        })
+      }).then(function(image) {
+        image.save()
+        return image
+      }).then(function(image) {
+        var post = new Post()
+
+        post.set("seeded", true)
+        post.set("image", image)
+        post.set("content", [{
+          color: false,
+          message: "Wow!! That is crazy!"
+        }, {
+          color: false,
+          message: "What were you thinking?\n"
+        }, {
+          color: false,
+          message: "Post: #" + n
+        }])
+
+        return post.save()
       })
-    }).then(function(image) {
-      image.save()
-      return image
-    }).then(function(image) {
-      var post = new Post()
-
-      post.set("seeded", true)
-      post.set("image", image)
-      post.set("content", [{
-        color: false,
-        message: "Wow!! That is crazy!"
-      }, {
-        color: false,
-        message: "What were you thinking?\n"
-      }, {
-        color: false,
-        message: "Post: #" + n
-      }])
-
-      return post.save()
     })
-  })
 
-  promise.then(function() {
+    return promise
+  }).then(function() {
     res.success()
   }, function(error) {
+    console.log(error)
     res.error(error.message)
   })
 })
