@@ -35,7 +35,6 @@ Parse.Cloud.define("feed", function(req, res) {
   query.limit(req.params.limit)
   query.skip(req.params.skip)
 
-  // TODO: uncomment in production
   query.equalTo("show", true)
   query.notEqualTo("creator", currentUser)
   query.notEqualTo("likedUsers", currentUser)
