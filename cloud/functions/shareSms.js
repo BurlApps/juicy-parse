@@ -37,7 +37,7 @@ Parse.Cloud.define("shareSms", function(req, res) {
             body: [
               "Your friend shared this with you on Juicy: ",
               message, "... Download Juicy to find out the rest: ",
-              "http://juicy.io"
+              "http://soojuicy.com/download"
             ].join("")
           })
         })
