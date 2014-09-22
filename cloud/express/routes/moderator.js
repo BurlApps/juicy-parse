@@ -16,10 +16,20 @@ module.exports.auth = function(req, res, next) {
     day = (day < 10) ? ("0" + day) : day
     year = date.getFullYear().toString().slice(-2)
 
-    emails[user.get("email")] = [month, day, year].join("")
+    emails[user.get("email")] = {
+      id: user.id,
+      birthday: [month, day, year].join("")
+    }
   }).then(function() {
     req.basicAuth(function(email, birthday) {
-      return emails[email] == birthday
+      var user = emails[email]
+      var validUser = (user.birthday == birthday)
+
+      if(validUser) {
+        req.session.user = user.id
+      }
+
+      return validUser
     })(req, res, next)
   })
 }
@@ -43,7 +53,10 @@ module.exports.confessions = function(req, res) {
     return post.fetch().then(function(post) {
       return confessions.push({
         id: confession.id,
-        message: post.get("content")[0].message,
+        message: post.get("content").map(function(block) {
+          return block.message
+        }).join(""),
+        adminNote: post.get("adminNote") || "",
         source: confession.get("source"),
         created: confession.createdAt,
         now: now
@@ -59,9 +72,49 @@ module.exports.confessions = function(req, res) {
   })
 }
 
-module.exports.post = function(req, res) {
-  Facebook.post(req.param("message")).then(function() {
-    module.exports.delete(req, res)
+module.exports.post = function(req, res, next) {
+  var adminNote = req.param("adminNote")
+  var message = req.param("message")
+  var fbMessage = '"' + message + '"'
+
+  if(adminNote) {
+    fbMessage += "\n\nAdmin note: " + adminNote
+  }
+
+  Facebook.post(fbMessage).then(function() {
+    var queue = new Queue()
+    queue.id = req.param("id")
+
+    return queue.fetch().then(function(queue) {
+      var post = queue.get("post")
+
+      return post.fetch().then(function(post) {
+        var postMessage = post.get("content").map(function(block) {
+          return block.message
+        }).join("")
+
+        if(message != postMessage) {
+          post.set("content", [{
+            color: false,
+            message: message
+          }])
+        }
+
+        post.set("show", true)
+        return post.save()
+      })
+    }).then(function() {
+      var user = new Parse.User()
+      user.id = req.session.user
+
+      queue.set("poster", user)
+      queue.set("adminNote", adminNote || undefined)
+      queue.set("show", false)
+      queue.set("spam", false)
+      return queue.save()
+    })
+  }).then(function() {
+    res.json({sucess: true})
   }, function(error) {
     console.log(error)
     res.json({sucess: false})
@@ -71,7 +124,6 @@ module.exports.post = function(req, res) {
 module.exports.delete = function(req, res) {
   var queue = new Queue()
   queue.id = req.param("id")
-  console.log(queue.id)
 
   queue.fetch().then(function(queue) {
     var post = queue.get("post")
@@ -81,9 +133,14 @@ module.exports.delete = function(req, res) {
       return post.save()
     })
   }).then(function() {
+    var user = new Parse.User()
+    user.id = req.session.user
+
+    queue.set("deleter", user)
     queue.set("show", false)
 
     if(req.spam == true) {
+      queue.set("spammer", user)
       queue.set("spam", true)
     }
 
@@ -96,7 +153,7 @@ module.exports.delete = function(req, res) {
   })
 }
 
-module.exports.spam = function(req, res) {
+module.exports.spam = function(req, res, next) {
   req.spam = true
-  exports.delete(req, res)
+  next()
 }

@@ -69,7 +69,7 @@ app.get('/moderator', routes.moderator.auth, routes.moderator.home)
 app.get('/moderator/confessions', routes.moderator.auth, routes.moderator.confessions)
 app.post('/moderator/confession', routes.moderator.auth, routes.moderator.post)
 app.delete('/moderator/confession', routes.moderator.auth, routes.moderator.delete)
-app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam)
+app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam, routes.moderator.delete)
 
 app.get('/moderator/spam', routes.moderator.auth, routes.spam.home)
 app.get('/moderator/spam/confessions', routes.moderator.auth, routes.spam.confessions)

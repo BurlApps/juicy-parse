@@ -37,7 +37,6 @@ module.exports.confessions = function(req, res) {
 module.exports.revert = function(req, res) {
   var queue = new Queue()
   queue.id = req.param("id")
-  console.log(queue.id)
 
   queue.fetch().then(function(queue) {
     var post = queue.get("post")
@@ -47,6 +46,10 @@ module.exports.revert = function(req, res) {
       return post.save()
     })
   }).then(function() {
+    var user = new Parse.User()
+    user.id = req.session.user
+
+    queue.set("reverter", user)
     queue.set("show", true)
     queue.set("spam", false)
 

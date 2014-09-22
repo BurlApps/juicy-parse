@@ -8,6 +8,7 @@ function getFormFromPost(post) {
   return {
     id: post.data("id"),
     message: post.find(".message").val(),
+    adminNote: post.find(".adminNote").val(),
     _csrf: $(".csrf").val()
   }
 }
@@ -62,7 +63,8 @@ function buildPost(confession) {
   var post = $('                                                                \
     <div class="post" data-id="' + confession.id + '">                          \
       <div class="left">                                                        \
-        <textarea class="message">"' + confession.message + '"</textarea>       \
+        <textarea class="message">' + confession.message + '</textarea>         \
+        <textarea class="adminNote" placeholder="Admin note"></textarea>        \
         <div class="time">                                                      \
           Posted <strong>' + duration + '</strong>                              \
           via the <strong>' + confession.source + '</strong>                    \
