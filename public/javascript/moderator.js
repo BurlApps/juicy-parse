@@ -60,24 +60,24 @@ function buildPost(confession) {
   var now = new Date(confession.now)
   var duration = moment.duration(created - now).humanize(true)
 
-  var post = $('                                                                \
-    <div class="post" data-id="' + confession.id + '">                          \
-      <div class="left">                                                        \
-        <textarea class="message">' + confession.message + '</textarea>         \
-        <textarea class="adminNote" placeholder="Admin note"></textarea>        \
-        <div class="time">                                                      \
-          Posted <strong>' + duration + '</strong>                              \
-          via the <strong>' + confession.source + '</strong>                    \
-        </div>                                                                  \
-      </div>                                                                    \
-      <div class="right">                                                       \
-        <div class="actions">                                                   \
-          <input class="push button" type="submit" value="POST" />              \
-          <input class="delete button" type="submit" value="DELETE" />          \
-          <input class="spam button" type="submit" value="SPAM" />              \
-        </div>                                                                  \
-      </div>                                                                    \
-    </div>                                                                      \
+  var post = $('                                                                                      \
+    <div class="post" data-id="' + confession.id + '">                                                \
+      <div class="left">                                                                              \
+        <textarea class="message">' + confession.message + '</textarea>                               \
+        <textarea class="adminNote" placeholder="Admin note">' + confession.adminNote + '</textarea>  \
+        <div class="time">                                                                            \
+          Posted <strong>' + duration + '</strong>                                                    \
+          via the <strong>' + confession.source + '</strong>                                          \
+        </div>                                                                                        \
+      </div>                                                                                          \
+      <div class="right">                                                                             \
+        <div class="actions">                                                                         \
+          <input class="push button" type="submit" value="POST" />                                    \
+          <input class="delete button" type="submit" value="DELETE" />                                \
+          <input class="spam button" type="submit" value="SPAM" />                                    \
+        </div>                                                                                        \
+      </div>                                                                                          \
+    </div>                                                                                            \
   ')
 
   return post

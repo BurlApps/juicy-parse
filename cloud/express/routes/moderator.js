@@ -56,7 +56,7 @@ module.exports.confessions = function(req, res) {
         message: post.get("content").map(function(block) {
           return block.message
         }).join(""),
-        adminNote: post.get("adminNote") || "",
+        adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
         created: confession.createdAt,
         now: now
