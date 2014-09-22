@@ -51,16 +51,12 @@ function addListeners(post) {
 }
 
 function buildPost(confession) {
-  var created = new Date(confession.created)
-  var now = new Date(confession.now)
-  var duration = moment.duration(created - now).humanize(true)
-
-  var post = $('                                                                \
+  return $('                                                                    \
     <div class="post" data-id="' + confession.id + '">                          \
       <div class="left">                                                        \
         <textarea class="message">"' + confession.message + '"</textarea>       \
         <div class="time">                                                      \
-          Posted <strong>' + duration + '</strong>                              \
+          Posted <strong>' + confession.duration + '</strong>                   \
           via the <strong>' + confession.source + '</strong>                    \
         </div>                                                                  \
       </div>                                                                    \
@@ -71,8 +67,6 @@ function buildPost(confession) {
       </div>                                                                    \
     </div>                                                                      \
   ')
-
-  return post
 }
 
 function getPosts() {

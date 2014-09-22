@@ -1,6 +1,7 @@
 var Users = Parse.User
 var Queue = Parse.Object.extend("ConfessionsQueue")
 var Facebook = require("cloud/util/facebook")
+var Moment = require("moment")
 
 module.exports.auth = function(req, res, next) {
   var emails = {}
@@ -23,7 +24,7 @@ module.exports.auth = function(req, res, next) {
   }).then(function() {
     req.basicAuth(function(email, birthday) {
       var user = emails[email]
-      var validUser = (user.birthday == birthday)
+      var validUser = (user && user.birthday == birthday)
 
       if(validUser) {
         req.session.user = user.id
@@ -48,7 +49,6 @@ module.exports.confessions = function(req, res) {
 
   query.each(function(confession) {
     var post = confession.get("post")
-    var now  = new Date()
 
     return post.fetch().then(function(post) {
       return confessions.push({
@@ -58,8 +58,7 @@ module.exports.confessions = function(req, res) {
         }).join(""),
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
-        created: confession.createdAt,
-        now: now
+        duration: Moment.duration(confession.createdAt - new Date()).humanize(true)
       })
     })
   }).then(function() {

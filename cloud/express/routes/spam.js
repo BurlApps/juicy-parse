@@ -1,4 +1,5 @@
 var Queue = Parse.Object.extend("ConfessionsQueue")
+var Moment = require("moment")
 
 module.exports.home = function(req, res) {
   res.render("spam")
@@ -18,10 +19,11 @@ module.exports.confessions = function(req, res) {
     return post.fetch().then(function(post) {
       return confessions.push({
         id: confession.id,
-        message: post.get("content")[0].message,
+        message: post.get("content").map(function(block) {
+          return block.message
+        }).join(""),
         source: confession.get("source"),
-        created: confession.createdAt,
-        now: now
+        duration: Moment.duration(confession.createdAt - new Date()).humanize(true)
       })
     })
   }).then(function() {
