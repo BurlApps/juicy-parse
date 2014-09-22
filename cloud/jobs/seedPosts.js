@@ -13,7 +13,7 @@ Parse.Cloud.job("seedPosts", function(req, res) {
       promise = promise.then(function(image) {
         var post = new Post()
 
-        post.set("background", Settings.getBackground(req.settings))
+        post.set("background", Settings.getBackground(settings))
         post.set("seeded", true)
         post.set("content", [{
           color: false,
