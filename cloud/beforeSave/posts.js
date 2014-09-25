@@ -12,7 +12,7 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
   post.set("likes", 0)
   post.set("karma", 0)
   post.set("juicy", false)
-  post.set("show", true)
+  post.set("show", !!post.get("show"))
   post.set("seeded", !!post.get("seeded"))
   post.set("confession", !!post.get("confession"))
 

@@ -52,6 +52,7 @@ module.exports.post = function(req, res, next) {
 
     post.set("background", Settings.getBackground(req.settings))
     post.set("confession", req.isConfession)
+    post.set("show", false)
     post.set("creator", user)
     post.set("content", [{
       color: false,

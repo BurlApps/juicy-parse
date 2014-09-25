@@ -22,6 +22,7 @@ module.exports.post = function(req, res) {
 
     post.set("background", Settings.getBackground(settings))
     post.set("confession", true)
+    post.set("show", false)
     post.set("content", [{
       color: false,
       message: message
