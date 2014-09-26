@@ -10,19 +10,10 @@ Parse.Cloud.define("shareSms", function(req, res) {
   var post = new Post()
   post.id  = req.params.post
 
-  post.fetch().then(function() {
-    var promise = Parse.Promise.as()
-
-    _.each(post.get("content"), function(content) {
-      promise = promise.then(function() {
-        if(content.message) {
-          message += content.message
-        }
-	return message
-      })
-    })
-
-    return promise
+  post.fetch().then(function(post) {
+    return post.get("content").map(function(block) {
+      return block.message
+    }).join("")
   }).then(function(post) {
     return Settings().then(function(settings) {
       var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))

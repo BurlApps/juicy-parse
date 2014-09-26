@@ -15,6 +15,7 @@ Parse.Cloud.job("seedPosts", function(req, res) {
 
         post.set("background", Settings.getBackground(settings))
         post.set("seeded", true)
+        post.set("show", true)
         post.set("content", [{
           color: false,
           message: "Wow!! That is crazy! "
