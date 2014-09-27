@@ -1,31 +1,37 @@
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #ff503a;
-    position: relative;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff503a;
+  position: relative;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 
-.corner-link {
+.corner-links {
   position: fixed;
   z-index: 4;
   top: 15px;
   right: 15px;
+}
+
+.corner-links .link {
   color: #fff;
   background: rgba(0, 0, 0, 0.15);
   text-decoration: none;
   padding: 10px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
 
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -37,11 +43,11 @@ canvas {
   transition: background .2s ease 0;
 }
 
-.corner-link:hover {
+.corner-links .link:hover {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.corner-link:hover:active {
+.corner-links .link:hover:active {
   background: rgba(0, 0, 0, 0.5);
 }
 

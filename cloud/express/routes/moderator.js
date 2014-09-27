@@ -40,6 +40,12 @@ module.exports.home = function(req, res) {
   res.render("moderator")
 }
 
+module.exports.writer = function(req, res) {
+  res.render("confession", {
+    admin: true
+  })
+}
+
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)

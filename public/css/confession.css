@@ -1,3 +1,7 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .container {
   width: 850px;
 }
@@ -10,4 +14,38 @@
   height: 260px;
   resize: none;
   font-size: 20px;
+}
+
+.corner-links {
+  position: fixed;
+  z-index: 4;
+  top: 15px;
+  right: 15px;
+}
+
+.corner-links .link {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+
+  -webkit-transition: background .2s ease 0;
+  -moz-transition: background .2s ease;
+  -o-transition: background .2s ease 0;
+  transition: background .2s ease 0;
+}
+
+.corner-links .link:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.corner-links .link:hover:active {
+  background: rgba(0, 0, 0, 0.5);
 }

@@ -29,8 +29,12 @@ app.use(express.cookieSession({
 }))
 app.use(express.csrf())
 app.use(function(req, res, next) {
+  // Auth
   req.basicAuth = express.basicAuth
   res.locals.csrf = req.session._csrf
+
+  // Locals
+  res.locals.admin = false
   next()
 })
 
@@ -64,6 +68,9 @@ app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.r
 
 // TWILIO INBOUND: Facebook Confessions
 app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+
+// Writer Route
+app.get('/moderator/writer', routes.moderator.auth, routes.moderator.writer)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)

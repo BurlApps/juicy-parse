@@ -20,6 +20,13 @@ module.exports.post = function(req, res) {
     var post = new Posts()
     var queue = new Queue()
 
+    if(req.session.user) {
+      var user = new Parse.User()
+      user.id = req.session.user
+      queue.set("creator", user)
+      post.set("creator", user)
+    }
+
     post.set("background", Settings.getBackground(settings))
     post.set("confession", true)
     post.set("show", false)

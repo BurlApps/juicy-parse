@@ -19,6 +19,9 @@
       </div>
       <canvas id="canvas"></canvas>
       <input class="csrf" type="hidden" value="<%= csrf %>"/>
-      <a class="corner-link" href="/moderator/spam">Go to Spam</a>
+      <div class="corner-links">
+        <a class="link" href="/moderator/writer">New Post</a>
+        <a class="link" href="/moderator/spam">Spam Queue</a>
+      </div>
     </body>
 </html>

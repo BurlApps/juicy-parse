@@ -25,5 +25,11 @@
           <img class="image" src="/images/iphone-confessions.png"/>
         </div>
         <canvas id="canvas"></canvas>
+        <% if(admin) { %>
+          <div class="corner-links">
+            <a class="link" href="/moderator">Confessions Queue</a>
+            <a class="link" href="/moderator/spam">Spam Queue</a>
+          </div>
+        <% } %>
     </body>
 </html>
