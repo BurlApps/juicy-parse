@@ -49,6 +49,7 @@ module.exports.writer = function(req, res) {
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
+  var now = new Date()
 
   query.equalTo("show", true)
   query.equalTo("spam", false)
@@ -62,9 +63,10 @@ module.exports.confessions = function(req, res) {
         message: post.get("content").map(function(block) {
           return block.message
         }).join(""),
+        created: post.createdAt,
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
-        duration: Moment.duration(confession.createdAt - new Date()).humanize(true)
+        duration: Moment.duration(post.createdAt - now).humanize(true)
       })
     })
   }).then(function() {

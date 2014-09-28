@@ -8,13 +8,13 @@ module.exports.home = function(req, res) {
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
+  var now  = new Date()
 
   query.equalTo("show", false)
   query.equalTo("spam", true)
 
   query.each(function(confession) {
     var post = confession.get("post")
-    var now  = new Date()
 
     return post.fetch().then(function(post) {
       return confessions.push({
@@ -23,7 +23,8 @@ module.exports.confessions = function(req, res) {
           return block.message
         }).join(""),
         source: confession.get("source"),
-        duration: Moment.duration(confession.createdAt - new Date()).humanize(true)
+        created: post.createdAt,
+        duration: Moment.duration(post.createdAt - now).humanize(true)
       })
     })
   }).then(function() {
