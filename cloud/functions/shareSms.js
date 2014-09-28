@@ -10,15 +10,14 @@ Parse.Cloud.define("shareSms", function(req, res) {
   var post = new Post()
   post.id  = req.params.post
 
-  post.fetch().then(function(post) {
+  post.fetch().then(function() {
     return post.get("content").map(function(block) {
       return block.message
     }).join("")
-  }).then(function(post) {
+  }).then(function(message) {
     return Settings().then(function(settings) {
       var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
       var promise = Parse.Promise.as()
-      if(message.length > 40) message = message.substring(0, 40)
 
       _.each(contacts, function(contact) {
         promise = promise.then(function() {
@@ -27,7 +26,8 @@ Parse.Cloud.define("shareSms", function(req, res) {
             from: settings.get("twilioShareNumber"),
             body: [
               "Your friend shared this with you on Juicy: ",
-              message, "... Download Juicy to find out the rest: ",
+              message.substring(0, 60),
+              "... Download Juicy to find out the rest: ",
               "http://soojuicy.com/download"
             ].join("")
           })
