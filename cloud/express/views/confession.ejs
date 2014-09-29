@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Post to Confessions</title>
+        <title>Post to <%= slug.toUpperCase() %> Confessions</title>
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
         <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="/css/confession.css">
+        <link rel="stylesheet" href="/css/schools.css">
+
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-        <script type="text/javascript" src="/javascript/particles.js"></script>
         <script type="text/javascript" src="/javascript/index.js"></script>
+        <script type="text/javascript" src="/javascript/schools.js"></script>
+        <script type="text/javascript" src="/javascript/particles.js"></script>
     </head>
     <body>
         <div class="container">
           <div class="information">
-            <div class="header">Confessions</div>
+            <div class="header">Confession</div>
             <div class="subheader">Confess without worries!</div>
             <form class="form" action="/confession">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <textarea name="message" class="input textarea" placeholder="Your confession" autofocus required></textarea>
+              <input name="school" type="hidden" value="<%= school %>"/>
+              <textarea name="message" class="input textarea" placeholder="Your <%= slug.toUpperCase() %> confession" autofocus required></textarea>
               <input class="submit" type="submit" value="Post Your Confession" />
               <div class="contact">We will always keep your identity a secret.</div>
             </form>
           </div>
-          <img class="image" src="/images/iphone-confessions.png"/>
+          <img class="image" src="/images/confessions/<%= slug %>.png"/>
         </div>
         <canvas id="canvas"></canvas>
         <% if(admin) { %>
           <div class="corner-links">
-            <a class="link" href="/moderator">Confessions Queue</a>
-            <a class="link" href="/moderator/spam">Spam Queue</a>
+            <div class="link school-button">
+              <%= (slug) ? ("School: " + slug.toUpperCase()) : "Choose School" %>
+            </div>
+            <a class="link" href="/moderator<%= (slug) ? ("/" + slug) : "" %>">Confessions Queue</a>
+            <a class="link" href="/moderator/<%= (slug) ? (slug + "/") : "" %>spam">Spam Queue</a>
+          </div>
+
+          <div class="school-popup">
+            <div class="popup-darkener"></div>
+            <div class="popup-container">
+              <div class="popup-header">
+                <div class="popup-title">Choose College</div>
+                <div class="popup-close">Cancel</div>
+              </div>
+              <div class="popup-schools">
+                <a class="popup-school" href="/moderator">No School</a>
+                <% schools.forEach(function(school) { %>
+                  <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
+                <% }) %>
+              </div>
+            </div>
           </div>
         <% } %>
     </body>

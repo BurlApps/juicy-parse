@@ -1,5 +1,6 @@
 var Users = Parse.User
 var Queue = Parse.Object.extend("ConfessionsQueue")
+var Schools = Parse.Object.extend("Schools")
 var Facebook = require("cloud/util/facebook")
 var Moment = require("moment")
 
@@ -31,25 +32,94 @@ module.exports.auth = function(req, res, next) {
       }
 
       return validUser
-    })(req, res, next)
+    })(req, res, function() {
+      module.exports.schools(req, res, next)
+    })
   })
+}
+
+module.exports.schools = function(req, res, next) {
+  if(!req.session.schools) {
+    var query = new Parse.Query(Schools)
+    var schools = []
+
+    query.each(function(school) {
+      return schools.push({
+        name: school.get("name"),
+        slug: school.get("slug")
+      })
+    }).then(function() {
+      req.session.schools = schools
+      res.locals.schools = schools
+
+      next()
+    }, function(error) {
+      console.log(error)
+      next()
+    })
+  } else {
+    next()
+  }
 }
 
 
 module.exports.home = function(req, res) {
-  res.render("moderator")
+  var slug = req.param("school")
+
+  if(slug) {
+    var query = new Parse.Query(Schools)
+
+    query.equalTo("slug", slug)
+    query.first().then(function(school) {
+      res.render("moderator", {
+        school: school.id,
+        slug: slug
+      })
+    }, function(error) {
+      console.log(error)
+      res.redirect("/moderator")
+    })
+  } else {
+    res.render("moderator")
+  }
 }
 
 module.exports.writer = function(req, res) {
-  res.render("confession", {
-    admin: true
-  })
+  var slug = req.param("school")
+
+  if(slug) {
+    var query = new Parse.Query(Schools)
+
+    query.equalTo("slug", slug)
+    query.first().then(function(school) {
+      res.render("confession", {
+        admin: true,
+        school: school.id,
+        slug: slug
+      })
+    }, function(error) {
+      console.log(error)
+      res.redirect("/confession")
+    })
+  } else {
+    res.redirect("/confession")
+  }
 }
 
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
   var now = new Date()
+  var schoolID = req.param("school")
+
+  if(schoolID) {
+    var school = new Schools()
+    school.id = schoolID
+
+    query.equalTo("school", school)
+  } else {
+    query.doesNotExist("school")
+  }
 
   query.equalTo("show", true)
   query.equalTo("spam", false)
@@ -83,12 +153,15 @@ module.exports.post = function(req, res, next) {
   var adminNote = req.param("adminNote")
   var message = req.param("message")
   var fbMessage = '"' + message + '"'
+  var school = new Schools()
+
+  school.id = req.param("school")
 
   if(adminNote) {
     fbMessage += "\n\nAdmin note: " + adminNote
   }
 
-  Facebook.post(fbMessage).then(function() {
+  Facebook.post(fbMessage, school).then(function() {
     var queue = new Queue()
     queue.id = req.param("id")
 

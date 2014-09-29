@@ -1,9 +1,40 @@
 var Posts  = Parse.Object.extend("Posts")
 var Queue  = Parse.Object.extend("ConfessionsQueue")
+var Schools = Parse.Object.extend("Schools")
 var Settings = require("cloud/util/settings")
 
+module.exports.redirect = function(req, res) {
+  Settings().then(function(settings) {
+    res.redirect('/confession/' + (req.param("school") || settings.get("schoolsDefault")))
+  })
+}
+
 module.exports.home = function(req, res) {
-  res.render('confession')
+  var slug = req.param("school")
+
+  if(slug) {
+    var query = new Parse.Query(Schools)
+
+    query.equalTo("slug", slug)
+    query.first().then(function(school) {
+      if(school) {
+        res.render("confession", {
+          school: school.id,
+          slug: slug,
+          admin: !!req.session.user
+        })
+      } else {
+        res.redirect("/confession")
+      }
+    }, function(error) {
+      console.log(error)
+      res.redirect("/confession", {
+        admin: !!req.session.user
+      })
+    })
+  } else {
+    res.render("spam")
+  }
 }
 
 module.exports.post = function(req, res) {
@@ -19,6 +50,7 @@ module.exports.post = function(req, res) {
   Settings().then(function(settings) {
     var post = new Posts()
     var queue = new Queue()
+    var school = new Schools()
 
     if(req.session.user) {
       var user = new Parse.User()
@@ -35,6 +67,9 @@ module.exports.post = function(req, res) {
       message: message
     }])
 
+    school.id = req.param("school")
+
+    queue.set("school", school)
     queue.set("source", "web")
     queue.set("post", post)
     queue.save()

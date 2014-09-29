@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Spam Queue</title>
+        <title><%= (slug) ? (slug.toUpperCase() + " ") : "" %>Spam Queue</title>
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="/css/moderator.css">
+        <link rel="stylesheet" href="/css/schools.css">
+
+        <script type="text/javascript">
+          window.school = <%- (school) ? ("'" + school + "'") : "null"  %>
+        </script>
+
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="/javascript/moment.js"></script>
+        <script type="text/javascript" src="/javascript/schools.js"></script>
         <script type="text/javascript" src="/javascript/spam.js"></script>
         <script type="text/javascript" src="/javascript/particles.js"></script>
     </head>
     <body>
       <div class="container">
-        <div class="header">Spam Queue</div>
+        <div class="header">
+          <%= (slug) ? (slug.toUpperCase() + " ") : "" %>Spam Queue
+        </div>
         <div class="inner-container">
           <div class="loading">Loading spam confessions</div>
           <div class="posts"></div>
@@ -20,8 +29,28 @@
       <canvas id="canvas"></canvas>
       <input class="csrf" type="hidden" value="<%= csrf %>"/>
       <div class="corner-links">
-        <a class="link" href="/moderator/writer">New Post</a>
-        <a class="link" href="/moderator">Confessions Queue</a>
+        <div class="link school-button">
+          <%= (slug) ? ("School: " + slug.toUpperCase()) : "Choose School" %>
+        </div>
+        <% if(slug && school) { %>
+          <a class="link" href="/moderator/<%= slug %>/writer">New Post</a>
+        <% } %>
+        <a class="link" href="/moderator<%= (slug) ? ("/" + slug) : "" %>">Confessions Queue</a>
+      </div>
+      <div class="school-popup">
+        <div class="popup-darkener"></div>
+        <div class="popup-container">
+          <div class="popup-header">
+            <div class="popup-title">Choose College</div>
+            <div class="popup-close">Cancel</div>
+          </div>
+          <div class="popup-schools">
+            <a class="popup-school" href="/moderator">No School</a>
+            <% schools.forEach(function(school) { %>
+              <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
+            <% }) %>
+          </div>
+        </div>
       </div>
     </body>
 </html>

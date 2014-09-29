@@ -1,6 +1,7 @@
 var Users = Parse.User
 var Posts = Parse.Object.extend("Posts")
 var Queue = Parse.Object.extend("ConfessionsQueue")
+var Schools = Parse.Object.extend("Schools")
 var Settings = require("cloud/util/settings")
 var Facebook = require("cloud/util/facebook")
 
@@ -10,17 +11,14 @@ module.exports.auth = function(req, res, next) {
 
       req.basicAuth(function(username, password) {
         return (username == settings.get("twilioAuthUsername")) &&
-               (password == settings.get("twilioAuthPassword")) &&
-               ([
-                  settings.get("twilioCreateNumber"),
-                  settings.get("twilioConfessionNumber")
-                ].indexOf(req.param("To")) != -1)
+               (password == settings.get("twilioAuthPassword"))
       })(req, res, next)
   })
 }
 
 module.exports.post = function(req, res, next) {
   var from = req.param("From")
+  var to = req.param("To")
   var body = req.param("Body")
 
   // Set Default
@@ -60,14 +58,25 @@ module.exports.post = function(req, res, next) {
     }])
 
     if(req.isConfession) {
+      var query = new Parse.Query(Schools)
       var queue = new Queue()
-      queue.set("source", "sms")
-      queue.set("post", post)
-      queue.set("show", req.isModerated)
-      queue.save()
-    }
 
-    return post.save()
+      query.equalTo("phone", to)
+
+      return query.first().then(function(school) {
+        queue.set("school", school)
+        queue.set("source", "sms")
+        queue.set("post", post)
+        queue.set("show", req.isModerated)
+        queue.save()
+
+        return post.save()
+      }, function(error) {
+        console.log(error)
+      })
+    } else {
+      return post.save()
+    }
   }).then(function() {
     next()
   }, function(error) {

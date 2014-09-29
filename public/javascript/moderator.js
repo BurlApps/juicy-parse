@@ -79,8 +79,13 @@ function buildPost(confession) {
 
 function getPosts() {
   $(".loading").show()
+  var url = "/moderator/confessions"
 
-  $.getJSON("/moderator/confessions", function(confessions) {
+  if(window.school) {
+    url += "?school=" + window.school
+  }
+
+  $.getJSON(url, function(confessions) {
     if(confessions.length != 0) {
       $(".loading").hide()
 

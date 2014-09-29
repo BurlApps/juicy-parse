@@ -35,6 +35,10 @@ app.use(function(req, res, next) {
 
   // Locals
   res.locals.admin = false
+  res.locals.school = null
+  res.locals.slug = null
+  res.locals.schools = req.session.schools || []
+
   next()
 })
 
@@ -58,19 +62,17 @@ app.get('/sitemap', routes.core.sitemap)
 app.get('/sitemap.xml', routes.core.sitemap)
 
 // Confessions
-app.get('/confession', routes.confession.home)
-app.get('/confessions', routes.confession.home)
+app.get('/confession', routes.confession.redirect)
+app.get('/confessions', routes.confession.redirect)
+app.get('/confession/:school', routes.confession.home)
+app.get('/confessions/:school', routes.confession.redirect)
 app.post('/confession', routes.confession.post)
-app.post('/confessions', routes.confession.post)
 
 // TWILIO INBOUND: Juicy Posts
 app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.response)
 
 // TWILIO INBOUND: Facebook Confessions
 app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
-
-// Writer Route
-app.get('/moderator/writer', routes.moderator.auth, routes.moderator.writer)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)
@@ -82,6 +84,10 @@ app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam, r
 app.get('/moderator/spam', routes.moderator.auth, routes.spam.home)
 app.get('/moderator/spam/confessions', routes.moderator.auth, routes.spam.confessions)
 app.post('/moderator/spam/confession', routes.moderator.auth, routes.spam.revert)
+
+app.get('/moderator/:school/writer', routes.moderator.auth, routes.moderator.writer)
+app.get('/moderator/:school/spam', routes.moderator.auth, routes.spam.home)
+app.get('/moderator/:school', routes.moderator.auth, routes.moderator.home)
 
 // Not Found Redirect
 app.all("*", routes.notfound)

@@ -1,14 +1,42 @@
+var Schools = Parse.Object.extend("Schools")
 var Queue = Parse.Object.extend("ConfessionsQueue")
 var Moment = require("moment")
 
 module.exports.home = function(req, res) {
-  res.render("spam")
+  var slug = req.param("school")
+
+  if(slug) {
+    var query = new Parse.Query(Schools)
+
+    query.equalTo("slug", slug)
+    query.first().then(function(school) {
+      res.render("spam", {
+        school: school.id,
+        slug: slug
+      })
+    }, function(error) {
+      console.log(error)
+      res.redirect("/moderator/spam")
+    })
+  } else {
+    res.render("spam")
+  }
 }
 
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
   var now  = new Date()
+  var schoolID = req.param("school")
+
+  if(schoolID) {
+    var school = new Schools()
+    school.id = schoolID
+
+    query.equalTo("school", school)
+  } else {
+    query.doesNotExist("school")
+  }
 
   query.equalTo("show", false)
   query.equalTo("spam", true)
