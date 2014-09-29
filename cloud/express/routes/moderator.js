@@ -159,15 +159,12 @@ module.exports.post = function(req, res, next) {
   var adminNote = req.param("adminNote")
   var message = req.param("message")
   var fbMessage = '"' + message + '"'
-  var school = new Schools()
-
-  school.id = req.param("school")
 
   if(adminNote) {
     fbMessage += "\n\nAdmin note: " + adminNote
   }
 
-  Facebook.post(fbMessage, school).then(function() {
+  Facebook.post(fbMessage, req.param("school")).then(function() {
     var queue = new Queue()
     queue.id = req.param("id")
 

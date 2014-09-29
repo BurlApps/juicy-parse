@@ -9,6 +9,7 @@ function getFormFromPost(post) {
     id: post.data("id"),
     message: post.find(".message").val(),
     adminNote: post.find(".adminNote").val(),
+    school: window.school,
     _csrf: $(".csrf").val()
   }
 }
@@ -56,7 +57,7 @@ function addListeners(post) {
 }
 
 function buildPost(confession) {
-  return $('                                                                                          \
+  var post  = $('                                                                                     \
     <div class="post" data-id="' + confession.id + '">                                                \
       <div class="left">                                                                              \
         <textarea class="message">' + confession.message + '</textarea>                               \
@@ -75,6 +76,12 @@ function buildPost(confession) {
       </div>                                                                                          \
     </div>                                                                                            \
   ')
+
+  if(!window.school) {
+    post.find(".push.button").remove()
+  }
+
+  return post
 }
 
 function getPosts() {
