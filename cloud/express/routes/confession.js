@@ -19,8 +19,11 @@ module.exports.home = function(req, res) {
     query.first().then(function(school) {
       if(school) {
         res.render("confession", {
-          school: school.id,
-          slug: slug,
+          school: {
+            id: school.id,
+            slug: slug,
+            name: school.get("name")
+          },
           admin: !!req.session.user
         })
       } else {

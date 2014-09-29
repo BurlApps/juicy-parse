@@ -72,8 +72,11 @@ module.exports.home = function(req, res) {
     query.equalTo("slug", slug)
     query.first().then(function(school) {
       res.render("moderator", {
-        school: school.id,
-        slug: slug
+        school: {
+          id: school.id,
+          slug: slug,
+          name: school.get("name")
+        }
       })
     }, function(error) {
       console.log(error)
@@ -94,8 +97,11 @@ module.exports.writer = function(req, res) {
     query.first().then(function(school) {
       res.render("confession", {
         admin: true,
-        school: school.id,
-        slug: slug
+        school: {
+          id: school.id,
+          slug: slug,
+          name: school.get("name")
+        }
       })
     }, function(error) {
       console.log(error)

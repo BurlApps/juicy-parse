@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Post to <%= slug.toUpperCase() %> Confessions</title>
+        <title><%= school.name %> - Post to Confessions</title>
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
         <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/index.css">
@@ -20,22 +20,22 @@
             <div class="subheader">Confess without worries!</div>
             <form class="form" action="/confession">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <input name="school" type="hidden" value="<%= school %>"/>
-              <textarea name="message" class="input textarea" placeholder="Your <%= slug.toUpperCase() %> confession" autofocus required></textarea>
+              <input name="school" type="hidden" value="<%= school.id %>"/>
+              <textarea name="message" class="input textarea" placeholder="Your <%= school.name %> confession" autofocus required></textarea>
               <input class="submit" type="submit" value="Post Your Confession" />
               <div class="contact">We will always keep your identity a secret.</div>
             </form>
           </div>
-          <img class="image" src="/images/confessions/<%= slug %>.png"/>
+          <img class="image" src="/images/confessions/<%= school.slug %>.png"/>
         </div>
         <canvas id="canvas"></canvas>
         <% if(admin) { %>
           <div class="corner-links">
             <div class="link school-button">
-              <%= (slug) ? ("School: " + slug.toUpperCase()) : "Choose School" %>
+              <%= (school) ? ("School: " + school.name) : "Choose School" %>
             </div>
-            <a class="link" href="/moderator<%= (slug) ? ("/" + slug) : "" %>">Confessions Queue</a>
-            <a class="link" href="/moderator/<%= (slug) ? (slug + "/") : "" %>spam">Spam Queue</a>
+            <a class="link" href="/moderator/<%= school.slug %>">Confessions Queue</a>
+            <a class="link" href="/moderator/<%= school.slug %>/spam">Spam Queue</a>
           </div>
 
           <div class="school-popup">

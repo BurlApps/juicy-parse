@@ -36,7 +36,6 @@ app.use(function(req, res, next) {
   // Locals
   res.locals.admin = false
   res.locals.school = null
-  res.locals.slug = null
   res.locals.schools = req.session.schools || []
 
   next()

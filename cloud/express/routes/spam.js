@@ -11,8 +11,11 @@ module.exports.home = function(req, res) {
     query.equalTo("slug", slug)
     query.first().then(function(school) {
       res.render("spam", {
-        school: school.id,
-        slug: slug
+        school: {
+          id: school.id,
+          slug: slug,
+          name: school.get("name")
+        }
       })
     }, function(error) {
       console.log(error)
