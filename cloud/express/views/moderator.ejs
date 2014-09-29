@@ -20,6 +20,11 @@
       <div class="container">
         <div class="header">Confessions Queue</div>
         <div class="inner-container">
+          <% if(school) { %>
+            <div class="filtered-school">
+              Filtered confessions for <strong><%= school.name %></strong>
+            </div>
+          <% } %>
           <div class="loading">Loading new confessions</div>
           <div class="posts"></div>
         </div>
