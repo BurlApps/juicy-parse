@@ -71,13 +71,17 @@ module.exports.home = function(req, res) {
 
     query.equalTo("slug", slug)
     query.first().then(function(school) {
-      res.render("moderator", {
-        school: {
-          id: school.id,
-          slug: slug,
-          name: school.get("name")
-        }
-      })
+      if(school) {
+        res.render("moderator", {
+          school: {
+            id: school.id,
+            slug: slug,
+            name: school.get("name")
+          }
+        })
+      } else {
+        res.redirect("/moderator")
+      }
     }, function(error) {
       console.log(error)
       res.redirect("/moderator")
