@@ -33,12 +33,12 @@
       <input class="csrf" type="hidden" value="<%= csrf %>"/>
       <div class="corner-links">
         <div class="link school-button">
-          <%= (school) ? ("School: " + school.name) : "Choose School" %>
+          <strong><%- (school) ? school.name : "Choose School" %></strong>
         </div>
         <% if(school) { %>
           <a class="link" href="/moderator/<%= school.slug %>/writer">New Post</a>
         <% } %>
-        <a class="link" href="/moderator<%= (school) ? ("/" + school.slug) : "" %>">Confessions Queue</a>
+        <a class="link" href="/moderator<%= (school) ? ("/" + school.slug) : "" %>">Confessions</a>
       </div>
       <div class="school-popup">
         <div class="popup-darkener"></div>

@@ -32,10 +32,10 @@
         <% if(admin) { %>
           <div class="corner-links">
             <div class="link school-button">
-              <%= (school) ? ("School: " + school.name) : "Choose School" %>
+              <strong><%- (school) ? school.name : "Choose School" %></strong>
             </div>
-            <a class="link" href="/moderator/<%= school.slug %>">Confessions Queue</a>
-            <a class="link" href="/moderator/<%= school.slug %>/spam">Spam Queue</a>
+            <a class="link" href="/moderator/<%= school.slug %>">Confessions</a>
+            <a class="link" href="/moderator/<%= school.slug %>/spam">Spam</a>
           </div>
 
           <div class="school-popup">
