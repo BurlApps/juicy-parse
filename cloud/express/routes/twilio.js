@@ -67,7 +67,7 @@ module.exports.post = function(req, res, next) {
         queue.set("school", school)
         queue.set("source", "sms")
         queue.set("post", post)
-        queue.set("show", req.isModerated)
+        queue.set("show", true)
         queue.save()
 
         return post.save()
@@ -87,18 +87,7 @@ module.exports.post = function(req, res, next) {
 
 module.exports.confession = function(req, res, next) {
   req.isConfession = true
-  req.isModerated = req.settings.get("facebookModerate")
-
-  if(!req.isModerated) {
-    Facebook.post(req.param("Body")).then(function(response) {
-      next()
-    }, function(error) {
-      console.log(error)
-      exports.response(req, res)
-    })
-  } else {
-    next()
-  }
+  next()
 }
 
 module.exports.response = function(req, res) {
