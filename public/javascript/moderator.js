@@ -63,8 +63,8 @@ function buildPost(confession) {
         <textarea class="message">' + confession.message + '</textarea>                               \
         <textarea class="adminNote" placeholder="Admin note">' + confession.adminNote + '</textarea>  \
         <div class="time">                                                                            \
-          Posted <strong>' + confession.duration + '</strong>                                         \
-          via the <strong>' + confession.source + '</strong>                                          \
+          <strong>' + confession.duration + '</strong>                                                \
+          via <strong>' + confession.source + '</strong>                                              \
         </div>                                                                                        \
       </div>                                                                                          \
       <div class="right">                                                                             \
@@ -77,7 +77,9 @@ function buildPost(confession) {
     </div>                                                                                            \
   ')
 
-  if(!window.school) {
+  if(confession.school) {
+    post.find(".time").append('to <strong>' + confession.school.name + '</strong>')
+  } else {
     post.find(".push.button").remove()
   }
 

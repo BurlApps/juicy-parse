@@ -32,7 +32,7 @@
         <% if(admin) { %>
           <div class="corner-links">
             <div class="link school-button">
-              <strong><%- (school) ? school.name : "Choose School" %></strong>
+              <strong><%= school.name %></strong>
             </div>
             <a class="link" href="/moderator/<%= school.slug %>">Confessions</a>
             <a class="link" href="/moderator/<%= school.slug %>/spam">Spam</a>
@@ -46,9 +46,8 @@
                 <div class="popup-close">Cancel</div>
               </div>
               <div class="popup-schools">
-                <a class="popup-school" href="/moderator">No School</a>
                 <% schools.forEach(function(school) { %>
-                  <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
+                  <a class="popup-school" href="/moderator/<%= school.slug %>/writer"><%= school.name %></a>
                 <% }) %>
               </div>
             </div>

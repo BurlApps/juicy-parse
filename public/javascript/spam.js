@@ -51,13 +51,13 @@ function addListeners(post) {
 }
 
 function buildPost(confession) {
-  return $('                                                                    \
+  var post = $('                                                                \
     <div class="post" data-id="' + confession.id + '">                          \
       <div class="left">                                                        \
         <textarea class="message">"' + confession.message + '"</textarea>       \
         <div class="time">                                                      \
-          Posted <strong>' + confession.duration + '</strong>                   \
-          via the <strong>' + confession.source + '</strong>                    \
+          <strong>' + confession.duration + '</strong>                          \
+          via <strong>' + confession.source + '</strong>                        \
         </div>                                                                  \
       </div>                                                                    \
       <div class="right">                                                       \
@@ -67,6 +67,12 @@ function buildPost(confession) {
       </div>                                                                    \
     </div>                                                                      \
   ')
+
+  if(confession.school) {
+    post.find(".time").append('to <strong>' + confession.school.name + '</strong>')
+  }
+
+  return post
 }
 
 function getPosts() {

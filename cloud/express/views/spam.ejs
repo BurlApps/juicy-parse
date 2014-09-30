@@ -33,7 +33,7 @@
       <input class="csrf" type="hidden" value="<%= csrf %>"/>
       <div class="corner-links">
         <div class="link school-button">
-          <strong><%- (school) ? school.name : "Choose School" %></strong>
+          <strong><%- (school) ? school.name : "All Schools" %></strong>
         </div>
         <% if(school) { %>
           <a class="link" href="/moderator/<%= school.slug %>/writer">New Post</a>
@@ -48,9 +48,9 @@
             <div class="popup-close">Cancel</div>
           </div>
           <div class="popup-schools">
-            <a class="popup-school" href="/moderator">No School</a>
+            <a class="popup-school" href="/moderator/spam">All Schools</a>
             <% schools.forEach(function(school) { %>
-              <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
+              <a class="popup-school" href="/moderator/<%= school.slug %>/spam"><%= school.name %></a>
             <% }) %>
           </div>
         </div>

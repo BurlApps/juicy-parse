@@ -120,15 +120,12 @@ module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
   var now = new Date()
-  var schoolID = req.param("school")
 
-  if(schoolID) {
+  if(req.param("school")) {
     var school = new Schools()
-    school.id = schoolID
+    school.id = req.param("school")
 
     query.equalTo("school", school)
-  } else {
-    query.doesNotExist("school")
   }
 
   query.equalTo("show", true)
@@ -136,9 +133,11 @@ module.exports.confessions = function(req, res) {
 
   query.each(function(confession) {
     var post = confession.get("post")
+    var school = confession.get("school")
+    var object = {}
 
     return post.fetch().then(function(post) {
-      return confessions.push({
+       return object = {
         id: confession.id,
         message: post.get("content").map(function(block) {
           return block.message
@@ -147,7 +146,20 @@ module.exports.confessions = function(req, res) {
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
         duration: Moment.duration(post.createdAt - now).humanize(true)
-      })
+      }
+    }).then(function() {
+      if(school) {
+        return school.fetch().then(function(school) {
+          return object.school = {
+            id: school.id,
+            name: school.get("name")
+          }
+        })
+      } else {
+        return object.school = null
+      }
+    }).then(function() {
+      confessions.push(object)
     })
   }).then(function() {
     res.json(confessions.sort(function(a, b) {
