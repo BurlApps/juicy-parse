@@ -4,6 +4,7 @@ module.exports.post = function(message, schoolID) {
   var school = new Schools()
 
   school.id = schoolID
+
   return school.fetch().then(function(school) {
     return Parse.Cloud.httpRequest({
         method: "POST",
