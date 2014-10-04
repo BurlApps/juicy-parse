@@ -9,7 +9,6 @@ function getFormFromPost(post) {
     id: post.data("id"),
     message: post.find(".message").val(),
     adminNote: post.find(".adminNote").val(),
-    school: post.data("school"),
     _csrf: $(".csrf").val()
   }
 }
@@ -78,10 +77,9 @@ function buildPost(confession) {
   ')
 
   if(confession.school) {
-    post.attr("data-school", confession.school.id)
     post.find(".time").append('to <strong>' + confession.school.name + '</strong>')
   } else {
-    post.find(".push.button").remove()
+    post.find(".push.button").val("ACCEPT")
   }
 
   return post

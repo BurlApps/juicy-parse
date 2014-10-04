@@ -175,43 +175,51 @@ module.exports.post = function(req, res, next) {
   var adminNote = req.param("adminNote")
   var message = req.param("message")
   var fbMessage = '"' + message + '"'
+  var queue = new Queue()
+  queue.id = req.param("id")
 
   if(adminNote) {
     fbMessage += "\n\nAdmin note: " + adminNote
   }
 
-  Facebook.post(fbMessage, req.param("school")).then(function() {
-    var queue = new Queue()
-    queue.id = req.param("id")
+  queue.fetch().then(function() {
+    var school = queue.get("school")
 
-    return queue.fetch().then(function(queue) {
-      var post = queue.get("post")
+    if(school) {
+      return Facebook.post(fbMessage, school)
+    } else {
+      return true
+    }
+  }).then(function() {
+    var post = queue.get("post")
 
-      return post.fetch().then(function(post) {
-        var postMessage = post.get("content").map(function(block) {
-          return block.message
-        }).join("")
+    return post.fetch().then(function(post) {
+      var postMessage = post.get("content").map(function(block) {
+        return block.message
+      }).join("")
 
-        if(message != postMessage) {
-          post.set("content", [{
-            color: false,
-            message: message
-          }])
-        }
+      if(message != postMessage) {
+        post.set("content", [{
+          color: false,
+          message: message
+        }])
+      }
 
-        post.set("show", true)
-        return post.save()
-      })
-    }).then(function() {
-      var user = new Parse.User()
-      user.id = req.session.user
-
-      queue.set("poster", user)
-      queue.set("adminNote", adminNote || undefined)
-      queue.set("show", false)
-      queue.set("spam", false)
-      return queue.save()
+      post.set("show", true)
+      return post.save()
     })
+  }).then(function() {
+    var user = new Parse.User()
+    user.id = req.session.user
+
+    if(adminNote) {
+      queue.set("adminNote", adminNote)
+    }
+
+    queue.set("poster", user)
+    queue.set("show", false)
+    queue.set("spam", false)
+    return queue.save()
   }).then(function() {
     res.json({sucess: true})
   }, function(error) {

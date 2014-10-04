@@ -1,10 +1,6 @@
 var Schools = Parse.Object.extend("Schools")
 
-module.exports.post = function(message, schoolID) {
-  var school = new Schools()
-
-  school.id = schoolID
-
+module.exports.post = function(message, school) {
   return school.fetch().then(function(school) {
     return Parse.Cloud.httpRequest({
         method: "POST",
