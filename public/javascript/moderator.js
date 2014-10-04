@@ -1,6 +1,12 @@
 // Init
 $(function() {
-  return getPosts()
+  getPosts()
+
+  setInterval(function() {
+    if($(".posts .post").length == 0) {
+      getPosts()
+    }
+  }, 30000)
 })
 
 // Util Methods
@@ -86,7 +92,7 @@ function buildPost(confession) {
 }
 
 function getPosts() {
-  $(".loading").show()
+  $(".loading").text("Loading new confessions").show()
   var url = "/moderator/confessions"
 
   if(window.school) {
@@ -97,7 +103,7 @@ function getPosts() {
     if(confessions.length != 0) {
       $(".loading").hide()
 
-      $.each(confessions, function(index, confession) {
+      confessions.forEach(function(confession) {
         var post = buildPost(confession)
         $(".posts").append(post)
         addListeners(post)

@@ -1,6 +1,12 @@
 // Init
 $(function() {
-  return getPosts()
+  getPosts()
+
+  setInterval(function() {
+    if($(".posts .post").length == 0) {
+      getPosts()
+    }
+  }, 30000)
 })
 
 // Util Methods
@@ -76,7 +82,7 @@ function buildPost(confession) {
 }
 
 function getPosts() {
-  $(".loading").show()
+  $(".loading").text("Loading spam confessions").show()
   var url = "/moderator/spam/confessions"
 
   if(window.school) {
