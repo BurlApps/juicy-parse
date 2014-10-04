@@ -1,4 +1,5 @@
 var Testers = Parse.Object.extend("Testers")
+var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
   res.render('index')
@@ -70,6 +71,22 @@ module.exports.robots = function(req, res) {
 }
 
 module.exports.sitemap = function(req, res) {
+  var query = new Parse.Query(Schools)
+  var schools = []
+
   res.set('Content-Type', 'application/xml')
-  res.render('sitemap')
+
+  query.each(function(school) {
+    return schools.push(school.get("slug"))
+  }).then(function() {
+    res.render('sitemap', {
+      schools: schools
+    })
+  }, function(error) {
+    console.log(error)
+
+    res.render('sitemap', {
+      schools: schools
+    })
+  })
 }
