@@ -10,4 +10,4 @@ git checkout master
 git merge origin/development
 
 git checkout development
-git push
+#git push
