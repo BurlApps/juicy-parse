@@ -7,9 +7,7 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
     return block.message
   }).join(""))
 
-  if(!post.isNew()) {
-    return res.success()
-  }
+  if(!post.isNew()) return res.success()
 
   // Set Defaults
   post.set("shares", 0)
