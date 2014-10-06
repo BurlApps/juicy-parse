@@ -3,6 +3,8 @@ var Post = Parse.Object.extend("Posts")
 Parse.Cloud.job("flatContent", function(req, res) {
   var query = new Parse.Query(Post)
 
+  query.doesNotExist("flatContent")
+
   query.each(function(post) {
     post.set("flatContent", post.get("content").map(function(block) {
       return block.message
