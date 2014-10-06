@@ -64,6 +64,8 @@ module.exports.post = function(req, res, next) {
       query.equalTo("phone", to)
 
       return query.first().then(function(school) {
+        req.facebookLink = school.get("facebookLink")
+
         queue.set("school", school)
         queue.set("source", "sms")
         queue.set("post", post)
@@ -93,6 +95,7 @@ module.exports.confession = function(req, res, next) {
 module.exports.response = function(req, res) {
   res.render('twilio', {
     newUser: req.newUser,
-    isConfession: req.isConfession
+    isConfession: req.isConfession,
+    facebookLink: req.facebookLink
   })
 }
