@@ -52,6 +52,10 @@ module.exports.tester = function(req, res) {
   })
 }
 
+module.exports.notfound = function(req, res) {
+  res.redirect("/")
+}
+
 module.exports.download = function(req, res) {
   // TODO: replace with itunes link or urx deeplink
   res.redirect("/")

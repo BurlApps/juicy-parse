@@ -3,6 +3,10 @@ var Image = require("parse-image")
 Parse.Cloud.beforeSave("Posts", function(req, res) {
   var post = req.object
 
+  post.set("flatContent", post.get("content").map(function(block) {
+    return block.message
+  }).join(""))
+
   if(!post.isNew()) {
     return res.success()
   }

@@ -11,8 +11,7 @@ routes = {
   confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
-  spam: require("cloud/express/routes/spam"),
-  notfound: require("cloud/express/routes/notfound")
+  spam: require("cloud/express/routes/spam")
 }
 
 // Global app configuration section
@@ -89,7 +88,7 @@ app.get('/moderator/:school/spam', routes.moderator.auth, routes.spam.home)
 app.get('/moderator/:school', routes.moderator.auth, routes.moderator.home)
 
 // Not Found Redirect
-app.all("*", routes.notfound)
+app.all("*", routes.core.notfound)
 
 // Listen to Parse
 app.listen()

@@ -49,9 +49,7 @@ module.exports.confessions = function(req, res) {
     return post.fetch().then(function(post) {
        return object = {
         id: confession.id,
-        message: post.get("content").map(function(block) {
-          return block.message
-        }).join(""),
+        message: post.get("flatContent"),
         created: post.createdAt,
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),

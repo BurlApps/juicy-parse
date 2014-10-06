@@ -139,9 +139,7 @@ module.exports.confessions = function(req, res) {
     return post.fetch().then(function(post) {
        return object = {
         id: confession.id,
-        message: post.get("content").map(function(block) {
-          return block.message
-        }).join(""),
+        message: post.get("flatContent"),
         created: post.createdAt,
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
@@ -194,11 +192,7 @@ module.exports.post = function(req, res, next) {
     var post = queue.get("post")
 
     return post.fetch().then(function(post) {
-      var postMessage = post.get("content").map(function(block) {
-        return block.message
-      }).join("")
-
-      if(message != postMessage) {
+      if(message != post.get("flatContent")) {
         post.set("content", [{
           color: false,
           message: message
