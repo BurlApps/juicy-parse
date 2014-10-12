@@ -38,8 +38,7 @@ app.use(function(req, res, next) {
   res.locals.school = null
   res.locals.schools = req.session.schools || []
 
-  if(req.session.gaTracking != undefined || req.session.gaTracking != null) {
-    console.log(123)
+  if(req.session.gaTracking == undefined) {
     Settings().then(function(settings) {
       req.session.gaTracking = settings.get("gaTracking")
       res.locals.gaTracking = req.session.gaTracking
