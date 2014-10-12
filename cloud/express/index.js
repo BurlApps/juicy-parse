@@ -1,4 +1,5 @@
 // These two lines are required to initialize Express in Cloud Code.
+var Settings = require("cloud/util/settings")
 var express = require('express')
 var app = express()
 
@@ -37,7 +38,20 @@ app.use(function(req, res, next) {
   res.locals.school = null
   res.locals.schools = req.session.schools || []
 
-  next()
+  if(req.session.gaTracking != undefined || req.session.gaTracking != null) {
+    console.log(123)
+    Settings().then(function(settings) {
+      req.session.gaTracking = settings.get("gaTracking")
+      res.locals.gaTracking = req.session.gaTracking
+      next()
+    }, function(error) {
+      console.log(error)
+      next()
+    })
+  } else {
+    res.locals.gaTracking = req.session.gaTracking
+    next()
+  }
 })
 
 // Landing
