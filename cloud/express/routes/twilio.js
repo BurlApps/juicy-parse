@@ -48,6 +48,7 @@ module.exports.post = function(req, res, next) {
   }).then(function(user) {
     var post = new Posts()
 
+    post.set("darkenerAlpha", 1)
     post.set("background", Settings.getBackground(req.settings))
     post.set("confession", req.isConfession)
     post.set("show", false)

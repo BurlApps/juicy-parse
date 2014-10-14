@@ -62,6 +62,7 @@ module.exports.post = function(req, res) {
       post.set("creator", user)
     }
 
+		post.set("darkenerAlpha", 1)
     post.set("background", Settings.getBackground(settings))
     post.set("confession", true)
     post.set("show", false)
