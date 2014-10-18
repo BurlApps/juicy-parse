@@ -7,7 +7,7 @@ Parse.Cloud.job("removeBackgrounds", function(req, res) {
 
 	  query.exists("image")
 	  query.each(function(post) {
-			post.set("image", undefined)
+			post.unset("image")
 			post.set("background", Settings.getBackground(settings))
 
 			return post.save()
