@@ -243,6 +243,8 @@ module.exports.delete = function(req, res) {
     if(req.spam == true) {
       queue.set("spammer", user)
       queue.set("spam", true)
+    } else {
+	    queue.set("spam", false)
     }
 
     return queue.save()

@@ -95,6 +95,7 @@ app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam, r
 app.get('/moderator/spam', routes.moderator.auth, routes.spam.home)
 app.get('/moderator/spam/confessions', routes.moderator.auth, routes.spam.confessions)
 app.post('/moderator/spam/confession', routes.moderator.auth, routes.spam.revert)
+app.delete('/moderator/spam/confession', routes.moderator.auth, routes.moderator.delete)
 
 app.get('/moderator/:school/writer', routes.moderator.auth, routes.moderator.writer)
 app.get('/moderator/:school/spam', routes.moderator.auth, routes.spam.home)

@@ -54,6 +54,7 @@ function confession(action) {
 
 function addListeners(post) {
   post.find(".revert").click(confession("POST"))
+  post.find(".delete").click(confession("DELETE"))
 }
 
 function buildPost(confession) {
@@ -69,6 +70,7 @@ function buildPost(confession) {
       <div class="right">                                                       \
         <div class="actions">                                                   \
           <input class="revert button" type="submit" value="REVERT" />          \
+          <input class="delete button" type="submit" value="DELETE" />          \
         </div>                                                                  \
       </div>                                                                    \
     </div>                                                                      \
