@@ -1,5 +1,6 @@
 require("cloud/jobs/seedPosts")
 require("cloud/jobs/seedPostsRemove")
+require("cloud/jobs/removeBackgrounds")
 require("cloud/jobs/whatIsJuicy")
 require("cloud/jobs/hidePosts")
 require("cloud/jobs/flatContent")
