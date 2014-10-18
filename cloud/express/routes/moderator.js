@@ -184,7 +184,9 @@ module.exports.post = function(req, res, next) {
     var school = queue.get("school")
 
     if(school) {
-      return Facebook.post(fbMessage, school)
+      return Facebook.post(fbMessage, school).then(function(postID) {
+	      queue.set("facebookPost", postID)
+      })
     } else {
       return true
     }
