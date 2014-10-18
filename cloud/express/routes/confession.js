@@ -31,12 +31,10 @@ module.exports.home = function(req, res) {
       }
     }, function(error) {
       console.log(error)
-      res.redirect("/confession", {
-        admin: !!req.session.user
-      })
+      res.redirect("/confession")
     })
   } else {
-    res.render("spam")
+    res.redirect("/confession")
   }
 }
 

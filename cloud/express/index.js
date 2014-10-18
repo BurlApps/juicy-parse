@@ -12,7 +12,8 @@ routes = {
   confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
-  spam: require("cloud/express/routes/spam")
+  spam: require("cloud/express/routes/spam"),
+  search: require("cloud/express/routes/search")
 }
 
 // Global app configuration section
@@ -34,7 +35,7 @@ app.use(function(req, res, next) {
   res.locals.csrf = req.session._csrf
 
   // Locals
-  res.locals.admin = false
+  res.locals.admin = !!req.session.user
   res.locals.school = null
   res.locals.schools = req.session.schools || []
 
@@ -71,6 +72,10 @@ app.get('/robots.txt', routes.core.robots)
 // Sitemap
 app.get('/sitemap', routes.core.sitemap)
 app.get('/sitemap.xml', routes.core.sitemap)
+
+// Search
+app.get('/search', routes.search.home)
+app.post('/search', routes.search.search)
 
 // Confessions
 app.get('/confession', routes.confession.redirect)
