@@ -16,7 +16,7 @@ module.exports.search = function(req, res) {
 		query.matches("flatContent", new RegExp(search, "i"))
 	}
 
-	if(!req.session.user)
+	if(!req.session.user) {
   	query.equalTo("show", true)
   }
 
