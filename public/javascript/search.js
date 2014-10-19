@@ -17,10 +17,21 @@ $(function() {
 })
 
 function buildPost(post) {
-	return $('																																	\
+	var element = $('																														\
     <div class="post">                                                				\
     	<div class="message">' + post.message + '</div>                         \
-			<div class="time">Posted <strong>' + post.duration + '</strong></div>   \
+			<div class="bottom">																										\
+				<div class="left">																										\
+					Created <strong>' + post.duration + '</strong></div>								\
+				</div>																																\
     </div>                                                                    \
   ')
+
+  if(!post.show) {
+	  element.find(".bottom").append("						\
+	  	<strong class='right'>Hidden</strong>			\
+	  ")
+  }
+
+  return element
 }

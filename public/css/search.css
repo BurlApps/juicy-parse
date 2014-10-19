@@ -132,7 +132,7 @@ canvas {
   box-sizing: border-box;
 }
 
-.container .information .results .post .time {
+.container .information .results .post .bottom {
   color: #777;
   font-size: 16px;
   background: #fafafa;
@@ -142,4 +142,15 @@ canvas {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+
+  zoom: 1;
+  overflow: hidden;
+}
+
+.container .information .results .post .bottom .left {
+	float: left;
+}
+
+.container .information .results .post .bottom .right {
+	float: right;
 }

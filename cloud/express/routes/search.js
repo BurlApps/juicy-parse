@@ -30,7 +30,8 @@ module.exports.search = function(req, res) {
 			promise = promise.then(function() {
 		    return results.push({
 		      message: post.get("flatContent"),
-		      duration: Moment.duration(post.createdAt - now).humanize(true)
+		      duration: Moment.duration(post.createdAt - now).humanize(true),
+		      show: post.get("show")
 		    })
 		  })
 	  })
