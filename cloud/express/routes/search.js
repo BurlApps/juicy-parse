@@ -16,7 +16,10 @@ module.exports.search = function(req, res) {
 		query.matches("flatContent", new RegExp(search, "i"))
 	}
 
-  query.equalTo("show", true)
+	if(!req.session.user)
+  	query.equalTo("show", true)
+  }
+
 	query.descending("createdAt")
 	query.limit(20)
 
