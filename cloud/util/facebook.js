@@ -13,9 +13,12 @@ module.exports.post = function(message, school) {
 	      school.get("facebookToken")
 	    ].join(""),
 	    body: {
-	      message: message,
-	      published: true
-	    },
+	      "message": message,
+	      "published": true,
+	      "feed_targeting": JSON.stringify({
+					"countries": ['US']
+				})
+			},
 	    success: function(httpResponse) {
 		    postID = httpResponse.data.id.split("_")[1]
 		  }
