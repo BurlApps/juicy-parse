@@ -92,6 +92,7 @@ canvas {
 	font-size: 14px;
 	color: rgba(255, 255, 255, 0.8);
 	padding-right: 15px;
+	margin-left: -10px;
 }
 
 .guidelines .guides li {
