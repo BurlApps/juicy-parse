@@ -36,6 +36,7 @@ Parse.Cloud.define("feed", function(req, res) {
   query.skip(req.params.skip)
 
   query.equalTo("show", true)
+  query.lessThanOrEqualTo("length", 200)
   query.notEqualTo("creator", currentUser)
   query.notEqualTo("likedUsers", currentUser)
   query.notEqualTo("nopedUsers", currentUser)
