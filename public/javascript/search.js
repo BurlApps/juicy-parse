@@ -17,9 +17,10 @@ $(function() {
 })
 
 function buildPost(post) {
+	var message = $('<div/>').text(post.message).html()
 	var element = $('																														\
     <div class="post">                                                				\
-    	<div class="message">' + post.message + '</div>                         \
+    	<div class="message">' + message + '</div>                        	 	  \
 			<div class="bottom">																										\
 				<div class="left">																										\
 					Created <strong>' + post.duration + '</strong></div>								\
