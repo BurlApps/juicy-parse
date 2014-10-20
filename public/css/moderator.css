@@ -52,6 +52,54 @@ canvas {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.guidelines {
+	position: fixed;
+	top: 15px;
+	left: 15px;
+	width: 300px;
+	background: #fff;
+	overflow: hidden;
+
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+
+  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.guidelines .header {
+	font-size: 16px;
+	background: #F7F7F7;
+	color: #636363;
+	padding: 10px 0;
+	margin: 0;
+	border-bottom: solid 1px #ededed;
+	text-shadow: none;
+}
+
+.guidelines .subheader {
+	text-align: center;
+	font-size: 15px;
+	color: #636363;
+	background: #fcfcfc;
+	padding: 8px 0;
+	border-bottom: solid 1px #f3f3f3;
+}
+
+.guidelines .guides {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.8);
+	padding-right: 15px;
+}
+
+.guidelines .guides li {
+	margin-bottom: 8px;
+	color: #666;
+}
+
+
 .container {
   position: relative;
   z-index: 2;
