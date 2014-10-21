@@ -54,6 +54,7 @@ canvas {
 
 .guidelines {
 	position: fixed;
+	z-index: 5;
 	top: 15px;
 	left: 15px;
 	width: 300px;
