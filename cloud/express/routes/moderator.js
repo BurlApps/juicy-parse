@@ -182,8 +182,9 @@ module.exports.post = function(req, res, next) {
 
   queue.fetch().then(function() {
     var school = queue.get("school")
+    var poster = queue.get("poster")
 
-    if(school) {
+    if(school && !poster) {
       return Facebook.post(fbMessage, school).then(function(postID) {
 	      queue.set("facebookPost", postID)
       })
