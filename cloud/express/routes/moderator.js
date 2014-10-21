@@ -188,8 +188,13 @@ module.exports.post = function(req, res, next) {
       return Facebook.post(fbMessage, school).then(function(postID) {
 	      queue.set("facebookPost", postID)
       })
-    } else {
+    } else if(!poster) {
       return true
+    } else {
+    	queue.set("show", false)
+	    queue.set("spam", false)
+	    queue.save()
+	    return Parse.Promise.error("Already posted to facebook")
     }
   }).then(function() {
     var post = queue.get("post")
