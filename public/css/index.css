@@ -27,6 +27,21 @@ canvas {
 	font-style: normal;
 }
 
+@media (max-width: 800px) {
+  .container {
+    width: 420px !important;
+  }
+
+	.container .information {
+		float: none !important;
+	}
+
+  .container .image {
+	  display: none !important;
+  }
+}
+
+
 .container {
   position: relative;
   z-index: 2;

@@ -1,3 +1,17 @@
+@media (max-width: 850px) {
+  .container {
+    width: 470px !important;
+  }
+
+  .container .information {
+		float: none !important;
+	}
+
+  .container .image {
+	  display: none !important;
+  }
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
