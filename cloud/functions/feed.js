@@ -14,6 +14,14 @@ Parse.Cloud.define("feed", function(req, res) {
   var posts = []
   var currentUser = Parse.User.current()
 
+	// Geo Query
+	var geoQuery = new Parse.Query(Posts)
+	geoQuery.equalTo("city", req.params.city)
+
+	if(!req.params.city) {
+		geoQuery.limit(0)
+	}
+
   // New Posts Query
   var daysAgo = new Date()
   var newPostsQuery = new Parse.Query(Posts)
@@ -31,7 +39,7 @@ Parse.Cloud.define("feed", function(req, res) {
   aboutFriendsQuery.matchesQuery("aboutUsers", friendRelation.query())
 
   // Base "Or Query"
-  var query = Parse.Query.or(aboutMeQuery, aboutFriendsQuery, newPostsQuery)
+  var query = Parse.Query.or(geoQuery, aboutMeQuery, aboutFriendsQuery, newPostsQuery)
   query.limit(req.params.limit)
   query.skip(req.params.skip)
 
