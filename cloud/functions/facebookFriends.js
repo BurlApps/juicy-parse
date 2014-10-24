@@ -40,7 +40,9 @@ Parse.Cloud.define("facebookFriends", function(req, res) {
 			return Parse.Push.send({
 			  where: pushQuery,
 			  data: {
-			    alert: "Your friend just joined Juicy! Watch for new friend posts 😃"
+			    alert: "Your friend just joined Juicy! Watch for new friend posts 😃",
+			    badge: "Increment",
+			    sound: "alert.caf"
 			  }
 			})
     }).then(function() {
