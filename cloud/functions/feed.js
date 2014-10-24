@@ -14,7 +14,7 @@ Parse.Cloud.define("feed", function(req, res) {
   var posts = []
   var currentUser = Parse.User.current()
 
-  // About Me Query
+  // New Posts Query
   var daysAgo = new Date()
   var newPostsQuery = new Parse.Query(Posts)
 

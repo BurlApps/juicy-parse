@@ -6,6 +6,7 @@ Parse.Cloud.define("facebookFriends", function(req, res) {
   var currentUser     = Parse.User.current()
   var friendsRelation = currentUser.relation("friends")
   var names           = []
+  var users						= []
 
   Parse.Cloud.httpRequest({
     url:'https://graph.facebook.com/me/friends?&access_token=' + currentUser.get('authData').facebook.access_token
@@ -20,16 +21,28 @@ Parse.Cloud.define("facebookFriends", function(req, res) {
 
     return promise;
   }).then(function() {
-    var query = new Parse.Query(Parse.User)
-    query.containedIn("name", names)
-    query.each(function(user) {
+    var friendsQuery = new Parse.Query(Parse.User)
+    friendsQuery.containedIn("name", names)
+    friendsQuery.each(function(user) {
+    	users.push(user)
       friendsRelation.add(user)
 
       var userRelation = user.relation("friends")
       userRelation.add(currentUser)
+
       return user.save()
     }).then(function() {
       return currentUser.save()
+    }).then(function() {
+	    var pushQuery = new Parse.Query(Parse.Installation);
+			pushQuery.containedIn("user", users)
+
+			return Parse.Push.send({
+			  where: pushQuery,
+			  data: {
+			    alert: "Your friend just joined Juicy! Watch for new friend posts 😃"
+			  }
+			})
     }).then(function() {
       res.success("Added facebook friends successfully")
     }, function(error) {
