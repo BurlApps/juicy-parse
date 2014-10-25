@@ -1,5 +1,7 @@
 // Init
 $(function() {
+	window.count = 0
+
   getPosts()
 
   setInterval(function() {
@@ -49,6 +51,9 @@ function confession(action) {
         $(".loading").show()
       }
     }, 1000)
+
+    window.count--
+    updateTitle()
   }
 }
 
@@ -92,6 +97,9 @@ function getPosts() {
   }
 
   $.getJSON(url, function(confessions) {
+  	window.count = confessions.length
+  	updateTitle()
+
     if(confessions.length != 0) {
       $(".loading").hide()
 
@@ -104,4 +112,12 @@ function getPosts() {
       $(".loading").text("No spam confessions. Doing good!")
     }
   })
+}
+
+function updateTitle() {
+	if(window.count > 0) {
+		$("title").text("Spam Queue (" + window.count + ")")
+	} else {
+		$("title").text("Spam Queue")
+	}
 }

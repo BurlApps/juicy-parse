@@ -1,5 +1,7 @@
 // Init
 $(function() {
+	window.count = 0
+
   getPosts()
 
   setInterval(function() {
@@ -51,6 +53,9 @@ function confession(action) {
         $(".loading").show()
       }
     }, 1000)
+
+    window.count--
+    updateTitle()
   }
 }
 
@@ -100,6 +105,9 @@ function getPosts() {
   }
 
   $.getJSON(url, function(confessions) {
+  	window.count = confessions.length
+  	updateTitle()
+
     if(confessions.length != 0) {
       $(".loading").hide()
 
@@ -112,4 +120,12 @@ function getPosts() {
       $(".loading").text("No new confessions. Good work!")
     }
   })
+}
+
+function updateTitle() {
+	if(window.count > 0) {
+		$("title").text("Confessions Queue (" + window.count + ")")
+	} else {
+		$("title").text("Confessions Queue")
+	}
 }
