@@ -101,7 +101,6 @@ canvas {
 	color: #666;
 }
 
-
 .container {
   position: relative;
   z-index: 2;
@@ -253,4 +252,34 @@ canvas {
 
 .post .actions .spam {
   background: #FF503A;
+}
+
+@media (max-width: 1200px) {
+  .guidelines {
+    width: 250px;
+  }
+
+  .container {
+	  right: -50px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .guidelines {
+    width: 225px;
+  }
+
+  .container {
+	  right: -70px;
+  }
+}
+
+@media (max-width: 800px) {
+  .guidelines {
+    display: none;
+  }
+
+  .container {
+	  left: -40px;
+  }
 }
