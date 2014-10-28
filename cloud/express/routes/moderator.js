@@ -195,6 +195,8 @@ module.exports.post = function(req, res, next) {
 	    queue.set("spam", false)
 	    queue.save()
 	    return Parse.Promise.error("Already posted to facebook")
+    } else if(!show || spam) {
+      return Parse.Promise.error("Marked as hidden or spam already")
     } else {
       return true
     }
