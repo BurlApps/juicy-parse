@@ -183,18 +183,20 @@ module.exports.post = function(req, res, next) {
   queue.fetch().then(function() {
     var school = queue.get("school")
     var poster = queue.get("poster")
+    var show = queue.get("show")
+    var spam = queue.get("spam")
 
-    if(school && !poster) {
+    if(school && !poster && show && !spam) {
       return Facebook.post(fbMessage, school).then(function(postID) {
 	      queue.set("facebookPost", postID)
       })
-    } else if(!poster) {
-      return true
-    } else {
+    } else if(poster) {
     	queue.set("show", false)
 	    queue.set("spam", false)
 	    queue.save()
 	    return Parse.Promise.error("Already posted to facebook")
+    } else {
+      return true
     }
   }).then(function() {
     var post = queue.get("post")
