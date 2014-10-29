@@ -5,6 +5,7 @@
         <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
         <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="/css/schools.css">
 
         <% if(gaTracking) { %>
           <script>
@@ -22,6 +23,7 @@
         <script type="text/javascript" src="//code.jquery.com/jquery-1.8.0.min.js"></script>
         <script type="text/javascript" src="/javascript/particles.js"></script>
         <script type="text/javascript" src="/javascript/index.js"></script>
+        <script type="text/javascript" src="/javascript/schools.js"></script>
     </head>
     <body>
         <div class="container">
@@ -39,5 +41,30 @@
           <img class="image" src="/images/home.png"/>
         </div>
         <canvas id="canvas"></canvas>
+        <% if(admin) { %>
+          <div class="corner-links">
+            <div class="link school-button">
+              <strong>All Schools</strong>
+            </div>
+            <a class="link" href="/moderator/">Confessions</a>
+            <a class="link" href="/moderator/spam">Spam</a>
+            <a class="link" href="/search">Search</a>
+          </div>
+
+          <div class="school-popup">
+            <div class="popup-darkener"></div>
+            <div class="popup-container">
+              <div class="popup-header">
+                <div class="popup-title">Choose College</div>
+                <div class="popup-close">Cancel</div>
+              </div>
+              <div class="popup-schools">
+                <% schools.forEach(function(school) { %>
+                  <a class="popup-school" href="/moderator/<%= school.slug %>/writer"><%= school.name %></a>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+        <% } %>
     </body>
 </html>

@@ -1,3 +1,39 @@
+.corner-links {
+  position: fixed;
+  z-index: 4;
+  top: 15px;
+  right: 15px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.corner-links .link {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+
+  -webkit-transition: background .2s ease 0;
+  -moz-transition: background .2s ease;
+  -o-transition: background .2s ease 0;
+  transition: background .2s ease 0;
+}
+
+.corner-links .link:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.corner-links .link:hover:active {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 .school-popup {
   display: none;
   position: fixed;
@@ -6,6 +42,7 @@
   right: 0;
   bottom: 0;
   z-index: 5;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .popup-darkener {

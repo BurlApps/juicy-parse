@@ -5,6 +5,7 @@ body {
     height: 100%;
     background: #ff503a;
     position: relative;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 canvas {
