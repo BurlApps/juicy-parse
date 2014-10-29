@@ -249,13 +249,13 @@ module.exports.delete = function(req, res) {
     var user = new Parse.User()
     user.id = req.session.user
 
-    queue.set("deleter", user)
     queue.set("show", false)
 
     if(req.spam == true) {
       queue.set("spammer", user)
       queue.set("spam", true)
     } else {
+    	queue.set("deleter", user)
 	    queue.set("spam", false)
     }
 

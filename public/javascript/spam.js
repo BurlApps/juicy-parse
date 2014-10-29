@@ -66,7 +66,7 @@ function buildPost(confession) {
   var post = $('                                                                \
     <div class="post" data-id="' + confession.id + '">                          \
       <div class="left">                                                        \
-        <textarea class="message">"' + confession.message + '"</textarea>       \
+        <textarea class="message">' + confession.message + '</textarea>       	\
         <div class="time">                                                      \
           <strong>' + confession.duration + '</strong>                          \
           via <strong>' + confession.source + '</strong>                        \
