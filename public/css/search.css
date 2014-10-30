@@ -97,6 +97,13 @@ canvas {
   box-sizing: border-box;
 }
 
+.container .information .results .post .image {
+  margin: 0;
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
 .container .information .results .post .bottom {
   color: #777;
   font-size: 16px;

@@ -28,8 +28,11 @@ module.exports.search = function(req, res) {
 
 		_.each(posts, function(post) {
 			promise = promise.then(function() {
+		    var image = post.get("image")
+
 		    return results.push({
 		      message: post.get("flatContent"),
+		      image: (image) ? image.url() : null,
 		      duration: Moment.duration(post.createdAt - now).humanize(true),
 		      show: post.get("show")
 		    })

@@ -21,6 +21,7 @@ function buildPost(post) {
 	var element = $('																														\
     <div class="post">                                                				\
     	<div class="message">' + message + '</div>                        	 	  \
+    	<image class="image"/>																									\
 			<div class="bottom">																										\
 				<div class="left">																										\
 					Created <strong>' + post.duration + '</strong></div>								\
@@ -32,6 +33,12 @@ function buildPost(post) {
 	  element.find(".bottom").append("						\
 	  	<strong class='right'>Hidden</strong>			\
 	  ")
+  }
+
+  if(post.image) {
+		element.find(".image")
+			.attr("src", post.image)
+			.css("display", "block")
   }
 
   return element
