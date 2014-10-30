@@ -28,13 +28,16 @@
     </head>
     <body>
         <div class="container">
-          <div class="information">
+          <div class="information <%= (imagesAllowed) ? "imagesAllowed" : "" %>">
             <div class="header">Confession</div>
             <div class="subheader">Confess without worries!</div>
             <form class="form" action="/confession">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
               <input name="school" type="hidden" value="<%= school.id %>"/>
               <textarea name="message" class="input textarea" placeholder="Your <%= school.name %> confession" autofocus required></textarea>
+              <% if(imagesAllowed) { %>
+              	<input name="image" class="input" type="text" placeholder="Link to an awesome image..." />
+              <% } %>
               <input class="submit" type="submit" value="Post Your Confession" />
               <div class="contact">We will always keep your identity a secret.</div>
             </form>

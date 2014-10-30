@@ -47,9 +47,12 @@ module.exports.confessions = function(req, res) {
     var object = {}
 
     return post.fetch().then(function(post) {
-       return object = {
+	    var image = post.get("image")
+
+      return object = {
         id: confession.id,
         message: post.get("flatContent"),
+        image: (image) ? image.url() : null,
         created: post.createdAt,
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),

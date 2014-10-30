@@ -24,6 +24,10 @@ body {
   width: 470px;
 }
 
+.container .information.imagesAllowed {
+	margin-top: -10px;
+}
+
 .container .information .form .input.textarea {
   height: 260px;
   resize: none;

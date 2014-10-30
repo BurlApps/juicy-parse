@@ -67,6 +67,7 @@ function buildPost(confession) {
     <div class="post" data-id="' + confession.id + '">                          \
       <div class="left">                                                        \
         <textarea class="message">' + confession.message + '</textarea>       	\
+        <image class="image"/>																									\
         <div class="time">                                                      \
           <strong>' + confession.duration + '</strong>                          \
           via <strong>' + confession.source + '</strong>                        \
@@ -83,6 +84,12 @@ function buildPost(confession) {
 
   if(confession.school) {
     post.find(".time").append('to <strong>' + confession.school.name + '</strong>')
+  }
+
+	if(confession.image) {
+		post.find(".image")
+			.attr("src", confession.image)
+			.css("display", "block")
   }
 
   return post

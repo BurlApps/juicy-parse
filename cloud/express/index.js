@@ -13,7 +13,8 @@ routes = {
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
   spam: require("cloud/express/routes/spam"),
-  search: require("cloud/express/routes/search")
+  search: require("cloud/express/routes/search"),
+  images: require("cloud/express/routes/images")
 }
 
 // Global app configuration section
@@ -77,6 +78,9 @@ app.get('/sitemap.xml', routes.core.sitemap)
 app.get('/search', routes.search.home)
 app.post('/search', routes.search.search)
 
+// Images
+app.get('/images/:post', routes.images.home)
+
 // Confessions
 app.get('/confession', routes.confession.redirect)
 app.get('/confessions', routes.confession.redirect)
@@ -102,7 +106,7 @@ app.get('/moderator/spam/confessions', routes.moderator.auth, routes.spam.confes
 app.post('/moderator/spam/confession', routes.moderator.auth, routes.spam.revert)
 app.delete('/moderator/spam/confession', routes.moderator.auth, routes.moderator.delete)
 
-app.get('/moderator/:school/writer', routes.moderator.auth, routes.moderator.writer)
+app.get('/moderator/:school/writer', routes.moderator.auth, routes.confession.home)
 app.get('/moderator/:school/spam', routes.moderator.auth, routes.spam.home)
 app.get('/moderator/:school', routes.moderator.auth, routes.moderator.home)
 

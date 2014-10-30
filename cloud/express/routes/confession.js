@@ -2,6 +2,7 @@ var Posts  = Parse.Object.extend("Posts")
 var Queue  = Parse.Object.extend("ConfessionsQueue")
 var Schools = Parse.Object.extend("Schools")
 var Settings = require("cloud/util/settings")
+var Image = require("parse-image")
 
 module.exports.redirect = function(req, res) {
   Settings().then(function(settings) {
@@ -18,14 +19,17 @@ module.exports.home = function(req, res) {
     query.equalTo("slug", slug)
     query.first().then(function(school) {
       if(school) {
-        res.render("confession", {
-          school: {
-            id: school.id,
-            slug: slug,
-            name: school.get("name")
-          },
-          admin: !!req.session.user
-        })
+	      Settings().then(function(settings) {
+	        res.render("confession", {
+	          school: {
+	            id: school.id,
+	            slug: slug,
+	            name: school.get("name")
+	          },
+	          admin: !!req.session.user,
+	          imagesAllowed: settings.get("confessionsImagesAllowed")
+	        })
+	    	})
       } else {
         res.redirect("/confession")
       }
@@ -40,6 +44,7 @@ module.exports.home = function(req, res) {
 
 module.exports.post = function(req, res) {
   var message = req.param("message")
+  var imageLink = req.param("image")
 
   if(!message) {
     return res.json({
@@ -76,13 +81,40 @@ module.exports.post = function(req, res) {
     queue.set("post", post)
     queue.save()
 
-    return post.save()
+		if(imageLink) {
+			return Parse.Cloud.httpRequest({
+				url: imageLink
+			}).then(function(response) {
+			  var image = new Image()
+			  return image.setData(response.buffer)
+			}).then(function(image) {
+			  return image.data()
+			}).then(function(buffer) {
+				var linkParts = imageLink.split(".")
+				var extension = linkParts[linkParts.length - 1].toLowerCase()
+
+				if(["jpeg", "jpg", "png", "svg", "gif", "bmp"].indexOf(extension) == -1) {
+					extension == "jpg"
+				}
+
+			  var file = new Parse.File("image." + extension, {
+					base64: buffer.toString("base64")
+				})
+
+			  return file.save()
+			}).then(function(image) {
+				post.set("image", image)
+				return post.save()
+			})
+		} else {
+			return post.save()
+		}
   }).then(function() {
     res.json({
       success: true,
       message: "Thanks for confessing :)"
     })
-  }, function() {
+  }, function(error) {
     res.json({
       success: false,
       message: "Something went wrong, sorry :("

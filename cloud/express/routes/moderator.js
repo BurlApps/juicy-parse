@@ -62,7 +62,6 @@ module.exports.schools = function(req, res, next) {
   }
 }
 
-
 module.exports.home = function(req, res) {
   var slug = req.param("school")
 
@@ -91,31 +90,6 @@ module.exports.home = function(req, res) {
   }
 }
 
-module.exports.writer = function(req, res) {
-  var slug = req.param("school")
-
-  if(slug) {
-    var query = new Parse.Query(Schools)
-
-    query.equalTo("slug", slug)
-    query.first().then(function(school) {
-      res.render("confession", {
-        admin: true,
-        school: {
-          id: school.id,
-          slug: slug,
-          name: school.get("name")
-        }
-      })
-    }, function(error) {
-      console.log(error)
-      res.redirect("/confession")
-    })
-  } else {
-    res.redirect("/confession")
-  }
-}
-
 module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
@@ -137,9 +111,13 @@ module.exports.confessions = function(req, res) {
     var object = {}
 
     return post.fetch().then(function(post) {
-       return object = {
+	    var image = post.get("image")
+
+      return object = {
         id: confession.id,
+        post: post.id,
         message: post.get("flatContent"),
+        image: (image) ? image.url() : null,
         created: post.createdAt,
         adminNote: confession.get("adminNote") || "",
         source: confession.get("source"),
@@ -172,11 +150,21 @@ module.exports.confessions = function(req, res) {
 module.exports.post = function(req, res, next) {
   var adminNote = req.param("adminNote")
   var message = req.param("message")
+  var hasImage = req.param("image")
   var fbMessage = '"' + message + '"'
+  var fbLink = null
   var queue = new Queue()
   queue.id = req.param("id")
 
-  if(adminNote) {
+  if(hasImage == "true") {
+	  fbLink = [
+	  	"\nhttp://", req.host,
+	  	"/images/", req.param("post")
+	  ].join("")
+	  fbMessage += fbLink
+  }
+
+  if(adminNote != "") {
     fbMessage += "\n\nAdmin note: " + adminNote
   }
 
@@ -187,7 +175,7 @@ module.exports.post = function(req, res, next) {
     var spam = queue.get("spam")
 
     if(school && !poster && show && !spam) {
-      return Facebook.post(fbMessage, school).then(function(postID) {
+      return Facebook.post(fbMessage, fbLink, school).then(function(postID) {
 	      queue.set("facebookPost", postID)
       })
     } else if(poster) {

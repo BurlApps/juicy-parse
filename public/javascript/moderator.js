@@ -15,6 +15,8 @@ $(function() {
 function getFormFromPost(post) {
   return {
     id: post.data("id"),
+    post: post.data("post"),
+    image: !!post.find(".image").attr("src"),
     message: post.find(".message").val(),
     adminNote: post.find(".adminNote").val(),
     _csrf: $(".csrf").val()
@@ -68,9 +70,10 @@ function addListeners(post) {
 
 function buildPost(confession) {
   var post  = $('                                                                                     \
-    <div class="post" data-id="' + confession.id + '">                                                \
+    <div class="post" data-id="' + confession.id + '" data-post="' + confession.post + '">            \
       <div class="left">                                                                              \
         <textarea class="message">' + confession.message + '</textarea>                               \
+        <image class="image"/>																																				\
         <textarea class="adminNote" placeholder="Admin note">' + confession.adminNote + '</textarea>  \
         <div class="time">                                                                            \
           <strong>' + confession.duration + '</strong>                                                \
@@ -91,6 +94,12 @@ function buildPost(confession) {
     post.find(".time").append('to <strong>' + confession.school.name + '</strong>')
   } else {
     post.find(".push.button").val("ACCEPT")
+  }
+
+  if(confession.image) {
+		post.find(".image")
+			.attr("src", confession.image)
+			.css("display", "block")
   }
 
   return post

@@ -199,6 +199,13 @@ canvas {
   height: 40px;
 }
 
+.post .image {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: none;
+}
+
 .post .time {
   color: #777;
   font-size: 16px;
