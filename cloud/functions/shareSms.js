@@ -28,7 +28,7 @@ Parse.Cloud.define("shareSms", function(req, res) {
               "Your friend shared this with you on Juicy: \n\n",
               message.substring(0, 60),
               "...\n\n Download Juicy to find out the rest: ",
-              "http://",settings.get("host"),"/download"
+              "http://", settings.get("host"), "/download"
             ].join("")
           })
         })
