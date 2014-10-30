@@ -25,10 +25,10 @@ Parse.Cloud.define("shareSms", function(req, res) {
             to: "+1" + contact["phone"].match(/\d/g).join(""),
             from: settings.get("twilioShareNumber"),
             body: [
-              "Your friend shared this with you on Juicy: ",
+              "Your friend shared this with you on Juicy: \n\n",
               message.substring(0, 60),
-              "... Download Juicy to find out the rest: ",
-              "http://soojuicy.com/download"
+              "...\n\n Download Juicy to find out the rest: ",
+              "http://",settings.get("host"),"/download"
             ].join("")
           })
         })
