@@ -21,6 +21,8 @@ routes = {
 app.set('views', 'cloud/express/views')
 app.set('view engine', 'ejs')
 
+app.enable('trust proxy')
+
 app.use(express.bodyParser())
 app.use(express.cookieParser())
 app.use(express.cookieSession({

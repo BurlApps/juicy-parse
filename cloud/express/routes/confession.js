@@ -1,3 +1,4 @@
+var Users  = Parse.Object.extend("User")
 var Posts  = Parse.Object.extend("Posts")
 var Queue  = Parse.Object.extend("ConfessionsQueue")
 var Schools = Parse.Object.extend("Schools")
@@ -45,6 +46,7 @@ module.exports.home = function(req, res) {
 module.exports.post = function(req, res) {
   var message = req.param("message")
   var imageLink = req.param("image")
+  var settings
 
   if(!message) {
     return res.json({
@@ -54,19 +56,39 @@ module.exports.post = function(req, res) {
   }
 
   Settings().then(function(settings) {
+  	var user = new Parse.User()
+  	req.settings = settings
+
+  	if(req.session.user) {
+      user.id = req.session.user
+			return user
+    } else if(req.cookies[settings.get("confessionTracker")]) {
+      user.id = req.cookies[settings.get("confessionTracker")]
+      return user
+    } else {
+	    var random = Math.random().toString(36).slice(2)
+	    user.set("username", random)
+	    user.set("password", random)
+	    user.set("admin", false)
+	    user.set("registered", false)
+	    user.set("terms", false)
+	    return user.signUp()
+    }
+  }).then(function(user) {
     var post = new Posts()
     var queue = new Queue()
     var school = new Schools()
 
-    if(req.session.user) {
-      var user = new Parse.User()
-      user.id = req.session.user
-      queue.set("creator", user)
-      post.set("creator", user)
-    }
+    res.cookie(req.settings.get("confessionTracker"), user.id, {
+	    maxAge: 9000000000,
+	    httpOnly: true
+	  })
+
+    queue.set("creator", user)
+    post.set("creator", user)
 
 		post.set("darkenerAlpha", 1)
-    post.set("background", Settings.getBackground(settings))
+    post.set("background", Settings.getBackground(req.settings))
     post.set("confession", true)
     post.set("show", false)
     post.set("content", [{
@@ -115,6 +137,8 @@ module.exports.post = function(req, res) {
       message: "Thanks for confessing :)"
     })
   }, function(error) {
+	  console.log(error)
+
     res.json({
       success: false,
       message: "Something went wrong, sorry :("
