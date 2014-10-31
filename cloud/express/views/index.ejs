@@ -30,12 +30,14 @@
           <div class="information">
             <div class="header">Juicy</div>
             <div class="subheader">Share without worries!</div>
-            <form class="form" action="/tester">
+            <div class="description">
+	            Scandal. Intrigue. Secrets. Share the juicy details. We’ll tell you what your friends are really like. Share anonymously to as many or as little as you want.
+            </div>
+            <form class="form" action="/phone">
               <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <input name="name" class="input" type="text" placeholder="My Name" required step="1" autofocus/>
-              <input name="email" class="input" type="email" placeholder="My Email" required step="2"/>
-              <input class="submit" type="submit" value="Join the beta, it will be fun :)" />
-              <div class="contact">We will contact you by email soon...</div>
+              <input name="phone" class="input phone" type="tel" placeholder="Your digits" required step="1" autofocus/>
+              <input class="submit" type="submit" value="Get your daily squeeze!" />
+              <div class="contact">We just sent the link to your phone!</div>
             </form>
           </div>
           <img class="image" src="/images/home.png"/>
