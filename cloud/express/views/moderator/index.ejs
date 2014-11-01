@@ -1,88 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Confessions Queue</title>
-        <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
-        <link rel="stylesheet" href="/css/moderator.css">
-        <link rel="stylesheet" href="/css/schools.css">
-
-        <script type="text/javascript">
-          window.school = <%- (school) ? ("'" + school.id + "'") : "null"  %>
-        </script>
-
-        <% if(gaTracking) { %>
-          <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', '<%= gaTracking %>', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-          </script>
-        <% } %>
-
-        <script type="text/javascript" src="//code.jquery.com/jquery-1.8.0.min.js"></script>
-        <script type="text/javascript" src="/javascript/particles.js"></script>
-        <script type="text/javascript" src="/javascript/moderator.js"></script>
-        <script type="text/javascript" src="/javascript/schools.js"></script>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">Confessions Queue</div>
-        <div class="inner-container">
-          <% if(school) { %>
-            <div class="filtered-school">
-              Filtered confessions for <strong><%= school.name %></strong>
-            </div>
-          <% } %>
-          <div class="loading">Loading new confessions</div>
-          <div class="posts"></div>
-        </div>
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="header">Confessions Queue</div>
+  <div class="inner-container">
+    <% if(school) { %>
+      <div class="filtered-school">
+        Filtered confessions for <strong><%= school.name %></strong>
       </div>
-      <canvas id="canvas"></canvas>
-      <input class="csrf" type="hidden" value="<%= csrf %>"/>
-      <div class="corner-links">
-        <div class="link school-button">
-          <strong><%- (school) ? school.name : "All Schools" %></strong>
-        </div>
-        <% if(school) { %>
-          <a class="link" href="/moderator/<%= school.slug %>/writer">New Post</a>
-        <% } %>
-        <a class="link" href="/moderator/<%= (school) ? (school.slug + "/") : "" %>spam">Spam</a>
-        <a class="link" href="/search">Search</a>
-      </div>
-      <div class="school-popup">
-        <div class="popup-darkener"></div>
-        <div class="popup-container">
-          <div class="popup-header">
-            <div class="popup-title">Choose College</div>
-            <div class="popup-close">Cancel</div>
-          </div>
-          <div class="popup-schools">
-            <a class="popup-school" href="/moderator">All Schools</a>
-            <% schools.forEach(function(school) { %>
-              <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
-            <% }) %>
-          </div>
-        </div>
-      </div>
-      <div class="guidelines">
-	    	<div class="header">Guidelines</div>
-	    	<div class="subheader">We trust you to make the right<br>call when there’s a gray area</div>
-	    	<ul class="guides">
-		    	<li><strong>When in doubt, spam it</strong></li>
-		    	<li><strong>Don’t delete,</strong> always spam</li>
-		    	<li><strong>No full names, only first names,</strong> no last initials</li>
-		    	<li><strong>No blatant racism.</strong> Venting about white people problems is ok</li>
-		    	<li><strong>No blatant sexism.</strong> This is a tricky area, if someone says they’re friendzoned, post it. If someone says they believe women are asking for it, then don’t post it</li>
-		    	<li><strong>No threats of violence,</strong> unless you think someone would see it as joking</li>
-		    	<li><strong>No rape posts</strong> whatsoever</li>
-		    	<li><strong>No posts about the other confessions page</strong></li>
-		    	<li><strong>No posts promoting links</strong> e.g see my craigslist ad</li>
-		    	<li><strong>Make your judgement on sexual posts,</strong> I don’t know how to word this, the page should be weird from time to time, but not gross</li>
-	    	</ul>
-    	</div>
-    </body>
-</html>
+    <% } %>
+    <div class="loading">Loading new confessions</div>
+    <div class="posts"></div>
+  </div>
+</div>
+<input class="csrf" type="hidden" value="<%= csrf %>"/>
+<% include guidelines.ejs %>
+<% include ../includes/end.ejs %>

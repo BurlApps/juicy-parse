@@ -14,7 +14,8 @@ module.exports.home = function(req, res) {
         school: {
           id: school.id,
           slug: slug,
-          name: school.get("name")
+          name: school.get("name"),
+          template: 'moderator/spam'
         }
       })
     }, function(error) {
@@ -22,7 +23,9 @@ module.exports.home = function(req, res) {
       res.redirect("/moderator/spam")
     })
   } else {
-    res.render("moderator/spam")
+    res.render("moderator/spam", {
+	    template: 'moderator/spam'
+    })
   }
 }
 

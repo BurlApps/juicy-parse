@@ -38,6 +38,8 @@ app.use(function(req, res, next) {
   res.locals.csrf = req.session._csrf
 
   // Locals
+  res.locals.host = req.host
+  res.locals.url = req.protocol + "://" + req.host
   res.locals.admin = !!req.session.user
   res.locals.school = null
   res.locals.schools = req.session.schools || []

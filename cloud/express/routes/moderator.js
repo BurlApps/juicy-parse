@@ -75,8 +75,9 @@ module.exports.home = function(req, res) {
           school: {
             id: school.id,
             slug: slug,
-            name: school.get("name")
-          }
+            name: school.get("name"),
+          },
+          template: 'moderator/index'
         })
       } else {
         res.redirect("/moderator")
@@ -86,7 +87,9 @@ module.exports.home = function(req, res) {
       res.redirect("/moderator")
     })
   } else {
-    res.render("moderator/index")
+    res.render("moderator/index", {
+	    template: 'moderator/index'
+    })
   }
 }
 

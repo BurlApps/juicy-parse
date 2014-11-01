@@ -3,7 +3,9 @@ var Moment = require("moment")
 var _      = require('underscore')
 
 module.exports.home = function(req, res) {
-  res.render("search/index")
+  res.render("search/index", {
+	  template: 'search/index'
+  })
 }
 
 module.exports.search = function(req, res) {

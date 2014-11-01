@@ -2,7 +2,9 @@ var Testers = Parse.Object.extend("Testers")
 var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
-  res.render('home/index')
+  res.render('home/index', {
+	  template: 'home/index'
+  })
 }
 
 module.exports.tester = function(req, res) {

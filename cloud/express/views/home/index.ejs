@@ -1,70 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Join the Beta</title>
-        <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
-        <link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="/css/index.css">
-        <link rel="stylesheet" href="/css/schools.css">
-
-        <% if(gaTracking) { %>
-          <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', '<%= gaTracking %>', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-          </script>
-        <% } %>
-
-        <script type="text/javascript" src="//code.jquery.com/jquery-1.8.0.min.js"></script>
-        <script type="text/javascript" src="/javascript/particles.js"></script>
-        <script type="text/javascript" src="/javascript/index.js"></script>
-        <script type="text/javascript" src="/javascript/schools.js"></script>
-    </head>
-    <body>
-        <div class="container">
-          <div class="information">
-            <div class="header">Juicy</div>
-            <div class="subheader">Share without worries!</div>
-            <form class="form" action="/tester">
-              <input name="_csrf" type="hidden" value="<%= csrf %>"/>
-              <input name="name" class="input" type="text" placeholder="My Name" required step="1" autofocus/>
-              <input name="email" class="input" type="email" placeholder="My Email" required step="2"/>
-              <input class="submit" type="submit" value="Join the beta, it will be fun :)" />
-              <div class="contact">We will contact you by email soon...</div>
-            </form>
-          </div>
-          <img class="image" src="/images/home.png"/>
-        </div>
-        <canvas id="canvas"></canvas>
-        <% if(admin) { %>
-          <div class="corner-links">
-            <div class="link school-button">
-              <strong>All Schools</strong>
-            </div>
-            <a class="link" href="/moderator/">Confessions</a>
-            <a class="link" href="/moderator/spam">Spam</a>
-            <a class="link" href="/search">Search</a>
-          </div>
-
-          <div class="school-popup">
-            <div class="popup-darkener"></div>
-            <div class="popup-container">
-              <div class="popup-header">
-                <div class="popup-title">Choose College</div>
-                <div class="popup-close">Cancel</div>
-              </div>
-              <div class="popup-schools">
-                <% schools.forEach(function(school) { %>
-                  <a class="popup-school" href="/moderator/<%= school.slug %>/writer"><%= school.name %></a>
-                <% }) %>
-              </div>
-            </div>
-          </div>
-        <% } %>
-    </body>
-</html>
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="information">
+    <div class="header">Juicy</div>
+    <div class="subheader">Share without worries!</div>
+    <form class="form" action="/tester">
+      <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+      <input name="name" class="input" type="text" placeholder="My Name" required step="1" autofocus/>
+      <input name="email" class="input" type="email" placeholder="My Email" required step="2"/>
+      <input class="submit" type="submit" value="Join the beta, it will be fun :)" />
+      <div class="contact">We will contact you by email soon...</div>
+    </form>
+  </div>
+  <img class="image" src="/images/home.png"/>
+</div>
+<% include ../includes/end.ejs %>

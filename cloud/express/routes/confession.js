@@ -28,7 +28,8 @@ module.exports.home = function(req, res) {
 	            name: school.get("name")
 	          },
 	          admin: !!req.session.user,
-	          imagesAllowed: settings.get("confessionsImagesAllowed")
+	          imagesAllowed: settings.get("confessionsImagesAllowed"),
+	          template: 'confession/index'
 	        })
 	    	})
       } else {

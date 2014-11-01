@@ -1,0 +1,18 @@
+<% if(admin) { %>
+	<link rel="stylesheet" href="/css/schools.css">
+<% } %>
+
+<% if(template == "home/index") { %>
+	<link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/css/index.css">
+<% } else if(template == "confession/index") { %>
+	<link href='//fonts.googleapis.com/css?family=Signika:400,700,600,300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/confession.css">
+<% } else if(template == "moderator/index") { %>
+	<link rel="stylesheet" href="/css/moderator.css">
+<% } else if(template == "moderator/spam") { %>
+	<link rel="stylesheet" href="/css/moderator.css">
+<% } else if(template == "search/index") { %>
+	<link rel="stylesheet" href="/css/search.css">
+<% } %>
