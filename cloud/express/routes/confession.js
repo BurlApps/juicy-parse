@@ -21,7 +21,7 @@ module.exports.home = function(req, res) {
     query.first().then(function(school) {
       if(school) {
 	      Settings().then(function(settings) {
-	        res.render("confession", {
+	        res.render("confession/index", {
 	          school: {
 	            id: school.id,
 	            slug: slug,

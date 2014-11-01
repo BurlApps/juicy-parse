@@ -10,7 +10,7 @@ module.exports.home = function(req, res) {
 
     query.equalTo("slug", slug)
     query.first().then(function(school) {
-      res.render("spam", {
+      res.render("moderator/spam", {
         school: {
           id: school.id,
           slug: slug,
@@ -22,7 +22,7 @@ module.exports.home = function(req, res) {
       res.redirect("/moderator/spam")
     })
   } else {
-    res.render("spam")
+    res.render("moderator/spam")
   }
 }
 

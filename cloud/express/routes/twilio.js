@@ -94,7 +94,7 @@ module.exports.confession = function(req, res, next) {
 }
 
 module.exports.response = function(req, res) {
-  res.render('twilio', {
+  res.render('twilio/index', {
     newUser: req.newUser,
     isConfession: req.isConfession,
     facebookLink: req.facebookLink

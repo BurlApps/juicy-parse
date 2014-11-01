@@ -71,7 +71,7 @@ module.exports.home = function(req, res) {
     query.equalTo("slug", slug)
     query.first().then(function(school) {
       if(school) {
-        res.render("moderator", {
+        res.render("moderator/index", {
           school: {
             id: school.id,
             slug: slug,
@@ -86,7 +86,7 @@ module.exports.home = function(req, res) {
       res.redirect("/moderator")
     })
   } else {
-    res.render("moderator")
+    res.render("moderator/index")
   }
 }
 

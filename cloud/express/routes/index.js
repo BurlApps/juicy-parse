@@ -2,7 +2,7 @@ var Testers = Parse.Object.extend("Testers")
 var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
-  res.render('index')
+  res.render('home/index')
 }
 
 module.exports.tester = function(req, res) {
@@ -62,16 +62,16 @@ module.exports.download = function(req, res) {
 }
 
 module.exports.terms = function(req, res) {
-  res.render('terms')
+  res.render('legal/terms')
 }
 
 module.exports.privacy = function(req, res) {
-  res.render('privacy')
+  res.render('legal/privacy')
 }
 
 module.exports.robots = function(req, res) {
   res.set('Content-Type', 'text/plain')
-  res.render('robots')
+  res.render('seo/robots')
 }
 
 module.exports.sitemap = function(req, res) {
@@ -83,7 +83,7 @@ module.exports.sitemap = function(req, res) {
   query.each(function(school) {
     return schools.push(school.get("slug"))
   }).then(function() {
-    res.render('sitemap', {
+    res.render('seo/sitemap', {
       schools: schools
     })
   }, function(error) {
