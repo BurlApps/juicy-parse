@@ -1,35 +1,40 @@
 var _ = require('underscore')
+var Posts = Parse.Object.extend("Posts")
 
 Parse.Cloud.job("hidePosts", function(req, res) {
-  var postsObject = Parse.Object.extend("Posts")
-  var countQuery  = new Parse.Query(postsObject)
+  var countQuery = new Parse.Query(Posts)
+  var daysAgo = new Date()
+
+  daysAgo.setDate(daysAgo.getDate()-2)
 
   countQuery.count().then(function(count) {
-    return Math.ceil(count/4)
-  }).then(function(removeLimit) {
-    var query = new Parse.Query(postsObject)
-    var promise = Parse.Promise.as()
+    return Math.ceil(count/8)
+  }).then(function(removeSkip) {
+  	var query = new Parse.Query(Posts)
 
-    var daysAgo = new Date()
-    daysAgo.setDate(daysAgo.getDate()-5)
+  	query.ascending("karma")
+  	query.greaterThanOrEqualTo('updatedAt', daysAgo)
+  	query.skip(removeSkip)
+  	query.select(["karma"])
+
+  	return query.first().then(function(post) {
+	  	return post.get("karma")
+  	})
+  }).then(function(karma) {
+    var query = new Parse.Query(Posts)
 
     query.greaterThanOrEqualTo('updatedAt', daysAgo)
-    query.ascending("karma")
-    query.limit(removeLimit)
+    query.lessThanOrEqualTo("karma", karma)
+    query.equalTo("show", true)
+    query.select(["juicy", "show"])
 
-    query.find(function(posts) {
-      _.each(posts, function(post) {
-        promise = promise.then(function() {
-          post.set("juicy", false)
-          post.set("show", false)
-          return post.save()
-        })
-      })
+    return query.each(function(post) {
+      post.set("juicy", false)
+      post.set("show", false)
+      return post.save()
     })
-
-    return promise
   }).then(function() {
-    res.success()
+    res.success("")
   }, function(error) {
     console.log(error)
     res.error(error.message)

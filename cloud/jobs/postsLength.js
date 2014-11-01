@@ -4,6 +4,7 @@ Parse.Cloud.job("postsLength", function(req, res) {
   var query = new Parse.Query(Post)
 
   query.doesNotExist("length")
+  query.select(["flatContent"])
 
   query.each(function(post) {
   	var content = post.get("flatContent")

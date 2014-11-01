@@ -1,38 +1,29 @@
-var _ = require('underscore');
+var _ = require('underscore')
+var Posts = Parse.Object.extend("Posts")
 
 Parse.Cloud.job("whatIsJuicy", function(req, res) {
-  var postsObject = Parse.Object.extend("Posts")
-  var oneDayQuery = new Parse.Query(postsObject)
+  var karmaQuery = new Parse.Query(Posts)
 
-  var oneDayAgo = new Date()
-  oneDayAgo.setDate(oneDayAgo.getDate()-1)
-  oneDayQuery.greaterThanOrEqualTo('updatedAt', oneDayAgo)
-  oneDayQuery.descending("karma")
-  oneDayQuery.skip(10)
-  oneDayQuery.limit(1)
+  karmaQuery.descending("karma")
+  karmaQuery.skip(10)
+  karmaQuery.select(["karma"])
 
-  oneDayQuery.first().then(function(post) {
+  karmaQuery.first().then(function(post) {
     if(post) {
       return post.get("karma")
-    } else {
-      res.success("")
     }
-  }).then(function(topPercent) {
-    var topQuery = new Parse.Query(postsObject)
-    topQuery.greaterThanOrEqualTo('karma', topPercent)
 
-    topQuery.each(function(post) {
+    return res.success("")
+  }).then(function(topKarma) {
+    var query = new Parse.Query(Posts)
+
+    query.equalTo("juicy", false)
+    query.greaterThanOrEqualTo('karma', topKarma)
+    query.select(["juicy", "show"])
+
+    return query.each(function(post) {
+      post.set("show", true)
       post.set("juicy", true)
-      return post.save()
-    })
-
-    return topPercent
-  }).then(function(topPercent) {
-    var bottomQuery = new Parse.Query(postsObject)
-    bottomQuery.lessThan('karma', topPercent)
-
-    return bottomQuery.each(function(post) {
-      post.set("juicy", false)
       return post.save()
     })
   }).then(function() {

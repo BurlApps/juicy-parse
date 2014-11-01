@@ -6,6 +6,7 @@ Parse.Cloud.job("seedPostsRemove", function(req, res) {
   var amount = req.params.posts
 
   query.equalTo("seeded", true)
+  query.select([])
 
   if(amount == "all") {
     query.limit(1000)

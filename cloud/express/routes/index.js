@@ -33,7 +33,7 @@ module.exports.tester = function(req, res) {
       }, function(error) {
         res.json({
           success: false,
-          message: "Something went wrong, sory :("
+          message: "Something went wrong, sorry :("
         })
         console.log(error)
       })

@@ -8,12 +8,13 @@ Parse.Cloud.job("clearSpam", function(req, res) {
 
 	query.equalTo("spam", true)
   query.lessThanOrEqualTo('updatedAt', daysAgo)
+  query.select(["spam"])
 
   query.each(function(confession) {
     confession.set("spam", false)
     return confession.save()
   }).then(function() {
-    res.success()
+    res.success("")
   }, function(error) {
     console.log(error)
     res.error(error.message)
