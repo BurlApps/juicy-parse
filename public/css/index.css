@@ -42,6 +42,31 @@ canvas {
   }
 }
 
+@media (max-width: 500px) {
+  .container {
+    width: inherit !important;
+    padding: 20px !important;
+    margin: 0 !important;
+
+    -moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+  }
+
+	.container .information {
+		width: 100% !important;
+		float: none !important;
+		margin: 0 !important;
+	}
+
+	.container .information .subheader {
+		font-size: 35px !important;
+	}
+
+  .container .image {
+	  display: none !important;
+  }
+}
 
 .container {
   position: relative;
@@ -104,6 +129,8 @@ canvas {
   -moz-transition: background .2s ease;
   -o-transition: background .2s ease 0;
   transition: background .2s ease 0;
+
+  -webkit-appearance: none;
 }
 
 .container .information .form .input {
