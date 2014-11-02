@@ -8,33 +8,40 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.phone = function(req, res) {
-  var phone = req.param("phone")
+  var phone = req.param("phone").match(/\d/g)
 
-  Settings().then(function(settings) {
-    var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
+	if(phone && phone.length > 0) {
+	  Settings().then(function(settings) {
+	    var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
 
-	  return client.sendSms({
-      to: "+1" + phone.match(/\d/g).join(""),
-      from: settings.get("twilioShareNumber"),
-      body: [
-	      "Ready to see the JUICIEST gossip by your friends? ",
-	      "Download the app to get your daily fix: ",
-	      "http://", settings.get("host"), "/download"
-      ].join("")
-	  })
-	}).then(function() {
-	  res.json({
-	    success: true,
-	    message: "Welcome to Juicy!"
-	  })
-	}, function(error) {
-		console.log(error)
+		  return client.sendSms({
+	      to: "+1" + phone.join(""),
+	      from: settings.get("twilioShareNumber"),
+	      body: [
+		      "Ready to see the JUICIEST gossip by your friends? ",
+		      "Download the app to get your daily fix: ",
+		      "http://", settings.get("host"), "/download"
+	      ].join("")
+		  })
+		}).then(function() {
+		  res.json({
+		    success: true,
+		    message: "Welcome to Juicy!"
+		  })
+		}, function(error) {
+			console.log(error)
 
+			res.json({
+		    success: false,
+		    message: "Something went wrong, sorry :("
+		  })
+		})
+	} else {
 		res.json({
 	    success: false,
-	    message: "Something went wrong, sorry :("
+	    message: "Invalid phone number :("
 	  })
-	})
+	}
 }
 
 module.exports.notfound = function(req, res) {
