@@ -29,6 +29,7 @@ module.exports.auth = function(req, res, next) {
 
       if(validUser) {
         req.session.user = user.id
+        res.locals.admin = true
       }
 
       return validUser
