@@ -13,29 +13,27 @@ Parse.Cloud.define("shareSms", function(req, res) {
   post.fetch().then(function() {
     return Settings().then(function(settings) {
       var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
-      var promise = Parse.Promise.as()
 			var message = post.get("flatContent")
+			var count = 0
 
       _.each(contacts, function(contact) {
-        return promise = promise.then(function() {
-          return client.sendSms({
-            to: "+1" + contact["phone"].match(/\d/g).join(""),
-            from: settings.get("twilioShareNumber"),
-            body: [
-              "Your friend shared this with you on Juicy:\n\n",
-              message.substring(0, 70),
-              "...\n\nDownload Juicy to find out the rest: ",
-              "http://", settings.get("host"), "/download"
-            ].join("")
-          })
+        client.sendSms({
+          to: "+1" + contact["phone"].match(/\d/g).join(""),
+          from: settings.get("twilioShareNumber"),
+          body: [
+	          "Your friend shared this:\n\n",
+	          message.substring(0, 69),
+	          "...\n\nDownload Juicy to see the rest: ",
+	          "http://", settings.get("host"), "/download"
+	        ].join("")
+        }, function(error, response) {
+	        count += 1
+
+	        if(count == contacts.length) {
+		        res.success("Share through twilio successfully")
+	        }
         })
       })
-
-      return promise
     })
-  }).then(function() {
-	  res.success("Share through twilio successfully")
-  }, function(error) {
-    res.error(error.message)
   })
 })
