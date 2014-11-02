@@ -14,9 +14,9 @@ module.exports.home = function(req, res) {
         school: {
           id: school.id,
           slug: slug,
-          name: school.get("name"),
-          template: 'moderator/spam'
-        }
+          name: school.get("name")
+        },
+        template: 'moderator/spam'
       })
     }, function(error) {
       console.log(error)

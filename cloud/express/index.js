@@ -61,8 +61,8 @@ app.use(function(req, res, next) {
 
 // Landing
 app.get('/', routes.core.home)
-app.post('/tester', routes.core.tester)
-app.post('/download', routes.core.download)
+app.get('/download', routes.core.download)
+app.post('/phone', routes.core.phone)
 
 // Terms
 app.get('/terms', routes.core.terms)

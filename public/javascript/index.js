@@ -17,7 +17,7 @@ $(function() {
         button.toggleClass("error", !response.success)
         button.toggleClass("active", response.success)
         contact.toggleClass("active", response.success)
-        form.find("input[type=text], textarea").val("")
+        form.find("input[type=text], input[type=tel], textarea").val("")
       })
     }
   })
