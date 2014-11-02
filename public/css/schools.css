@@ -137,3 +137,9 @@
   background: #0065c1;
   border: solid 1px #0065c1;
 }
+
+@media (max-width: 500px) {
+  .corner-links {
+		display: none !important;
+	}
+}
