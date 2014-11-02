@@ -26,6 +26,7 @@
 	        <div class="popup-close">Cancel</div>
 	      </div>
 	      <div class="popup-schools">
+	        <a class="popup-school" href="/moderator/">All Schools</a>
 	        <% schools.forEach(function(school) { %>
 	          <a class="popup-school" href="/moderator/<%= school.slug %>"><%= school.name %></a>
 	        <% }) %>
