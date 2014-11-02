@@ -1,6 +1,5 @@
 var Twilio = require('twilio')
 var Settings = require("cloud/util/settings")
-var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
   res.render('home/index', {
@@ -43,9 +42,9 @@ module.exports.notfound = function(req, res) {
 }
 
 module.exports.download = function(req, res) {
-	Settings().then(function(settings) {
-		res.redirect(settings.get("itunesLink"))
-	})
+  Settings().then(function(settings) {
+  	res.redirect(settings.get("itunesLink"))
+  })
 }
 
 module.exports.terms = function(req, res) {
