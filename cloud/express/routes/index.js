@@ -1,4 +1,5 @@
-var Testers = Parse.Object.extend("Testers")
+var Twilio = require('twilio')
+var Settings = require("cloud/util/settings")
 var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
@@ -7,51 +8,34 @@ module.exports.home = function(req, res) {
   })
 }
 
-module.exports.tester = function(req, res) {
-  var query = new Parse.Query(Testers)
-  var name  = req.param("name")
-  var email = req.param("email")
+module.exports.phone = function(req, res) {
+  var phone = req.param("phone")
 
-  if(!name || !email) {
-    return res.json({
-      success: false,
-      message: "Missing Information :("
-    })
-  }
+  Settings().then(function(settings) {
+    var client  = Twilio(settings.get("twilioSid"), settings.get("twilioToken"))
 
-  query.equalTo("email", email)
-  query.first().then(function(tester) {
-    if(!tester) {
-      tester = new Testers()
+	  return client.sendSms({
+      to: "+1" + phone.match(/\d/g).join(""),
+      from: settings.get("twilioShareNumber"),
+      body: [
+	      "Ready to see the JUICIEST gossip by your friends? ",
+	      "Download the app to get your daily fix: ",
+	      "http://", settings.get("host"), "/download"
+      ].join("")
+	  })
+	}).then(function() {
+	  res.json({
+	    success: true,
+	    message: "Welcome to Juicy!"
+	  })
+	}, function(error) {
+		console.log(error)
 
-      tester.set("name", name)
-      tester.set("email", email)
-
-      tester.save().then(function() {
-        res.json({
-          success: true,
-          message: "Welcome to the Beta Club :)"
-        })
-      }, function(error) {
-        res.json({
-          success: false,
-          message: "Something went wrong, sorry :("
-        })
-        console.log(error)
-      })
-    } else {
-      res.json({
-        success: false,
-        message: "Email already registered, sorry :("
-      })
-    }
-  }, function(error) {
-    res.json({
-      success: false,
-      message: "Something went wrong, sorry :("
-    })
-    console.log(error)
-  })
+		res.json({
+	    success: false,
+	    message: "Something went wrong, sorry :("
+	  })
+	})
 }
 
 module.exports.notfound = function(req, res) {
@@ -59,8 +43,9 @@ module.exports.notfound = function(req, res) {
 }
 
 module.exports.download = function(req, res) {
-  // TODO: replace with itunes link or urx deeplink
-  res.redirect("/")
+	Settings().then(function(settings) {
+		res.redirect(settings.get("itunesLink"))
+	})
 }
 
 module.exports.terms = function(req, res) {

@@ -69,6 +69,14 @@ canvas {
   font-weight: bold;
 }
 
+.container .information .description {
+  font-family: 'Signika', sans-serif;
+  font-size: 22px;
+  font-weight: light;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 5px;
+}
+
 .container .information .form {
   margin-top: 30px;
 }
