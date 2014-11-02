@@ -31,6 +31,7 @@ canvas {
 @media (max-width: 800px) {
   .container {
     width: 420px !important;
+    margin-top: 60px !important;
   }
 
 	.container .information {
@@ -45,7 +46,7 @@ canvas {
 @media (max-width: 500px) {
   .container {
     width: inherit !important;
-    padding: 20px !important;
+    padding: 60px 20px 20px 20px !important;
     margin: 0 !important;
 
     -moz-box-sizing: border-box;
