@@ -60,6 +60,8 @@ canvas {
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+
+  -webkit-appearance: none;
 }
 
 .container .information .form .input:focus {
@@ -125,4 +127,18 @@ canvas {
 
 .container .information .results .post .bottom .right {
 	float: right;
+}
+
+@media (max-width: 500px) {
+  .container {
+	  width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 20px;
+    margin: 0 auto !important;
+
+    -moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+  }
 }
