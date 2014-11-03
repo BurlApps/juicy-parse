@@ -22,6 +22,7 @@ module.exports.search = function(req, res) {
   	query.equalTo("show", true)
   }
 
+	query.exists("confession")
 	query.descending("createdAt")
 	query.limit(20)
 
@@ -31,13 +32,36 @@ module.exports.search = function(req, res) {
 		_.each(posts, function(post) {
 			promise = promise.then(function() {
 		    var image = post.get("image")
+				var queue = post.get("confession")
 
-		    return results.push({
-		      message: post.get("flatContent"),
-		      image: (image) ? image.url() : null,
-		      duration: Moment.duration(post.createdAt - now).humanize(true),
-		      show: post.get("show")
-		    })
+				return queue.fetch().then(function() {
+					var school = queue.get("school")
+
+					if(school) {
+						return school.fetch()
+					} else {
+						return false
+					}
+				}).then(function(school) {
+					var facebookPost = queue.get("facebookPost")
+					var data = {
+			      message: post.get("flatContent"),
+			      image: (image) ? image.url() : null,
+			      duration: Moment.duration(post.createdAt - now).humanize(true),
+			      show: post.get("show")
+			    }
+
+					if(school && facebookPost) {
+						data["facebook"] = [
+							"https://facebook.com/",
+							school.get("facebookPage"),
+							"/posts/",
+							queue.get("facebookPost")
+						].join("")
+					}
+
+			    return results.push(data)
+			  })
 		  })
 	  })
 

@@ -79,8 +79,8 @@ app.get('/sitemap', routes.core.sitemap)
 app.get('/sitemap.xml', routes.core.sitemap)
 
 // Search
-app.get('/search', routes.search.home)
-app.post('/search', routes.search.search)
+//app.get('/search', routes.search.home)
+//app.post('/search', routes.search.search)
 
 // Images
 app.get('/images/:post', routes.images.home)

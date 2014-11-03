@@ -45,6 +45,9 @@ module.exports.home = function(req, res) {
 }
 
 module.exports.post = function(req, res) {
+  var post = new Posts()
+  var queue = new Queue()
+  var school = new Schools()
   var message = req.param("message")
   var imageLink = req.param("image")
   var settings
@@ -76,10 +79,6 @@ module.exports.post = function(req, res) {
 	    return user.signUp()
     }
   }).then(function(user) {
-    var post = new Posts()
-    var queue = new Queue()
-    var school = new Schools()
-
     res.cookie(req.settings.get("confessionTracker"), user.id, {
 	    maxAge: 9000000000,
 	    httpOnly: true
@@ -88,21 +87,20 @@ module.exports.post = function(req, res) {
     queue.set("creator", user)
     post.set("creator", user)
 
+    school.id = req.param("school")
+
+    queue.set("school", school)
+    queue.set("source", "web")
+    return queue.save()
+  }).then(function() {
 		post.set("darkenerAlpha", 1)
     post.set("background", Settings.getBackground(req.settings))
-    post.set("confession", true)
+		post.set("confession", queue)
     post.set("show", false)
     post.set("content", [{
       color: false,
       message: message
     }])
-
-    school.id = req.param("school")
-
-    queue.set("school", school)
-    queue.set("source", "web")
-    queue.set("post", post)
-    queue.save()
 
 		if(imageLink) {
 			return Parse.Cloud.httpRequest({
@@ -132,6 +130,9 @@ module.exports.post = function(req, res) {
 		} else {
 			return post.save()
 		}
+  }).then(function() {
+  	queue.set("post", post)
+		return queue.save()
   }).then(function() {
     res.json({
       success: true,

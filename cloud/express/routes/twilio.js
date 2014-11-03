@@ -50,7 +50,6 @@ module.exports.post = function(req, res, next) {
 
     post.set("darkenerAlpha", 1)
     post.set("background", Settings.getBackground(req.settings))
-    post.set("confession", req.isConfession)
     post.set("show", false)
     post.set("creator", user)
     post.set("content", [{
@@ -69,11 +68,14 @@ module.exports.post = function(req, res, next) {
 
         queue.set("school", school)
         queue.set("source", "sms")
-        queue.set("post", post)
         queue.set("show", true)
-        queue.save()
-
+        return queue.save()
+      }).then(function() {
+	    	post.set("confession", queue)
         return post.save()
+      }).then(function() {
+	      queue.set("post", post)
+	      return queue.save()
       }, function(error) {
         console.log(error)
       })

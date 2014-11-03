@@ -2,12 +2,16 @@ var Image = require("parse-image")
 
 Parse.Cloud.beforeSave("Posts", function(req, res) {
   var post = req.object
-	var flatContent = post.get("content").map(function(block) {
-    return block.message
-  }).join("")
+	var content = post.get("content")
 
-  post.set("flatContent", flatContent)
-  post.set("length", flatContent.length)
+	if(content) {
+		var flatContent = content.map(function(block) {
+	    return block.message
+	  }).join("")
+
+	  post.set("flatContent", flatContent)
+	  post.set("length", flatContent.length)
+	}
 
   if(!post.isNew()) return res.success()
 
@@ -18,7 +22,6 @@ Parse.Cloud.beforeSave("Posts", function(req, res) {
   post.set("juicy", false)
   post.set("show", !!post.get("show"))
   post.set("seeded", !!post.get("seeded"))
-  post.set("confession", !!post.get("confession"))
 
   // Resize Image
   if(post.get("image")) {
