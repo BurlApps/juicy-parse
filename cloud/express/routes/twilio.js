@@ -66,6 +66,7 @@ module.exports.post = function(req, res, next) {
       return query.first().then(function(school) {
         req.facebookLink = school.get("facebookLink")
 
+        queue.set("creator", user)
         queue.set("school", school)
         queue.set("source", "sms")
         queue.set("show", true)
