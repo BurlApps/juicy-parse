@@ -2,6 +2,7 @@
 var Settings = require("cloud/util/settings")
 var express = require('express')
 var app = express()
+var random = Math.random().toString(36).slice(2)
 
 // Set Master Key
 Parse.Cloud.useMasterKey()
@@ -44,6 +45,7 @@ app.use(function(req, res, next) {
   res.locals.admin = !!req.session.user
   res.locals.school = null
   res.locals.schools = req.session.schools || []
+  res.locals.random = random
 
   if(req.session.gaTracking == undefined) {
     Settings().then(function(settings) {
