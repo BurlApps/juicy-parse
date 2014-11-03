@@ -24,7 +24,7 @@ module.exports.search = function(req, res) {
 
 	query.exists("confession")
 	query.descending("createdAt")
-	query.limit(20)
+	query.limit(10)
 
   query.find().then(function(posts) {
   	var promise = Parse.Promise.as()
