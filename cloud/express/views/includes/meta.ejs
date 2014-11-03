@@ -19,6 +19,9 @@ if(template == "home/index") {
 	title = "Spam Queue"
 } else if(template == "search/index") {
 	title = "Search Confessions"
+} else if(template == "posts/index") {
+	title = message.slice(0, 50) + "..."
+	description = message.slice(0, 160) + "..."
 }
 %>
 

@@ -22,9 +22,10 @@ Parse.Cloud.define("shareSms", function(req, res) {
           from: settings.get("twilioShareNumber"),
           body: [
 	          "Your friend shared this:\n\n",
-	          message.substring(0, 69),
+	          message.substring(0, (68 - post.id.length)),
 	          "...\n\nDownload Juicy to see the rest: ",
-	          "http://", settings.get("host"), "/download"
+	          "http://", settings.get("host"), "/download/",
+	          post.id
 	        ].join("")
         }, function(error, response) {
 	        count += 1

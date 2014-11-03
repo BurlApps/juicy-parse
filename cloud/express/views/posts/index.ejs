@@ -1,0 +1,23 @@
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="information">
+	  <div class="header">Your Post</div>
+    <div class="post">
+    	<div class="message"><%= message %></div>
+    	<image class="image"/>
+			<div class="bottom">
+				<div class="left">
+					Created <strong><%= duration %></strong>
+				</div>
+				<% if(!show) { %>
+					<strong class='right'>Hidden</strong>
+				<% } else if(facebook) { %>
+					<a class='right' href='<%= facebook %>' target='_blank'>
+			  		Facebook
+			  	</a>
+				<% } %>
+			</div>
+    </div>
+  </div>
+</div>
+<% include ../includes/end.ejs %>

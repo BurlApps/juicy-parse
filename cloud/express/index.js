@@ -14,7 +14,8 @@ routes = {
   moderator: require("cloud/express/routes/moderator"),
   spam: require("cloud/express/routes/spam"),
   search: require("cloud/express/routes/search"),
-  images: require("cloud/express/routes/images")
+  images: require("cloud/express/routes/images"),
+  posts: require("cloud/express/routes/posts")
 }
 
 // Global app configuration section
@@ -62,6 +63,7 @@ app.use(function(req, res, next) {
 // Landing
 app.get('/', routes.core.home)
 app.get('/download', routes.core.download)
+app.get('/download/:post', routes.core.download)
 app.post('/phone', routes.core.phone)
 
 // Terms
@@ -84,6 +86,9 @@ app.post('/search', routes.search.search)
 
 // Images
 app.get('/images/:post', routes.images.home)
+
+// Posts
+app.get('/posts/:post', routes.posts.home)
 
 // Confessions
 app.get('/confession', routes.confession.redirect)

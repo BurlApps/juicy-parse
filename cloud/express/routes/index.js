@@ -49,9 +49,17 @@ module.exports.notfound = function(req, res) {
 }
 
 module.exports.download = function(req, res) {
-  Settings().then(function(settings) {
-  	res.redirect(settings.get("itunesLink"))
-  })
+	var userAgent = req.get('User-Agent')
+	var isiOs = /(iPad|iPhone|iPod)/g.test(userAgent)
+	var post = req.param("post")
+
+	if(post && !isiOs) {
+		res.redirect("/posts/" + post)
+	} else {
+	  Settings().then(function(settings) {
+	  	res.redirect(settings.get("itunesLink"))
+	  })
+	}
 }
 
 module.exports.terms = function(req, res) {
