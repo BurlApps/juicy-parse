@@ -33,6 +33,12 @@ function buildPost(post) {
 	  element.find(".bottom").append("						\
 	  	<strong class='right'>Hidden</strong>			\
 	  ")
+  } else if(post.facebook) {
+	  element.find(".bottom").append("																\
+	  	<a class='right' href=" + post.facebook + " target='_blank'>	\
+	  		Facebook																										\
+	  	</a>																													\
+	  ")
   }
 
   if(post.image) {

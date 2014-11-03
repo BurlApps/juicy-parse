@@ -128,6 +128,21 @@ canvas {
 	float: right;
 }
 
+.container .information .results .post .bottom a.right {
+	color: #445D9B;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container .information .results .post .bottom a.right:hover {
+  text-decoration: underline;
+}
+
+.container .information .results .post .bottom a.right:hover:active {
+	color: #384d83;
+}
+
 @media (max-width: 600px) {
   .container {
 	  width: 100% !important;
