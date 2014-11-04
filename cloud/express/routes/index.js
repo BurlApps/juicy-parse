@@ -1,5 +1,6 @@
 var Twilio = require('twilio')
 var Settings = require("cloud/util/settings")
+var Schools = Parse.Object.extend("Schools")
 
 module.exports.home = function(req, res) {
   res.render('home/index', {

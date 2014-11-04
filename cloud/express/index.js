@@ -1,4 +1,3 @@
-// These two lines are required to initialize Express in Cloud Code.
 var Settings = require("cloud/util/settings")
 var express = require('express')
 var app = express()
@@ -8,7 +7,7 @@ var random = Math.random().toString(36).slice(2)
 Parse.Cloud.useMasterKey()
 
 // Routes
-routes = {
+var routes = {
   core: require("cloud/express/routes/index"),
   confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
