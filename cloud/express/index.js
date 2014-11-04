@@ -48,15 +48,18 @@ app.use(function(req, res, next) {
 
   if(req.session.gaTracking == undefined) {
     Settings().then(function(settings) {
+	    req.session.itunesApp = settings.get("itunesApp")
       req.session.gaTracking = settings.get("gaTracking")
       res.locals.gaTracking = req.session.gaTracking
+      res.locals.itunesApp = req.session.itunesApp
       next()
     }, function(error) {
       console.log(error)
       next()
     })
   } else {
-    res.locals.gaTracking = req.session.gaTracking
+    res.locals.gaTracking = req.session.gaTracking || ""
+    res.locals.itunesApp = req.session.itunesApp || ""
     next()
   }
 })
