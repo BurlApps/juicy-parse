@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
   res.locals.schools = req.session.schools || []
   res.locals.random = random
 
-  if(req.session.gaTracking == undefined) {
+  if(!req.session.gaTracking || !req.session.itunesApp) {
     Settings().then(function(settings) {
 	    req.session.itunesApp = settings.get("itunesApp")
       req.session.gaTracking = settings.get("gaTracking")
