@@ -60,14 +60,28 @@ module.exports.post = function(req, res) {
   }
 
   Settings().then(function(settings) {
+		var query = new Parse.Query(Posts)
+		var hourAgo = new Date()
+		var limit = settings.get("creationLimit")
+
+		hourAgo.setHours(hourAgo.getHours() - 1)
+		query.greaterThanOrEqualTo("createdAt", hourAgo)
+
+		return query.count().then(function(count) {
+			if(count < limit) {
+				return req.settings = settings
+			} else {
+				return Parse.Promise.error("Please wait an hour to post :(")
+			}
+		})
+  }).then(function() {
   	var user = new Parse.User()
-  	req.settings = settings
 
   	if(req.session.user) {
       user.id = req.session.user
 			return user
-    } else if(req.cookies[settings.get("confessionTracker")]) {
-      user.id = req.cookies[settings.get("confessionTracker")]
+    } else if(req.cookies[req.settings.get("confessionTracker")]) {
+      user.id = req.cookies[req.settings.get("confessionTracker")]
       return user
     } else {
 	    var random = Math.random().toString(36).slice(2)
@@ -143,7 +157,7 @@ module.exports.post = function(req, res) {
 
     res.json({
       success: false,
-      message: "Something went wrong, sorry :("
+      message: error || "Something went wrong, sorry :("
     })
   })
 }
