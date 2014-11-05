@@ -21,16 +21,24 @@ module.exports.home = function(req, res) {
     query.first().then(function(school) {
       if(school) {
 	      Settings().then(function(settings) {
-	        res.render("confession/index", {
-	          school: {
-	            id: school.id,
-	            slug: slug,
-	            name: school.get("name")
-	          },
-	          admin: !!req.session.user,
-	          imagesAllowed: settings.get("confessionsImagesAllowed"),
-	          template: 'confession/index'
-	        })
+		      if(school.get("enabled")) {
+		        res.render("confession/index", {
+		          school: {
+		            id: school.id,
+		            slug: slug,
+		            name: school.get("name")
+		          },
+		          imagesAllowed: settings.get("confessionsImagesAllowed"),
+		          template: 'confession/index'
+		        })
+		      } else {
+			      res.render("confession/disabled", {
+				    	school: {
+		            name: school.get("name")
+		          },
+		          template: 'confession/index'
+			      })
+		      }
 	    	})
       } else {
         res.redirect("/confession")
@@ -95,6 +103,16 @@ module.exports.post = function(req, res) {
 			}
 		})
   }).then(function(user) {
+  	school.id = req.param("school")
+
+  	return school.fetch().then(function() {
+	  	if(school.get("enabled")) {
+		  	return user
+	  	} else {
+		  	return Parse.Promise.error("Posting is currently disabled :(")
+	  	}
+  	})
+  }).then(function(user) {
     res.cookie(req.settings.get("confessionTracker"), user.id, {
 	    maxAge: 9000000000,
 	    httpOnly: true
@@ -102,8 +120,6 @@ module.exports.post = function(req, res) {
 
     queue.set("creator", user)
     post.set("creator", user)
-
-    school.id = req.param("school")
 
     queue.set("school", school)
     queue.set("source", "web")
