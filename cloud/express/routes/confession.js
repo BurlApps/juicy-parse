@@ -60,22 +60,8 @@ module.exports.post = function(req, res) {
   }
 
   Settings().then(function(settings) {
-		var query = new Parse.Query(Posts)
-		var hourAgo = new Date()
-		var limit = settings.get("creationLimit")
-
-		hourAgo.setHours(hourAgo.getHours() - 1)
-		query.greaterThanOrEqualTo("createdAt", hourAgo)
-
-		return query.count().then(function(count) {
-			if(count < limit) {
-				return req.settings = settings
-			} else {
-				return Parse.Promise.error("Please wait an hour to post :(")
-			}
-		})
-  }).then(function() {
   	var user = new Parse.User()
+		req.settings = settings
 
   	if(req.session.user) {
       user.id = req.session.user
@@ -92,6 +78,22 @@ module.exports.post = function(req, res) {
 	    user.set("terms", false)
 	    return user.signUp()
     }
+  }).then(function(user) {
+		var query = new Parse.Query(Posts)
+		var hourAgo = new Date()
+		var limit = req.settings.get("creationLimit")
+
+		hourAgo.setHours(hourAgo.getHours() - 1)
+		query.greaterThanOrEqualTo("createdAt", hourAgo)
+		query.equalTo("creator", user)
+
+		return query.count().then(function(count) {
+			if(count <= limit) {
+				return user
+			} else {
+				return Parse.Promise.error("Please wait an hour to post :(")
+			}
+		})
   }).then(function(user) {
     res.cookie(req.settings.get("confessionTracker"), user.id, {
 	    maxAge: 9000000000,
