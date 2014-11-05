@@ -65,6 +65,11 @@ module.exports.post = function(req, res) {
       success: false,
       message: "Confession missing :("
     })
+  } else if(!req.xhr) {
+	  return res.json({
+      success: true,
+      message: "Thanks for confessing :)"
+    })
   }
 
   Settings().then(function(settings) {
