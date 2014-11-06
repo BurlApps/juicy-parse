@@ -58,6 +58,7 @@ module.exports.post = function(req, res) {
   var school = new Schools()
   var message = req.param("message")
   var imageLink = req.param("image")
+  var shadowBan = false
   var settings
 
   if(!message) {
@@ -93,18 +94,19 @@ module.exports.post = function(req, res) {
     }
   }).then(function(user) {
 		var query = new Parse.Query(Posts)
-		var hourAgo = new Date()
+		var dateAgo = new Date()
 		var limit = req.settings.get("creationLimit")
 
-		hourAgo.setHours(hourAgo.getHours() - 1)
-		query.greaterThanOrEqualTo("createdAt", hourAgo)
+		dateAgo.setMinutes(dateAgo.getMinutes() - 30)
+		query.greaterThanOrEqualTo("createdAt", dateAgo)
 		query.equalTo("creator", user)
 
 		return query.count().then(function(count) {
 			if(count <= limit) {
 				return user
 			} else {
-				return Parse.Promise.error("Please wait an hour to post :(")
+				shadowBan = true
+				return Parse.Promise.error("Shadow ban user")
 			}
 		})
   }).then(function(user) {
@@ -178,9 +180,16 @@ module.exports.post = function(req, res) {
   }, function(error) {
 	  console.log(error)
 
-    res.json({
-      success: false,
-      message: error || "Something went wrong, sorry :("
-    })
+		if(shadowBan) {
+			res.json({
+	      success: true,
+	      message: "Thanks for confessing :)"
+	    })
+		} else {
+	    res.json({
+	      success: false,
+	      message: error || "Something went wrong, sorry :("
+	    })
+	  }
   })
 }
