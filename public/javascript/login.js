@@ -11,14 +11,15 @@ $(function() {
       enablePosting = false
 
       $.post(form.attr("action"), form.serialize(), function(response) {
+        button.toggleClass("error", !response.success)
+	      button.toggleClass("active", response.success)
+
         if(response.success) {
-	      	button.toggleClass("active", true)
-	      	button.val("logging in now....")
+	        button.val("logging in now....")
 	      	window.location.reload()
         } else {
 	        enablePosting = true
 	        button.val(response.message)
-	        button.toggleClass("error", true)
 	        form.find("input[type=password]").val("")
         }
       })
