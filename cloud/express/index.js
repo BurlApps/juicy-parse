@@ -47,8 +47,11 @@ app.use(function(req, res, next) {
   res.locals.schools = req.session.schools || []
   res.locals.random = random
 
-  if(!req.session.gaTracking || !req.session.itunesApp) {
+  if(req.session.appliedSettings !== true) {
     Settings().then(function(settings) {
+	    req.session.appliedSettings = true
+	    req.session.enforceSSL = settings.get("enforceSSL")
+	    req.session.production = settings.get("production")
 	    req.session.itunesApp = settings.get("itunesApp")
       req.session.gaTracking = settings.get("gaTracking")
       res.locals.gaTracking = req.session.gaTracking
@@ -62,6 +65,15 @@ app.use(function(req, res, next) {
     res.locals.gaTracking = req.session.gaTracking || ""
     res.locals.itunesApp = req.session.itunesApp || ""
     next()
+  }
+})
+app.use(function(req, res, next) {
+  var schema = req.headers['x-forwarded-proto']
+
+  if(!req.session.enforceSSL || schema === 'https') {
+    next()
+  } else {
+    res.redirect('https://' + req.headers.host + req.url)
   }
 })
 
