@@ -33,6 +33,7 @@ app.use(express.cookieSession({
   }
 }))
 app.use(express.csrf())
+app.use(routes.core.schools)
 app.use(function(req, res, next) {
   // Auth
   req.basicAuth = express.basicAuth
@@ -110,6 +111,8 @@ app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, rout
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)
 app.get('/moderator/confessions', routes.moderator.auth, routes.moderator.confessions)
+app.get('/moderator/logout', routes.moderator.logout)
+app.post('/moderator/login', routes.moderator.login)
 app.post('/moderator/confession', routes.moderator.auth, routes.moderator.post)
 app.delete('/moderator/confession', routes.moderator.auth, routes.moderator.delete)
 app.put('/moderator/confession', routes.moderator.auth, routes.moderator.spam, routes.moderator.delete)

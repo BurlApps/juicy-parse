@@ -15,6 +15,8 @@
 	  window.school = <%- (school) ? ("'" + school.id + "'") : "null"  %>
 	</script>
 	<script type="text/javascript" src="/javascript/moderator.js?r=<%= random %>"></script>
+<% } else if(template == "moderator/login") { %>
+	<script type="text/javascript" src="/javascript/login.js?r=<%= random %>"></script>
 <% } else if(template == "moderator/spam") { %>
 	<script type="text/javascript">
 	  window.school = <%- (school) ? ("'" + school.id + "'") : "null"  %>

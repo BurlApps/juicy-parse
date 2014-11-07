@@ -96,3 +96,27 @@ module.exports.sitemap = function(req, res) {
     })
   })
 }
+
+module.exports.schools = function(req, res, next) {
+  if(!req.session.schools) {
+    var query = new Parse.Query(Schools)
+    var schools = []
+
+    query.each(function(school) {
+      return schools.push({
+        name: school.get("name"),
+        slug: school.get("slug")
+      })
+    }).then(function() {
+      req.session.schools = schools
+      res.locals.schools = schools
+
+      next()
+    }, function(error) {
+      console.log(error)
+      next()
+    })
+  } else {
+    next()
+  }
+}

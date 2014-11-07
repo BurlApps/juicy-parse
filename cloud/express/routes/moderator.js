@@ -5,62 +5,50 @@ var Facebook = require("cloud/util/facebook")
 var Moment = require("moment")
 
 module.exports.auth = function(req, res, next) {
-  var emails = {}
-  var query = new Parse.Query(Users)
-
-  query.equalTo("admin", true)
-  query.each(function(user) {
-    date = user.get("birthday")
-
-    month = date.getMonth() + 1
-    month = (month < 10) ? ("0" + month) : month
-    day = date.getDate()
-    day = (day < 10) ? ("0" + day) : day
-    year = date.getFullYear().toString().slice(-2)
-
-    emails[user.get("email")] = {
-      id: user.id,
-      birthday: [month, day, year].join("")
-    }
-  }).then(function() {
-    req.basicAuth(function(email, birthday) {
-      var user = emails[email]
-      var validUser = (user && user.birthday == birthday)
-
-      if(validUser) {
-        req.session.user = user.id
-        res.locals.admin = true
-      }
-
-      return validUser
-    })(req, res, function() {
-      module.exports.schools(req, res, next)
-    })
-  })
+	if(req.session.user) {
+		next();
+	} else if(req.xhr) {
+		res.json({
+			success: false,
+			message: "Login required :("
+		})
+	} else {
+		res.render("moderator/login", {
+			template: "moderator/login"
+		})
+	}
 }
 
-module.exports.schools = function(req, res, next) {
-  if(!req.session.schools) {
-    var query = new Parse.Query(Schools)
-    var schools = []
+module.exports.login = function(req, res, next) {
+	Parse.User.logIn(req.param("email"), req.param("password"), {
+	  success: function(user) {
+		  if(user.get("admin") == true) {
+		  	req.session.user = user.id
 
-    query.each(function(school) {
-      return schools.push({
-        name: school.get("name"),
-        slug: school.get("slug")
-      })
-    }).then(function() {
-      req.session.schools = schools
-      res.locals.schools = schools
+		  	res.json({
+			  	success: true
+		  	})
+		  } else {
+			  res.json({
+			  	success: false,
+			  	message: "Invalid credentials :("
+		  	})
+		  }
+	  },
+	  error: function(user, error) {
+		  console.log(error)
 
-      next()
-    }, function(error) {
-      console.log(error)
-      next()
-    })
-  } else {
-    next()
-  }
+	    res.json({
+		  	success: false,
+		  	message: "Invalid credentials :("
+	  	})
+	  }
+	})
+}
+
+module.exports.logout = function(req, res, next) {
+	req.session = null
+	res.redirect("/")
 }
 
 module.exports.home = function(req, res) {
