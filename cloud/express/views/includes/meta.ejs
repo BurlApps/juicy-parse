@@ -5,6 +5,7 @@ var description = [
 	"We’ll tell you what your friends are really like.",
 	"Share anonymously to as many or as little as you want."
 ].join(" ")
+var visible = true
 
 if(template == "home/index") {
 	title = "Juicy - Share Without Worries!"
@@ -14,13 +15,19 @@ if(template == "home/index") {
 
 } else if(template == "moderator/index") {
 	title = "Confessions Queue"
+	visible = false
 
 } else if(template == "moderator/spam") {
 	title = "Spam Queue"
+	visible = false
+
 } else if(template == "moderator/login") {
 	title = "Moderator Login"
+	visible = false
+
 } else if(template == "search/index") {
 	title = "Search Confessions"
+
 } else if(template == "posts/index") {
 	title = message.slice(0, 50) + "..."
 	description = message.slice(0, 160) + "..."
@@ -44,29 +51,34 @@ if(template == "home/index") {
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<%= host %>/images/logo.png?r=<%= random %>">
 <link rel="apple-touch-icon-precomposed" sizes="57x57" href="<%= host %>/images/logo.png?r=<%= random %>">
 
-<!-- Open Graph Meta Tags -->
-<meta property="og:locale" content="en_us">
-<meta property="og:type" content="website">
-<meta property="og:url" content="<%= url %>">
-<meta property="og:image" content="<%= host %>/images/logo.png?r=<%= random %>">
-<meta property="og:title" content="<%= title %>">
-<meta property="og:description" content="<%= description %>">
-<meta property="og:site_name" content="Juicy"/>
+<% if(visible) { %>
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="<%= url %>">
+	<meta property="og:image" content="<%= host %>/images/logo.png?r=<%= random %>">
+	<meta property="og:title" content="<%= title %>">
+	<meta property="og:description" content="<%= description %>">
+	<meta property="og:site_name" content="Juicy"/>
 
-<!-- Schema.org markup for Google+ -->
-<meta itemprop="name" content="<%= title %>">
-<meta itemprop="description" content="<%= description %>">
-<meta itemprop="image" content="<%= host %>/images/logo.png?r=<%= random %>">
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="<%= title %>">
+	<meta itemprop="description" content="<%= description %>">
+	<meta itemprop="image" content="<%= host %>/images/logo.png?r=<%= random %>">
 
-<!-- Twitter Card data -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:domain" content="<%= host %>">
-<meta name="twitter:title" content="<%= title %>">
-<meta name="twitter:description" content="<%= description %>">
-<meta name="twitter:image:src" content="<%= host %>/images/logo.png?r=<%= random %>">
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:domain" content="<%= host %>">
+	<meta name="twitter:title" content="<%= title %>">
+	<meta name="twitter:description" content="<%= description %>">
+	<meta name="twitter:image:src" content="<%= host %>/images/logo.png?r=<%= random %>">
 
-<!-- Robot Meta Tags -->
-<meta name="robots" content="INDEX, FOLLOW">
-<meta name="revisit-after" content="1 day">
-<meta name="distribution" content="web">
-<meta name="robots" content="index, follow">
+	<!-- Robot Meta Tags -->
+	<meta name="robots" content="INDEX, FOLLOW">
+	<meta name="revisit-after" content="1 day">
+	<meta name="distribution" content="web">
+<% } else { %>
+
+	<!-- Robot Meta Tags -->
+	<meta name="robots" content="NOINDEX, NOFOLLOW, NOARCHIVE">
+<% } %>
