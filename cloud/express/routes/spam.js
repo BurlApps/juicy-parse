@@ -49,6 +49,10 @@ module.exports.confessions = function(req, res) {
     var school = confession.get("school")
     var object = {}
 
+    if(!post) {
+       return false
+    }
+
     return post.fetch().then(function(post) {
 	    var image = post.get("image")
 
