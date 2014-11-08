@@ -1,6 +1,7 @@
 @media (max-width: 1000px) {
-  .post {
+  .container .post .message {
     width: 100% !important;
+    left: inherit !important;
   }
 }
 
@@ -33,7 +34,7 @@ html, body {
 
 .container .post {
   position: relative;
-  width: 80%;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
   background-repeat: no-repeat;
@@ -56,6 +57,7 @@ html, body {
 
 .container .post .message {
   position: absolute;
+  left: 10%;
   z-index: 2;
   color: #fff;
   font-family: 'Signika', sans-serif;
@@ -63,7 +65,7 @@ html, body {
   font-weight: bold;
   text-align: center;
   text-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
-  width: 100%;
+  width: 80%;
   padding: 20px;
 
   -moz-box-sizing: border-box;
