@@ -40,7 +40,7 @@ module.exports.posts = function(req, res) {
     query.limit(10)
 
     query.equalTo("show", true)
-    query.lessThanOrEqualTo("length", 400)
+    query.lessThanOrEqualTo("length", 350)
     query.notEqualTo("likedUsers", user)
     query.descending("createdAt")
 

@@ -6,7 +6,7 @@
 
 @media (max-width: 500px) {
   .container .post .message {
-    font-size: 2.5em !important;
+    font-size: 2em !important;
   }
 }
 
