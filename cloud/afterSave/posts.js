@@ -5,8 +5,9 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
 
   if(post.existed()) return
 
-  // Add To Queue: Posted in App
+  // If Posted in the App
   if(!post.get("confession") && !post.get("seeded")) {
+	  //Add To Queue
 	  var queue = new Queue()
 
     queue.set("source", "app")
@@ -15,6 +16,21 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
     queue.save()
 
     post.set("confession", queue)
-    return post.save()
+    return post.save().then(function() {
+      // Send Push Notification
+      var user = post.get("creator")
+      var friendsRelation = user.relation("friends")
+      var pushQuery = new Parse.Query(Parse.Installation);
+    	pushQuery.matchesQuery("user", friendsRelation.query())
+
+      return Parse.Push.send({
+    	  where: pushQuery,
+    	  data: {
+    	    alert: "Your friend just posted, check the feed! 😃",
+    	    badge: "Increment",
+    	    sound: "alert.caf"
+    	  }
+    	})
+    })
   }
 })
