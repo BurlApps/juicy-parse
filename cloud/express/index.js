@@ -15,7 +15,8 @@ var routes = {
   spam: require("cloud/express/routes/spam"),
   search: require("cloud/express/routes/search"),
   images: require("cloud/express/routes/images"),
-  posts: require("cloud/express/routes/posts")
+  posts: require("cloud/express/routes/posts"),
+  feed: require("cloud/express/routes/feed")
 }
 
 // Global app configuration section
@@ -79,9 +80,11 @@ app.use(function(req, res, next) {
 
 // Landing
 app.get('/', routes.core.home)
+app.post('/phone', routes.core.phone)
+
+// Download
 app.get('/download', routes.core.download)
 app.get('/download/:post', routes.core.download)
-app.post('/phone', routes.core.phone)
 
 // Terms
 app.get('/terms', routes.core.terms)
@@ -119,6 +122,10 @@ app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.r
 
 // TWILIO INBOUND: Facebook Confessions
 app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
+
+// Feed
+app.get('/feed',  routes.feed.home)
+app.get('/feed/posts', routes.feed.posts)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)

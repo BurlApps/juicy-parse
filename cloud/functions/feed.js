@@ -11,7 +11,6 @@ Parse.Cloud.define("feed", function(req, res) {
   // TODO: Query for hotness calculated by karma (done)
   // TODO: Query for newest posts (done)
 
-  var posts = []
   var currentUser = Parse.User.current()
 
 	// Geo Query
