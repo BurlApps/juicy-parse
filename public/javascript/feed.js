@@ -1,17 +1,21 @@
 window.postQueue = []
+window.postIndex = 0
 window.pullingPosts = false
+window.interval = null
 
 function nextPost() {
-  if(window.postQueue.length == 0) {
+  var unTouchedCount = window.postQueue.length - window.postIndex - 1
+
+  if(window.postQueue.length <= window.postIndex) {
     return getPosts()
-  } else if(window.postQueue.length < 5) {
+  } else if(unTouchedCount < 5) {
     getPosts()
   }
 
-  var post = window.postQueue[0]
+  var post = window.postQueue[window.postIndex]
   var currentPost = $(".post")
   var newPost = buildPost(post)
-  window.postQueue.splice(0, 1)
+  window.postIndex++
 
   $(".container").append(newPost)
   newPost.find(".message").vAlign()
@@ -74,11 +78,34 @@ function buildPost(post) {
   return element
 }
 
+function resetInterval() {
+  if(window.interval) {
+    clearInterval(window.interval)
+  }
+
+  window.interval = setInterval(nextPost, 10000)
+}
+
 $(function() {
   getPosts()
-  setInterval(nextPost, 10000)
+  resetInterval()
 })
 
 $(window).resize(function() {
   $(".post").find(".message").vAlign()
 })
+
+$(document).keydown(function(e) {
+  if([37,38,39,40].indexOf(e.keyCode) != -1) {
+    if([37,38].indexOf(e.keyCode) != -1) {
+      if(window.postIndex <= 2) {
+        return false
+      }
+
+      window.postIndex -= 2
+    }
+
+    nextPost()
+    resetInterval()
+  }
+});
