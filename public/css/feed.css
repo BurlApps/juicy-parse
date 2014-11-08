@@ -40,8 +40,9 @@ canvas,
   height: 100%;
   margin: 0 auto;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   opacity: 0;
+  background-position: center center;
 }
 
 .container .post .darkener {
