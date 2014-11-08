@@ -66,7 +66,7 @@ function buildPost(post) {
   element.find(".message").text(post.message).vAlign()
   element.find(".darkener").css("opacity", post.alpha)
   element.css({
-    "background-color": "rgba(" + post.background.join(",") + ", 1)",
+    "background-color": "rgb(" + post.background.join(",") + ")",
     "background-image": "url('" + post.image + "')"
   })
 
