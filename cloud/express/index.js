@@ -124,8 +124,8 @@ app.get('/twilio/juicy', routes.twilio.auth, routes.twilio.post, routes.twilio.r
 app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, routes.twilio.post, routes.twilio.response)
 
 // Feed
-app.get('/feed',  routes.feed.home)
-app.get('/feed/posts', routes.feed.posts)
+app.get('/feed', routes.moderator.auth, routes.feed.home)
+app.get('/feed/posts', routes.moderator.auth, routes.feed.posts)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)
