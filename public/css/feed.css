@@ -28,6 +28,7 @@
   margin: 0 auto;
   background-repeat: no-repeat;
   background-size: cover;
+  opacity: 0;
 }
 
 .container .post .darkener {
@@ -53,4 +54,9 @@
   text-align: center;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
   width: 100%;
+  padding: 20px;
+
+  -moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }

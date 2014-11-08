@@ -13,10 +13,13 @@ function nextPost() {
   window.postQueue.splice(0, 1)
 
   $(".container").append(newPost)
+  newPost.find(".message").vAlign()
   currentPost.fadeOut(1000)
 
   setTimeout(function() {
-    newPost.fadeIn(500)
+    newPost.animate({
+      opacity: 1
+    }, 500)
     currentPost.remove()
   }, 1100)
 }
@@ -48,7 +51,7 @@ function buildPost(post) {
   element.css({
     "background-color": "rgba(" + post.background.join(",") + ", 1)",
     "background-image": "url('" + post.image + "')"
-  }).hide()
+  })
 
   return element
 }
