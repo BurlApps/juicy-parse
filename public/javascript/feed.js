@@ -73,6 +73,7 @@ function buildPost(post) {
 
   if(post.image) {
     element.css("background-image", "url('" + post.image + "')")
+    element.find(".darkener").css("background", "rgba(0,0,0,0.5)")
   }
 
   return element
