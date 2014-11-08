@@ -4,6 +4,12 @@
   }
 }
 
+@media (max-width: 500px) {
+  .container .post .message {
+    font-size: 2.5em !important;
+  }
+}
+
 .corner-links {
   display: none;
 }

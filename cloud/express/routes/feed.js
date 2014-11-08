@@ -42,6 +42,11 @@ module.exports.posts = function(req, res) {
 
     return promise
   }).then(function() {
+    if(results.length == 0) {
+      req.session.feedPosts = []
+      return module.exports.posts(req, res)
+    }
+
     req.session.feedPosts = alreadySeen
     res.json(results)
   }, function(error) {
