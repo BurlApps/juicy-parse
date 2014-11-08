@@ -1,5 +1,6 @@
-var _     = require('underscore')
-var Posts = Parse.Object.extend("Posts")
+var _        = require('underscore')
+var Posts    = Parse.Object.extend("Posts")
+var Settings = require("cloud/util/settings")
 
 module.exports.home = function(req, res) {
   res.render("feed/index", {
@@ -9,48 +10,66 @@ module.exports.home = function(req, res) {
 
 module.exports.posts = function(req, res) {
   var results = []
-  var alreadySeen = req.session.feedPosts || []
 
-  // Base "Or Query"
-  var query = new Parse.Query(Posts)
-  query.limit(10)
+  Settings().then(function(settings) {
+    var user = new Parse.User()
+    req.settings = settings
 
-  query.equalTo("show", true)
-  query.notContainedIn("objectId", alreadySeen)
-  query.lessThanOrEqualTo("length", 400)
-  query.descending("createdAt")
+    if(req.session.user) {
+      user.id = req.session.user
+    	return user
+    } else if(req.cookies[req.settings.get("confessionTracker")]) {
+      user.id = req.cookies[req.settings.get("confessionTracker")]
+      return user
+    } else {
+      var random = Math.random().toString(36).slice(2)
+      user.set("username", random)
+      user.set("password", random)
+      user.set("admin", false)
+      user.set("registered", false)
+      user.set("terms", false)
+      return user.signUp()
+    }
+  }).then(function(user) {
+    res.cookie(req.settings.get("confessionTracker"), user.id, {
+	    maxAge: 9000000000,
+	    httpOnly: true
+	  })
 
-  query.find().then(function(posts) {
-    var promise = Parse.Promise.as()
+    var query = new Parse.Query(Posts)
+    query.limit(10)
 
-		_.each(posts, function(post) {
-      promise = promise.then(function() {
-        var image = post.get("image")
+    query.equalTo("show", true)
+    query.lessThanOrEqualTo("length", 400)
+    query.notEqualTo("likedUsers", user)
+    query.descending("createdAt")
 
-        if(alreadySeen.indexOf(post.id) == -1) {
-          alreadySeen.push(post.id)
-        }
+    query.find().then(function(posts) {
+      var promise = Parse.Promise.as()
 
-        return results.push({
-          message: post.get("flatContent"),
-          image: (image) ? image.url() : "",
-          background: post.get("background"),
-          alpha: post.get("darkenerAlpha")
+  		_.each(posts, function(post) {
+        promise = promise.then(function() {
+          var likedRelation = post.relation("likedUsers")
+          var image = post.get("image")
+
+          likedRelation.add(user)
+          post.save()
+
+          results.push({
+            message: post.get("flatContent"),
+            image: (image) ? image.url() : "",
+            background: post.get("background"),
+            alpha: post.get("darkenerAlpha")
+          })
         })
       })
+
+      return promise
+    }).then(function() {
+      res.json(results)
+    }, function(error) {
+      console.log(error)
+      res.json([])
     })
-
-    return promise
-  }).then(function() {
-    if(results.length == 0) {
-      req.session.feedPosts = []
-      return module.exports.posts(req, res)
-    }
-
-    req.session.feedPosts = alreadySeen
-    res.json(results)
-  }, function(error) {
-    console.log(error)
-    res.json([])
   })
 }

@@ -1,4 +1,5 @@
 window.postQueue = []
+window.pullingPosts = false
 
 function nextPost() {
   if(window.postQueue.length == 0) {
@@ -20,22 +21,38 @@ function nextPost() {
     newPost.animate({
       opacity: 1
     }, 500)
+
     currentPost.remove()
-  }, 1100)
+  }, (currentPost.length != 0) ? 1100 : 0)
 }
 
 function getPosts() {
-  $.getJSON("/feed/posts", function(posts) {
-    if(posts.length != 0) {
-      posts.forEach(function(post) {
-        window.postQueue.push(post)
-      })
-
-      if($(".post").length == 0) {
-        nextPost()
-      }
+  if(window.postQueue.length == 0) {
+    window.postQueue[0] = {
+      message: "Squeezing a fresh batch...",
+      background: [0, 0, 0]
     }
-  })
+
+    nextPost()
+  }
+
+  if(!window.pullingPosts) {
+    window.pullingPosts = true
+
+    $.getJSON("/feed/posts", function(posts) {
+      window.pullingPosts = false
+
+      if(posts.length != 0) {
+        posts.forEach(function(post) {
+          window.postQueue.push(post)
+        })
+
+        if($(".post").length <= 1) {
+          nextPost()
+        }
+      }
+    })
+  }
 }
 
 function buildPost(post) {
