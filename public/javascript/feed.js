@@ -60,3 +60,7 @@ $(function() {
   getPosts()
   setInterval(nextPost, 10000)
 })
+
+$(window).resize(function() {
+  $(".post").find(".message").vAlign()
+})
