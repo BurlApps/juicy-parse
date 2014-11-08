@@ -17,7 +17,7 @@ module.exports.posts = function(req, res) {
 
   query.equalTo("show", true)
   query.notContainedIn("objectId", alreadySeen)
-  query.lessThanOrEqualTo("length", 200)
+  query.lessThanOrEqualTo("length", 400)
   query.descending("createdAt")
 
   query.find().then(function(posts) {
