@@ -58,7 +58,7 @@ module.exports.posts = function(req, res) {
           results.push({
             message: post.get("flatContent"),
             image: (image) ? image.url() : "",
-            background: post.get("background"),
+            background: post.get("background") || [],
             alpha: post.get("darkenerAlpha")
           })
         })
