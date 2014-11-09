@@ -39,6 +39,16 @@ function buildPost(post) {
 	  		Facebook																										\
 	  	</a>																													\
 	  ")
+  } else if(post.source == "app") {
+    element.find(".bottom").append("																\
+	  	<a class='right' href='/download' target='_blank'>	          \
+	  		iOS App 																										\
+	  	</a>																													\
+	  ")
+  } else if(post.souce == "sms") {
+    element.find(".bottom").append("																\
+	  	<strong class='right'>SMS</strong>			                      \
+	  ")
   }
 
   if(post.image) {

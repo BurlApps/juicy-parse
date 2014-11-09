@@ -48,7 +48,8 @@ module.exports.search = function(req, res) {
 			      message: post.get("flatContent"),
 			      image: (image) ? image.url() : null,
 			      duration: Moment.duration(post.createdAt - now).humanize(true),
-			      show: post.get("show")
+			      show: post.get("show"),
+			      source: queue.get("source")
 			    }
 
 					if(school && facebookPost) {
