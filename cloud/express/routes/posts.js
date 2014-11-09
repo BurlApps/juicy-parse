@@ -29,7 +29,9 @@ module.exports.home = function(req, res) {
 	      image: (image) ? image.url() : null,
 	      duration: Moment.duration(post.createdAt - now).humanize(true),
 	      show: post.get("show"),
-	      template: "posts/index"
+	      template: "posts/index",
+	      source: queue.get("source"),
+	      facebook: null
 	    }
 
 			if(school && facebookPost) {

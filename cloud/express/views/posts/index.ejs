@@ -15,7 +15,13 @@
 					<a class='right' href='<%= facebook %>' target='_blank'>
 			  		Facebook
 			  	</a>
-				<% } %>
+				<% } else if(source == "app") {  %>
+				  <a class='right' href='/download' target='_blank'>
+            iOS App
+          </a>
+        <% } else if(source == "sms") {  %>
+          <strong class='right'>SMS</strong>
+        <% }  %>
 			</div>
     </div>
   </div>
