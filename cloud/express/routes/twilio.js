@@ -17,9 +17,9 @@ module.exports.auth = function(req, res, next) {
 }
 
 module.exports.post = function(req, res, next) {
-  var from = req.param("From")
-  var to = req.param("To")
-  var body = req.param("Body")
+  var from = req.param("From")[0]
+  var to = req.param("To")[0]
+  var body = req.param("Body")[0]
 
   // Set Default
   req.newUser = false
