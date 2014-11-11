@@ -5,7 +5,7 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
 
   if(post.existed()) return
 
-  // If Posted in the App
+  // If Not A Confession or Seeded
   if(!post.get("confession") && !post.get("seeded")) {
 	  //Add To Queue
 	  var queue = new Queue()
