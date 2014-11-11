@@ -9,6 +9,7 @@ Parse.Cloud.define("topPosts", function(req, res) {
   query.limit(req.params.limit)
   query.equalTo("show", true)
   query.descending("karma")
+  query.lessThanOrEqualTo("createdAt", daysAgo)
 
   query.find().then(function(posts) {
     res.success(posts)
