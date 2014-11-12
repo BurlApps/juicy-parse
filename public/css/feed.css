@@ -21,6 +21,33 @@ canvas,
   display: none;
 }
 
+.image-toggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 3;
+  color: #fff;
+  padding: 8px 10px;
+  border: solid 1px #fff;
+  cursor: pointer;
+  background: none;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.image-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.image-toggle:hover:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .container {
   position: fixed;
   z-index: 2;

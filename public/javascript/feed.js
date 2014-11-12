@@ -2,14 +2,18 @@ window.postQueue = []
 window.postIndex = 0
 window.pullingPosts = false
 window.interval = null
+window.mode = 0
+window.attempted = false
 
 function nextPost() {
   var unTouchedCount = window.postQueue.length - window.postIndex - 1
 
-  if(window.postQueue.length <= window.postIndex) {
-    return getPosts()
-  } else if(unTouchedCount < 5) {
-    getPosts()
+  if(!window.attempted) {
+    if(window.postQueue.length <= window.postIndex) {
+      return getPosts()
+    } else if(unTouchedCount < 5) {
+      getPosts()
+    }
   }
 
   var post = window.postQueue[window.postIndex]
@@ -32,19 +36,31 @@ function nextPost() {
 
 function getPosts() {
   if(window.postQueue.length == 0) {
-    window.postQueue[0] = {
+    window.postQueue.push({
       message: "Squeezing a fresh batch...",
       background: [0, 0, 0]
-    }
+    })
 
     nextPost()
   }
 
   if(!window.pullingPosts) {
+    var url = "/feed/posts"
     window.pullingPosts = true
 
-    $.getJSON("/feed/posts", function(posts) {
+    switch(window.mode) {
+      case 1:
+        url += "?images=true"
+        break
+
+      case 2:
+        url += "?images=false"
+        break
+    }
+
+    $.getJSON(url, function(posts) {
       window.pullingPosts = false
+      window.attempted = false
 
       if(posts.length != 0) {
         posts.forEach(function(post) {
@@ -54,6 +70,18 @@ function getPosts() {
         if($(".post").length <= 1) {
           nextPost()
         }
+      } else {
+        if(window.interval) {
+          clearInterval(window.interval)
+        }
+
+        window.attempted = true
+        window.postQueue.push({
+          message: "No posts found...",
+          background: [0, 0, 0]
+        })
+
+        nextPost()
       }
     })
   }
@@ -88,26 +116,57 @@ function resetInterval() {
   window.interval = setInterval(nextPost, 10000)
 }
 
+function eventListeners() {
+  $(window).resize(function() {
+    $(".post").find(".message").vAlign()
+  })
+
+  $(document).keydown(function(e) {
+    if([37,38,39,40].indexOf(e.keyCode) != -1) {
+      if([37,38].indexOf(e.keyCode) != -1) {
+        if(window.postIndex <= 2) {
+          return false
+        }
+
+        window.postIndex -= 2
+      }
+
+      nextPost()
+      resetInterval()
+    }
+  });
+
+  $(".image-toggle").click(function() {
+    var toggle = $(this)
+    window.mode++
+
+    if(window.mode > 2) {
+      window.mode = 0
+    }
+
+    switch(window.mode) {
+      case 0:
+        toggle.text("All Posts")
+        break
+
+      case 1:
+        toggle.text("Images Only")
+        break
+
+      case 2:
+        toggle.text("Text Only")
+        break
+    }
+
+    window.postQueue = []
+    window.postIndex = 0
+    getPosts()
+    resetInterval()
+  })
+}
+
 $(function() {
   getPosts()
   resetInterval()
+  eventListeners()
 })
-
-$(window).resize(function() {
-  $(".post").find(".message").vAlign()
-})
-
-$(document).keydown(function(e) {
-  if([37,38,39,40].indexOf(e.keyCode) != -1) {
-    if([37,38].indexOf(e.keyCode) != -1) {
-      if(window.postIndex <= 2) {
-        return false
-      }
-
-      window.postIndex -= 2
-    }
-
-    nextPost()
-    resetInterval()
-  }
-});

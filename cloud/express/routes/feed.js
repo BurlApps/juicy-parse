@@ -10,6 +10,7 @@ module.exports.home = function(req, res) {
 
 module.exports.posts = function(req, res) {
   var results = []
+  var images = req.param("images")
 
   Settings().then(function(settings) {
     var user = new Parse.User()
@@ -43,6 +44,12 @@ module.exports.posts = function(req, res) {
     query.lessThanOrEqualTo("length", 350)
     query.notEqualTo("likedUsers", user)
     query.descending("createdAt")
+
+    if(images == "true") {
+      query.exists("image")
+    } else if(images == "false") {
+      query.doesNotExist("image")
+    }
 
     query.find().then(function(posts) {
       var promise = Parse.Promise.as()
