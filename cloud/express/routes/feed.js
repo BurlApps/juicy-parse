@@ -16,10 +16,7 @@ module.exports.posts = function(req, res) {
     var user = new Parse.User()
     req.settings = settings
 
-    if(req.session.user) {
-      user.id = req.session.user
-    	return user
-    } else if(req.cookies[req.settings.get("confessionTracker")]) {
+    if(req.cookies[req.settings.get("confessionTracker")]) {
       user.id = req.cookies[req.settings.get("confessionTracker")]
       return user
     } else {
@@ -73,7 +70,12 @@ module.exports.posts = function(req, res) {
 
       return promise
     }).then(function() {
-      res.json(results)
+      if(results.length == 0) {
+        res.clearCookie(req.settings.get("confessionTracker"))
+        module.exports.posts(req, res)
+      } else {
+        res.json(results)
+      }
     }, function(error) {
       console.log(error)
       res.json([])
