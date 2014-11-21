@@ -17,7 +17,10 @@ $(function() {
 })
 
 function buildPost(post) {
-	var message = $('<div/>').text(post.message).html()
+	var message = $('<div/>')
+	   .text(post.message)
+	   .html()
+	   .replace(/(?:\r\n|\r|\n)/g, '<br />')
 	var element = $('																														\
     <div class="post">                                                				\
     	<div class="message">' + message + '</div>                        	 	  \
