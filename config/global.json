@@ -1,21 +1,17 @@
 {
     "applications": {
         "Juicy": {
-            "applicationId": "JiY9SpududxaHLqhF83mhXglIIeLF2Zmvi5Z09hi", 
+            "applicationId": "JiY9SpududxaHLqhF83mhXglIIeLF2Zmvi5Z09hi",
             "masterKey": "bzSnkC4P0JxnANYGzaJGe5MHebeDgo2iQZbCenbv"
-        }, 
+        },
         "Juicy - Dev": {
-            "applicationId": "1GvIRYDV5tyGZx3iehQDOXdgHVvjyTfpmRddlZG1", 
+            "applicationId": "1GvIRYDV5tyGZx3iehQDOXdgHVvjyTfpmRddlZG1",
             "masterKey": "VZb0YP8VitcSOMVSuo7Eig6v1p7Y61BQo8wWaI2E"
-        }, 
-        "Juicy - Development": {
-            "applicationId": "1GvIRYDV5tyGZx3iehQDOXdgHVvjyTfpmRddlZG1", 
-            "masterKey": "VZb0YP8VitcSOMVSuo7Eig6v1p7Y61BQo8wWaI2E"
-        }, 
+        },
         "_default": {
             "link": "Juicy - Dev"
         }
-    }, 
+    },
     "global": {
         "parseVersion": "1.3.0"
     }
