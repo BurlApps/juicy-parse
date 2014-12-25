@@ -10,6 +10,7 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
 	  //Add To Queue
 	  var queue = new Queue()
 
+    queue.set("show", false)
     queue.set("source", "app")
     queue.set("post", post)
     queue.set("creator", post.get("creator"))

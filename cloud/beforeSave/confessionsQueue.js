@@ -6,7 +6,7 @@ Parse.Cloud.beforeSave("ConfessionsQueue", function(req, res) {
   }
 
   // Set Defaults
-  queue.set("show", true)
+  queue.set("show", !!queue.get("show"))
   queue.set("spam", false)
   res.success()
 })
