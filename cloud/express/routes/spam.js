@@ -81,7 +81,7 @@ module.exports.confessions = function(req, res) {
     })
   }).then(function() {
     res.json(confessions.sort(function(a, b) {
-      return a.created > b.created
+      return a.created - b.created
     }))
   }, function(error) {
     console.log(error)
