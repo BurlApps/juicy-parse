@@ -28,25 +28,31 @@ Parse.Cloud.define("feed", function(req, res) {
   daysAgo.setDate(daysAgo.getDate() - 5 - req.params.skip)
   newPostsQuery.greaterThanOrEqualTo("updatedAt", daysAgo)
 
-  // About Me Query
-  var aboutMeQuery = new Parse.Query(Posts)
-  aboutMeQuery.equalTo("aboutUsers", currentUser)
+  if(currentUser != null) {
+    // About Me Query
+    var aboutMeQuery = new Parse.Query(Posts)
+    aboutMeQuery.equalTo("aboutUsers", currentUser)
 
-  // About My Friends Query
-  var aboutFriendsQuery = new Parse.Query(Posts)
-  var friendRelation = currentUser.relation("friends")
-  aboutFriendsQuery.matchesQuery("aboutUsers", friendRelation.query())
+    // About My Friends Query
+    var aboutFriendsQuery = new Parse.Query(Posts)
+    var friendRelation = currentUser.relation("friends")
+    aboutFriendsQuery.matchesQuery("aboutUsers", friendRelation.query())
 
-  // Base "Or Query"
-  var query = Parse.Query.or(geoQuery, aboutMeQuery, aboutFriendsQuery, newPostsQuery)
+    // Base "Or Query"
+    var query = Parse.Query.or(geoQuery, aboutMeQuery, aboutFriendsQuery, newPostsQuery)
+    query.notEqualTo("creator", currentUser)
+    query.notEqualTo("likedUsers", currentUser)
+    query.notEqualTo("nopedUsers", currentUser)
+
+  } else {
+    var query = Parse.Query.or(geoQuery, newPostsQuery)
+  }
+
   query.limit(req.params.limit)
   query.skip(req.params.skip)
 
   query.equalTo("show", true)
   query.lessThanOrEqualTo("length", 200)
-  query.notEqualTo("creator", currentUser)
-  query.notEqualTo("likedUsers", currentUser)
-  query.notEqualTo("nopedUsers", currentUser)
   query.descending("createdAt")
 
   query.find().then(function(posts) {
