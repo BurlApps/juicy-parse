@@ -132,6 +132,9 @@ app.get('/feed/posts', routes.feed.posts)
 
 // Moderators Route
 app.get('/moderators', routes.moderators.auth, routes.moderators.home)
+app.get('/moderators/new', routes.moderators.auth, routes.moderators.new)
+app.get('/moderators/remove/:user', routes.moderators.auth, routes.moderators.remove)
+app.post('/moderators/new', routes.moderators.auth, routes.moderators.create)
 app.post('/moderators/:user/:school', routes.moderators.auth, routes.moderators.school)
 
 // Moderator Route

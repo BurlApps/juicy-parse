@@ -1,0 +1,14 @@
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="header">New Moderator</div>
+  <form class="form" action="/moderators/new" autocomplete="off">
+    <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+    <input class="input" name="firstName" type="text" placeholder="First Name" required="required" />
+    <input class="input" name="fullName" type="text" placeholder="Full Name" required="required" />
+    <input class="input" name="email" type="email" placeholder="Email" required="required" />
+    <input class="input" name="password" type="password" placeholder="Password" required="required" />
+    <input class="input" name="gender" type="text" placeholder="Gender (male or female)" required="required" />
+    <input class="submit" type="submit" value="Add Moderator" />
+  </form>
+</div>
+<% include ../includes/end.ejs %>

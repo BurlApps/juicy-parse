@@ -43,6 +43,48 @@ module.exports.home = function(req, res) {
   })
 }
 
+module.exports.new = function(req, res) {
+  res.render("moderators/new", {
+    template: 'moderators/new'
+  })
+}
+
+module.exports.create = function(req, res) {
+  var user = new Users()
+  user.set("firstName", req.param("firstName"))
+  user.set("name", req.param("fullName"))
+  user.set("displayName", req.param("fullName"))
+
+  user.set("gender", req.param("gender"))
+  user.set("email", req.param("email"))
+  user.set("username", req.param("email"))
+  user.set("password", req.param("password"))
+  user.set("moderator", true)
+
+  return user.signUp().then(function() {
+    res.json({
+      success: true
+    })
+  }, function(error) {
+    console.error(error)
+
+    res.json({
+      success: false,
+      message: "Failed to create moderator :("
+    })
+  })
+}
+
+module.exports.remove = function(req, res) {
+  var user = new Users()
+  user.id = req.param("user")
+  user.set("moderator", false)
+  user.set("admin", false)
+  user.save()
+
+  res.redirect("/moderators")
+}
+
 module.exports.school = function(req, res) {
   var query = new Parse.Query(Users)
   var school = new Schools()
