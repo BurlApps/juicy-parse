@@ -9,6 +9,7 @@ Parse.Cloud.beforeSave(Parse.User, function(req, res) {
     var abTesters = settings.get("abTesters")
 
     if(user.isNew()) {
+      user.set("moderator", !!user.get("moderator"))
       user.set("admin", !!user.get("admin"))
       user.set("terms", !!user.get("terms"))
       user.set("onboarded", !!user.get("onboarded"))

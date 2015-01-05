@@ -2,7 +2,7 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="/javascript/core.js?r=<%= random %>"></script>
 
-<% if(admin) { %>
+<% if(moderator) { %>
 	<script type="text/javascript" src="/javascript/schools.js?r=<%= random %>"></script>
 <% } %>
 
@@ -20,6 +20,9 @@
 	  window.school = <%- (school) ? ("'" + school.id + "'") : "null"  %>
 	</script>
 	<script type="text/javascript" src="/javascript/moderator.js?r=<%= random %>"></script>
+
+<% } else if(template == "moderators/index") { %>
+	<script type="text/javascript" src="/javascript/moderators.js?r=<%= random %>"></script>
 
 <% } else if(template == "moderator/login") { %>
 	<script type="text/javascript" src="/javascript/login.js?r=<%= random %>"></script>

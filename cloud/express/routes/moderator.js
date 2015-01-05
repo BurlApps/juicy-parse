@@ -22,12 +22,25 @@ module.exports.auth = function(req, res, next) {
 module.exports.login = function(req, res, next) {
 	Parse.User.logIn(req.param("email"), req.param("password"), {
 	  success: function(user) {
-		  if(user.get("admin") == true) {
-		  	req.session.user = user.id
+		  if(user.get("moderator") == true) {
+		  	var schoolsQuery = user.relation("schools").query()
+		  	var schools = []
 
-		  	res.json({
-			  	success: true
-		  	})
+        schoolsQuery.each(function(school) {
+          return schools.push({
+            id: school.id,
+            name: school.get("name"),
+            slug: school.get("slug")
+          })
+        }).then(function() {
+          req.session.schools = schools
+          req.session.user = user.id
+          req.session.admin = user.get("admin")
+
+          res.json({
+  			  	success: true
+  		  	})
+        })
 		  } else {
 			  res.json({
 			  	success: false,
@@ -53,28 +66,36 @@ module.exports.logout = function(req, res, next) {
 
 module.exports.home = function(req, res) {
   var slug = req.param("school")
+  var schools = req.session.schools
+  var allowed = (schools.map(function(school) {
+    return school.slug
+  }).indexOf(slug) != -1)
 
   if(slug) {
-    var query = new Parse.Query(Schools)
+    if(allowed) {
+      var query = new Parse.Query(Schools)
 
-    query.equalTo("slug", slug)
-    query.first().then(function(school) {
-      if(school) {
-        res.render("moderator/index", {
-          school: {
-            id: school.id,
-            slug: slug,
-            name: school.get("name"),
-          },
-          template: 'moderator/index'
-        })
-      } else {
+      query.equalTo("slug", slug)
+      query.first().then(function(school) {
+        if(school) {
+          res.render("moderator/index", {
+            school: {
+              id: school.id,
+              slug: slug,
+              name: school.get("name"),
+            },
+            template: 'moderator/index'
+          })
+        } else {
+          res.redirect("/moderator")
+        }
+      }, function(error) {
+        console.log(error)
         res.redirect("/moderator")
-      }
-    }, function(error) {
-      console.log(error)
+      })
+    } else {
       res.redirect("/moderator")
-    })
+    }
   } else {
     res.render("moderator/index", {
 	    template: 'moderator/index'
@@ -86,60 +107,67 @@ module.exports.confessions = function(req, res) {
   var confessions = []
   var query = new Parse.Query(Queue)
   var now = new Date()
+  var user = new Users()
 
-  if(req.param("school")) {
-    var school = new Schools()
-    school.id = req.param("school")
+  user.id = req.session.user
 
-    query.equalTo("school", school)
-  }
+  user.fetch().then(function() {
+    if(req.param("school")) {
+      var school = new Schools()
+      school.id = req.param("school")
 
-  query.equalTo("show", true)
-  query.equalTo("spam", false)
-
-  query.each(function(confession) {
-    var post = confession.get("post")
-    var school = confession.get("school")
-    var object = {}
-
-    if(!post) {
-       return false
+      query.equalTo("school", school)
+    } else {
+      query.matchesQuery("school", user.relation("schools").query())
     }
 
-    return post.fetch().then(function(post) {
-	    var image = post.get("image")
+    query.equalTo("show", true)
+    query.equalTo("spam", false)
 
-      return object = {
-        id: confession.id,
-        post: post.id,
-        message: post.get("flatContent"),
-        image: (image) ? image.url() : null,
-        created: post.createdAt,
-        adminNote: confession.get("adminNote") || "",
-        source: confession.get("source"),
-        duration: Moment.duration(post.createdAt - now).humanize(true)
+    query.each(function(confession) {
+      var post = confession.get("post")
+      var school = confession.get("school")
+      var object = {}
+
+      if(!post) {
+         return false
       }
+
+      return post.fetch().then(function(post) {
+  	    var image = post.get("image")
+
+        return object = {
+          id: confession.id,
+          post: post.id,
+          message: post.get("flatContent"),
+          image: (image) ? image.url() : null,
+          created: post.createdAt,
+          adminNote: confession.get("adminNote") || "",
+          source: confession.get("source"),
+          duration: Moment.duration(post.createdAt - now).humanize(true)
+        }
+      }).then(function() {
+        if(school) {
+          return school.fetch().then(function(school) {
+            return object.school = {
+              id: school.id,
+              name: school.get("name")
+            }
+          })
+        } else {
+          return object.school = null
+        }
+      }).then(function() {
+        confessions.push(object)
+      })
     }).then(function() {
-      if(school) {
-        return school.fetch().then(function(school) {
-          return object.school = {
-            id: school.id,
-            name: school.get("name")
-          }
-        })
-      } else {
-        return object.school = null
-      }
-    }).then(function() {
-      confessions.push(object)
+      res.json(confessions.sort(function(a, b) {
+        return a.created - b.created
+      }))
+    }, function(error) {
+      console.log(error)
+      res.json([])
     })
-  }).then(function() {
-    res.json(confessions.sort(function(a, b) {
-      return a.created - b.created
-    }))
-  }, function(error) {
-    console.log(error)
-    res.json([])
   })
 }
 

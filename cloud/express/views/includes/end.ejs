@@ -2,11 +2,16 @@
 	<a class="logo" href="/">
 		<img src="/images/logo_white.png"/>
 	</a>
-	<% if(admin) { %>
+	<% if(moderator) { %>
 	  <div class="corner-links">
-		  <div class="link school-button">
-		    <strong><%- (school) ? school.name : "All Schools" %></strong>
-		  </div>
+		  <% if(schools.length > 1) { %>
+  		  <div class="link school-button">
+  		    <strong><%- (school) ? school.name : "All Schools" %></strong>
+  		  </div>
+  		<% } %>
+		  <% if(admin) { %>
+		    <a class="link" href="/moderators/">Moderators</a>
+		  <% } %>
 		  <% if(school && template != "confession/index") { %>
 		    <a class="link" href="/moderator/<%= school.slug %>/writer">New Post</a>
 		  <% } %>

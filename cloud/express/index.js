@@ -12,6 +12,7 @@ var routes = {
   confession: require("cloud/express/routes/confession"),
   twilio: require("cloud/express/routes/twilio"),
   moderator: require("cloud/express/routes/moderator"),
+  moderators: require("cloud/express/routes/moderators"),
   spam: require("cloud/express/routes/spam"),
   search: require("cloud/express/routes/search"),
   images: require("cloud/express/routes/images"),
@@ -43,9 +44,11 @@ app.use(function(req, res, next) {
   // Locals
   res.locals.host = req.protocol + "://" + req.host
   res.locals.url = res.locals.host + req.url
-  res.locals.admin = !!req.session.user
+  res.locals.admin = !!req.session.admin
+  res.locals.moderator = !!req.session.user
   res.locals.school = null
   res.locals.schools = req.session.schools || []
+  res.locals.allSchools = req.session.allSchools || []
   res.locals.random = random
 
   if(req.session.appliedSettings !== true) {
@@ -126,6 +129,10 @@ app.get('/twilio/confession', routes.twilio.auth, routes.twilio.confession, rout
 // Feed
 app.get('/feed', routes.feed.home)
 app.get('/feed/posts', routes.feed.posts)
+
+// Moderators Route
+app.get('/moderators', routes.moderators.auth, routes.moderators.home)
+app.post('/moderators/:user/:school', routes.moderators.auth, routes.moderators.school)
 
 // Moderator Route
 app.get('/moderator', routes.moderator.auth, routes.moderator.home)

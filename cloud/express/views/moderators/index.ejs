@@ -1,0 +1,28 @@
+<% include ../includes/start.ejs %>
+<div class="container">
+  <div class="header">Moderators</div>
+  <div class="inner-container">
+    <div class="moderators">
+      <% moderators.forEach(function(moderator) { %>
+        <div class="moderator">
+          <div class="name"><%= moderator.name %></div>
+          <div class="schools">
+            <% allSchools.forEach(function(school) { %>
+              <form class="school" action="/moderators/<%= moderator.id %>/<%= school.id %>">
+                <input name="_csrf" type="hidden" value="<%= csrf %>"/>
+                <div class="name"><%= school.name %></div>
+                <% if(moderator.schools.indexOf(school.id) != -1) { %>
+                  <input name="allowed" class="checkbox" type="checkbox" checked="checked">
+                <% } else { %>
+                  <input name="allowed" class="checkbox" type="checkbox">
+                <% } %>
+                <div class="clear"></div>
+              </form>
+            <% }) %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+<% include ../includes/end.ejs %>

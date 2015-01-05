@@ -98,18 +98,19 @@ module.exports.sitemap = function(req, res) {
 }
 
 module.exports.schools = function(req, res, next) {
-  if(!req.session.schools) {
+  if(!req.session.allSchools) {
     var query = new Parse.Query(Schools)
     var schools = []
 
     query.each(function(school) {
       return schools.push({
+        id: school.id,
         name: school.get("name"),
         slug: school.get("slug")
       })
     }).then(function() {
-      req.session.schools = schools
-      res.locals.schools = schools
+      req.session.allSchools = schools
+      res.locals.allSchools = schools
 
       next()
     }, function(error) {
