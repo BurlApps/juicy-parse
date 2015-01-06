@@ -20,7 +20,6 @@ module.exports.home = function(req, res) {
   var query = new Parse.Query(Users)
   var moderators = []
 
-  query.equalTo("admin", false)
   query.equalTo("moderator", true)
 
   query.each(function(user) {
