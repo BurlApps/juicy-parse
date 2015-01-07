@@ -10,9 +10,7 @@ module.exports.auth = function(req, res, next) {
 			message: "Login required :("
 		})
 	} else {
-		res.render("moderator/login", {
-			template: "moderator/login"
-		})
+		res.redirect("/")
 	}
 }
 
