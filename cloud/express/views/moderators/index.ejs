@@ -12,7 +12,9 @@
         <div class="moderator">
           <div class="name">
             <%= moderator.name %>
-            (<a href="/moderators/remove/<%= moderator.id %>">Remove</a>)
+            <% if(!moderator.admin) { %>
+              (<a href="/moderators/remove/<%= moderator.id %>">Remove</a>)
+            <% } %>
           </div>
           <div class="schools">
             <% allSchools.forEach(function(school) { %>

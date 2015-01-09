@@ -30,7 +30,8 @@ module.exports.home = function(req, res) {
       return moderators.push({
         id: user.id,
         name: user.get("name"),
-        schools: schools
+        schools: schools,
+        admin: user.get("admin")
       })
     })
   }).then(function() {
