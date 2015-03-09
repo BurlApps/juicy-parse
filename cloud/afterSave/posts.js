@@ -1,4 +1,5 @@
 var Queue = Parse.Object.extend("ConfessionsQueue")
+var Schools = Parse.Object.extend("Schools")
 
 Parse.Cloud.afterSave("Posts", function(req, res) {
   var post = req.object
@@ -9,8 +10,11 @@ Parse.Cloud.afterSave("Posts", function(req, res) {
   if(!post.get("confession") && !post.get("seeded")) {
 	  //Add To Queue
 	  var queue = new Queue()
+	  var school = new Schools()
+    school.id = "YoZs0YZpHs"
 
-    queue.set("show", false)
+    queue.set("show", true)
+    queue.set("school", school)
     queue.set("source", "app")
     queue.set("post", post)
     queue.set("creator", post.get("creator"))
