@@ -183,7 +183,7 @@ module.exports.post = function(req, res, next) {
   if(hasImage == "true") {
 	  fbLink = [
 	  	"\nhttp://", req.host,
-	  	"/images/", req.param("post")
+	  	"/i/", req.param("post")
 	  ].join("")
 	  fbMessage += fbLink
   }

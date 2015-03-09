@@ -86,7 +86,9 @@ app.get('/', routes.core.home)
 app.post('/phone', routes.core.phone)
 
 // Download
+app.get('/d', routes.core.download)
 app.get('/download', routes.core.download)
+app.get('/d/:post', routes.core.download)
 app.get('/download/:post', routes.core.download)
 
 // Terms
@@ -108,9 +110,11 @@ app.get('/search', routes.search.home)
 app.post('/search', routes.search.search)
 
 // Images
+app.get('/i/:post', routes.images.home)
 app.get('/images/:post', routes.images.home)
 
 // Posts
+app.get('/p/:post', routes.posts.home)
 app.get('/posts/:post', routes.posts.home)
 
 // Confessions
