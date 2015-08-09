@@ -123,47 +123,53 @@ module.exports.confessions = function(req, res) {
 
     query.equalTo("show", true)
     query.equalTo("spam", false)
+    query.ascending("created")
+    query.limit(50)
 
-    query.each(function(confession) {
-      var post = confession.get("post")
-      var school = confession.get("school")
-      var object = {}
-
-      if(!post) {
-         return false
-      }
-
-      return post.fetch().then(function(post) {
-  	    var image = post.get("image")
-
-        return object = {
-          id: confession.id,
-          post: post.id,
-          message: post.get("flatContent"),
-          image: (image) ? image.url() : null,
-          created: post.createdAt,
-          adminNote: confession.get("adminNote") || "",
-          source: confession.get("source"),
-          duration: Moment.duration(post.createdAt - now).humanize(true)
-        }
-      }).then(function() {
-        if(school) {
-          return school.fetch().then(function(school) {
-            return object.school = {
-              id: school.id,
-              name: school.get("name")
-            }
-          })
-        } else {
-          return object.school = null
-        }
-      }).then(function() {
-        confessions.push(object)
-      })
+    query.find().then(function(posts) {	
+	  	var promise = Parse.Promise.as() 
+	       
+	    posts.forEach(function(confession) { 
+	      return promise = promise.then(function() {  
+		      var post = confession.get("post")
+		      var school = confession.get("school")
+		      var object = {}
+			
+		      if(!post) return false
+		
+		      return post.fetch().then(function(post) {
+		  	    var image = post.get("image")
+		
+		        return object = {
+		          id: confession.id,
+		          post: post.id,
+		          message: post.get("flatContent"),
+		          image: (image) ? image.url() : null,
+		          created: post.createdAt,
+		          adminNote: confession.get("adminNote") || "",
+		          source: confession.get("source"),
+		          duration: Moment.duration(post.createdAt - now).humanize(true)
+		        }
+		      }).then(function() {
+		        if(school) {
+		          return school.fetch().then(function(school) {
+		            return object.school = {
+		              id: school.id,
+		              name: school.get("name")
+		            }
+		          })
+		        } else {
+		          return object.school = null
+		        }
+		      }).then(function() {
+		        confessions.push(object)
+		      })
+		    })
+	    })
+	    
+	    return promise
     }).then(function() {
-      res.json(confessions.sort(function(a, b) {
-        return a.created - b.created
-      }))
+      res.json(confessions)
     }, function(error) {
       console.log(error)
       res.json([])
